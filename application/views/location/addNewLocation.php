@@ -27,7 +27,7 @@
                             
                             <div class="col-md-10">
 
-                              <form method="POST" action="<?php echo base_url('locationController/addNewLocation'); ?>">
+                              <form method="POST" action="<?php echo base_url('LocationController/addNewLocation'); ?>">
 
                                 <div class="row">
                                   <div class="col-md-3">

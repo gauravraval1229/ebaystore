@@ -77,7 +77,7 @@ var ebayApiUrl =   "<?=EBAYAPIURL?>";
                             <div class="dropdown-menu dropdown-menu-right">
                                 <a class="dropdown-item" href="#"><i class="ft-user"></i> Edit Profile</a>
                                 <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="<?php echo base_url('loginController/logout'); ?>"><i class="ft-power"></i> Logout</a>
+                                    <a class="dropdown-item" href="<?php echo base_url('LoginController/logout'); ?>"><i class="ft-power"></i> Logout</a>
                             </div>
                         </li>
                     </ul>
@@ -95,21 +95,21 @@ var ebayApiUrl =   "<?=EBAYAPIURL?>";
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
                 <li class="nav-item"><a href="#"><i class="la la-stethoscope"></i><span class="menu-title" data-i18n="nav.color_palette.main">Location</span></a>
                     <ul class="menu-content">
-                        <li><a class="menu-item" href="<?php echo base_url('locationController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
+                        <li><a class="menu-item" href="<?php echo base_url('LocationController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="nav-item"><a href="#"><i class="la la-shopping-cart"></i><span class="menu-title" data-i18n="nav.color_palette.main">Item Group</span></a>
                     <ul class="menu-content">
-                        <li><a class="menu-item" href="<?php echo base_url('itemGroupController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
+                        <li><a class="menu-item" href="<?php echo base_url('ItemGroupController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
                         </li>
                     </ul>
                 </li>
 
                 <li class="nav-item"><a href="#"><i class="la la-bank"></i><span class="menu-title" data-i18n="nav.color_palette.main">Product</span></a>
                     <ul class="menu-content">
-                        <li><a class="menu-item" href="<?php echo base_url('productController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
+                        <li><a class="menu-item" href="<?php echo base_url('ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
                         </li>
                     </ul>
                 </li>

@@ -31,7 +31,7 @@
                 <div class="card">
                   <div class="card-header">
                     <h4 class="card-title"><?php echo $msgName; ?> List</h4>
-                    <a href="<?php echo base_url(); ?>itemGroupController/addNewItemGroup" class="btn btn-info heading-elements" style="float:right;">Add New <?php echo $msgName; ?></a>
+                    <a href="<?php echo base_url('ItemGroupController/addNewItemGroup'); ?>" class="btn btn-info heading-elements" style="float:right;">Add New <?php echo $msgName; ?></a>
                   </div>
                   <div class="card-content collapse show">
                     <div class="card-body card-dashboard dataTables_wrapper dt-bootstrap">
@@ -55,7 +55,7 @@
                                 <td><?php echo $locationList->locations[$i]->merchantLocationStatus; ?></td>
                                 <td><?php echo $locationList->locations[$i]->name; ?></td>
                                 <!-- <td><a href="<?php echo base_url(); ?>Home/editInventory/<?php echo $productList->inventoryItems[$i]->sku; ?>">Edit</a></td>-->
-                                <td><a href="<?php echo base_url(); ?>itemGroupController/deleteLocation/<?php echo $locationList->locations[$i]->merchantLocationKey; ?>">Delete</a></td>
+                                <td><a href="<?php echo base_url(); ?>ItemGroupController/deleteLocation/<?php echo $locationList->locations[$i]->merchantLocationKey; ?>">Delete</a></td>
                               </tr>
                             <?php } ?>
                           </tbody>

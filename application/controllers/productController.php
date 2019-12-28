@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class productController extends CI_Controller {
+class ProductController extends CI_Controller {
 
 	public $msgName = "Product";
 
@@ -66,7 +66,7 @@ class productController extends CI_Controller {
 	    	if ($createInventory['status']==1) 
 	    	{
 	    		$this->session->set_flashdata('success', 'Product added successfully!');
-                redirect(base_url('productController/index'));
+                redirect(base_url('ProductController/index'));
 			}
 			else
 			{
@@ -88,7 +88,7 @@ class productController extends CI_Controller {
     	if ($deleteInventory['status']==1) 
     	{
     		$this->session->set_flashdata('success', 'Product deleted successfully!');
-            redirect(base_url('productController/index'));
+            redirect(base_url('ProductController/index'));
 		}
 		else
 		{
@@ -129,7 +129,7 @@ class productController extends CI_Controller {
 	    	if ($createInventory['status']==1) 
 	    	{
 	    		$this->session->set_flashdata('success', 'Product upadated successfully!');
-                redirect(base_url('productController/index'));
+                redirect(base_url('ProductController/index'));
 			}
 			else
 			{

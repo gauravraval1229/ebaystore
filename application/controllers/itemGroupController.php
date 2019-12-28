@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class itemGroupController extends CI_Controller {
+class ItemGroupController extends CI_Controller {
 
 	public $msgName = "Item Group";
 
@@ -73,7 +73,7 @@ class itemGroupController extends CI_Controller {
     	if ($deleteItemGroup['status']==1) 
     	{
     		$this->session->set_flashdata('success', 'Item group deleted successfully!');
-            redirect(base_url('itemGroupController/index'));
+            redirect(base_url('ItemGroupController/index'));
 		}
 		else
 		{

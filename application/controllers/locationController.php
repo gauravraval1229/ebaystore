@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class locationController extends CI_Controller {
+class LocationController extends CI_Controller {
 
 	public $msgName = "Location";
 
@@ -57,7 +57,7 @@ class locationController extends CI_Controller {
 	    	if ($createLocation['status']==1) 
 	    	{
 	    		$this->session->set_flashdata('success', 'Location created successfully!');
-                redirect(base_url('locationController/index'));
+                redirect(base_url('LocationController/index'));
 			}
 			else
 			{
@@ -79,7 +79,7 @@ class locationController extends CI_Controller {
 		if ($deleteLocation['status']==1) 
 		{
 			$this->session->set_flashdata('success', 'Location deleted successfully!');
-	        redirect(base_url('locationController/index'));
+	        redirect(base_url('LocationController/index'));
 		}
 		else
 		{
@@ -101,7 +101,7 @@ class locationController extends CI_Controller {
 		if ($actionResult['status']==1) 
 		{
 			$this->session->set_flashdata('success', 'Location '.$action.' successfully!');
-			redirect(base_url('locationController/index'));
+			redirect(base_url('LocationController/index'));
 		}
 		else
 		{

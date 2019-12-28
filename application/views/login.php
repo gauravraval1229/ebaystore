@@ -71,7 +71,7 @@
                                 
                                 <div class="card-content">
                                     <div class="card-body">
-                                        <form method="post" class="form-horizontal" action="<?php echo base_url('loginController/login'); ?>">
+                                        <form method="post" class="form-horizontal" action="<?php echo base_url('LoginController/login'); ?>">
                                             <fieldset class="form-group position-relative has-icon-left">
                                                 <input type="text" class="form-control" name="email" placeholder="Your Email Id" required>
                                                 <div class="form-control-position">
