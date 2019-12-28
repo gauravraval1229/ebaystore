@@ -15,3 +15,15 @@ application/logs/*
 !application/logs/index.html
 !application/logs/.htaccess
 /vendor/
+
+
+
+/application/config/config.php
+/application/config/database.php
+/db/ebaystore.sql
+/application/third_party/ebay-sdk/configuration.php
+.htaccess
+application/config/config.php
+application/config/database.php
+db/ebaystore.sql
+application/third_party/ebay-sdk/configuration.php
