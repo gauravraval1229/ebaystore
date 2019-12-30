@@ -7,7 +7,7 @@ class LoginController extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->library('form_validation');
-		$this->load->model('userModel','userModel');
+		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');
 	}
 

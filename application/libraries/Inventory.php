@@ -246,7 +246,9 @@ class Inventory {
         {
             $storeEnumObject = new Enums\StoreTypeEnum();
             $finalStore = $storeEnumObject::C_STORE;
-            $request->locationTypes = $finalStore;
+
+            $requests = new Types\InventoryLocationResponse();
+            $requests->locationTypes = $finalStore;
         }
         else if($data['locationType'] == "WAREHOUSE")
         {
@@ -256,7 +258,7 @@ class Inventory {
 
             //$request->locationTypes =  Enums\StoreTypeEnum::C_WAREHOUSE;
         }
-        //exit();
+        exit();
 
         $response = $service->CreateInventoryLocation($request);
 

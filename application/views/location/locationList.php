@@ -17,7 +17,7 @@
             </div>
           <?php } ?>
         </div>
-        <?php echo "<pre>"; print_r ($locationList); ?>
+        <?php //echo "<pre>"; print_r ($locationList); ?>
         <!-- DOM - jQuery events table -->
         <section id="dom">
           <div class="row">
