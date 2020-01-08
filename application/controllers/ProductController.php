@@ -9,6 +9,8 @@ class ProductController extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->library('Inventory');
+		$this->load->library('TokenData');
+		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');
 
 		if($this->session->userdata['logged_in']['id']=="")
@@ -17,12 +19,25 @@ class ProductController extends CI_Controller {
 			redirect(base_url('/'));
 			exit();
 		}
+
+		//require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+
+		// token expired or not
+
+		$where = "";
+		$where = "expired_datetime >='".currentTime."'";
+
+		$isTokenExpired = $this->userModel->tableData('tokenmaster',$where);
+		if(count($isTokenExpired) == 0 ) // Token expired and need to generate new token
+		{
+			redirect(base_url('TokenController/index'));
+		}
 	}
 
-    public function generateRandomString($length = 5)
-    {
-	    $chars = "123456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
-	    return substr(str_shuffle($chars),0,$length);
+	public function generateRandomString($length = 5)
+	{
+		$chars = "123456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
+		return substr(str_shuffle($chars),0,$length);
 	}
 	
 	public function index()
@@ -38,35 +53,23 @@ class ProductController extends CI_Controller {
     {
     	if(isset($_POST['btnAddNewProductSubmit'])) // request for submit new inventory
     	{
-    		$sku = $this->generateRandomString().time();
-    		$quantity=$this->input->post('quantity');
-	    	$brand=$this->input->post('brand');
-	    	$opticalZoom=$this->input->post('opticalZoom');
-	    	$type=$this->input->post('type');
-	    	$recordingDefinition=$this->input->post('recordingDefinition');
-	    	$mediaFormat=$this->input->post('mediaFormat');
-	    	$storageType=$this->input->post('storageType');
-	    	$description=$this->input->post('description');
-	    	$title=$this->input->post('title');
-
-
-	    	$insertData= array('sku'=>$sku,
-	    						'quantity'=>$quantity,
-	    						'brand'=>$brand,
-	    						'opticalZoom'=>$opticalZoom,
-	    						'type'=>$type,
-	    						'recordingDefinition'=>$recordingDefinition,
-	    						'mediaFormat'=>$mediaFormat,
-	    						'storageType'=>$storageType,
-	    						'description'=>$description,
-	    						'title'=>$title
+	    	$insertData= array('sku'=>$this->generateRandomString().time(),
+	    						'quantity'=>$this->input->post('quantity'),
+	    						'brand'=>$this->input->post('brand'),
+	    						'opticalZoom'=>$this->input->post('opticalZoom'),
+	    						'type'=>$this->input->post('type'),
+	    						'recordingDefinition'=>$this->input->post('recordingDefinition'),
+	    						'mediaFormat'=>$this->input->post('mediaFormat'),
+	    						'storageType'=>$this->input->post('storageType'),
+	    						'description'=>$this->input->post('description'),
+	    						'title'=>$this->input->post('title')
 	    					);
 
 	    	$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
-	    	if ($createInventory['status']==1) 
-	    	{
-	    		$this->session->set_flashdata('success', 'Product added successfully!');
-                redirect(base_url('ProductController/index'));
+			if ($createInventory['status']==1) 
+			{
+				$this->session->set_flashdata('success', 'Product added successfully!');
+				redirect(base_url('ProductController/index'));
 			}
 			else
 			{
@@ -83,12 +86,12 @@ class ProductController extends CI_Controller {
 
     public function deleteInventory($sku)
     {
-    	$deleteInventory = $this->inventory->deleteInventory($sku);
+		$deleteInventory = $this->inventory->deleteInventory($sku);
 
-    	if ($deleteInventory['status']==1) 
-    	{
-    		$this->session->set_flashdata('success', 'Product deleted successfully!');
-            redirect(base_url('ProductController/index'));
+		if ($deleteInventory['status']==1) 
+		{
+			$this->session->set_flashdata('success', 'Product deleted successfully!');
+			redirect(base_url('ProductController/index'));
 		}
 		else
 		{

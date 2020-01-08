@@ -1,8 +1,3 @@
-<script type="text/javascript">
-var ebayToken = "<?=EBAYTOKEN?>";
-var ebayApiUrl =   "<?=EBAYAPIURL?>";
-</script>
-
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 <!-- BEGIN: Head-->

@@ -44,7 +44,8 @@ class LoginController extends CI_Controller {
 
 				$this->session->set_userdata('logged_in',$session_arr);
 
-				redirect(base_url('ProductController/index'));
+				//redirect(base_url('ProductController/index'));
+				redirect(base_url('TokenController/index'));
 			}
 			else
 			{

@@ -13,31 +13,20 @@ class Inventory {
     public function listInventory() 
     {
         $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
-        /**
-         * Create the service object.
-         */
+        
         $service = new Services\InventoryService([
             'authorization' => $config['sandbox']['oauthUserToken'],
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US'
         ]);
-        /**
-         * Create the request object.
-         */
+        
         $request = new Types\GetInventoryItemsRestRequest();
 
-        /**
-         * Note how URI parameters are just properties on the request object.
-         */
         //$request->offset = '0';
         //$request->limit = '2';
-        /**
-         * Send the request.
-         */
+        
         $response = $service->getInventoryItems($request);
-        /**
-         * Output the result of calling the service operation.
-        */
+        
         $product =[];
         if ($response->getStatusCode() === 200) {
             $product = json_decode($response);
@@ -112,12 +101,6 @@ class Inventory {
     public function createOrUpdateInventory($data) 
     {
         $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
-        /**
-         * Create the service object.
-         */
-        /*$service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken']
-        ]);*/
 
         $service = new Services\InventoryService([
             'authorization'    => $config['sandbox']['oauthUserToken'],
@@ -125,9 +108,7 @@ class Inventory {
             'responseLanguage' => 'en-US',
             'sandbox'          => true
         ]);
-        /**
-         * Create the request object.
-         */
+        
         $request = new Types\CreateOrReplaceInventoryItemRestRequest();
        
         $request->sku = $data['sku'];
@@ -373,12 +354,6 @@ class Inventory {
     public function createOrUpdateItemGroup($data) 
     {
         $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
-        /**
-         * Create the service object.
-         */
-        /*$service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken']
-        ]);*/
 
         $service = new Services\InventoryService([
             'authorization'    => $config['sandbox']['oauthUserToken'],
@@ -386,9 +361,7 @@ class Inventory {
             'responseLanguage' => 'en-US',
             'sandbox'          => true
         ]);
-        /**
-         * Create the request object.
-         */
+        
         $request = new Types\CreateOrReplaceInventoryItemGroupRestRequest();
        
         $request->inventoryItemGroupKey = $data['inventoryItemGroupKey'];
