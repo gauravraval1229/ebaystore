@@ -11,11 +11,17 @@ class TokenData {
 
     public function getAccessToken($authCode)
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        // devId,appId,certId define in constants.php
+
+        $credentials = array (
+                                'devId' => devId,
+                                'appId' => appId,
+                                'certId' => certId
+        );
 
         $service = new Services\OAuthService([
-            'credentials' => $config['sandbox']['credentials'],
-            'ruName'      => $config['sandbox']['ruName']
+            'credentials' => $credentials,
+            'ruName'      => ruName
         ]);
         
         $request = new Types\GetUserTokenRestRequest();

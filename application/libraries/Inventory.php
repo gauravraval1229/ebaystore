@@ -12,10 +12,10 @@ class Inventory {
 
     public function listInventory() 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
-        
+        $CI =& get_instance(); // create instance so use $CI instead of $this
+
         $service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken'],
+            'authorization' => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US'
         ]);
@@ -36,21 +36,14 @@ class Inventory {
 
     public function deleteInventory($sku) 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
-        /**
-         * Create the service object.
-         */
-        $service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken']
-        ]);
-        /**
-         * Create the request object.
-         */
-        $request = new Types\DeleteInventoryItemRestRequest();
+        $CI =& get_instance(); // create instance so use $CI instead of $this
         
-        /**
-         * Note how URI parameters are just properties on the request object.
-         */
+        $service = new Services\InventoryService([
+            'authorization' => $CI->session->userdata('userToken')
+        ]);
+        
+        $request = new Types\DeleteInventoryItemRestRequest();
+
         $request->sku = "$sku";
         $response = $service->deleteInventoryItem($request);
 
@@ -67,10 +60,10 @@ class Inventory {
 
     public function editInventory($sku) 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
         
         $service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken']
+            'authorization' => $CI->session->userdata('userToken')
         ]);
         
         $request = new Types\GetInventoryItemRestRequest();
@@ -88,10 +81,10 @@ class Inventory {
 
     public function createOrUpdateInventory($data) 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
 
         $service = new Services\InventoryService([
-            'authorization'    => $config['sandbox']['oauthUserToken'],
+            'authorization'    => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US',
             'sandbox'          => true
@@ -156,10 +149,10 @@ class Inventory {
 
     public function getLocation() 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
 
         $service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken'],
+            'authorization' => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US',
             'sandbox' => true
@@ -182,10 +175,10 @@ class Inventory {
 
     public function createLocation($data) 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
         
         $service = new Services\InventoryService([
-            'authorization'    => $config['sandbox']['oauthUserToken'],
+            'authorization'    => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US',
             'sandbox'          => true
@@ -245,10 +238,10 @@ class Inventory {
 
     public function enableDisableLocation($action,$merchantLocationKey) 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
         
         $service = new Services\InventoryService([
-            'authorization'    => $config['sandbox']['oauthUserToken'],
+            'authorization'    => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US',
             'sandbox'          => true
@@ -286,10 +279,10 @@ class Inventory {
 
     public function deleteLocation($merchantLocationKey) 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
 
         $service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken'],
+            'authorization' => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US',
             'sandbox' => true
@@ -315,10 +308,10 @@ class Inventory {
 
     public function getItemGroup() 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
 
         $service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken'],
+            'authorization' => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US',
             'sandbox' => true
@@ -341,10 +334,10 @@ class Inventory {
 
     public function createOrUpdateItemGroup($data) 
     {
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
 
         $service = new Services\InventoryService([
-            'authorization'    => $config['sandbox']['oauthUserToken'],
+            'authorization'    => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US',
             'sandbox'          => true
@@ -354,10 +347,10 @@ class Inventory {
        
         $request->inventoryItemGroupKey = $data['inventoryItemGroupKey'];
 
-        //$request->inventoryItemGroup = new Types\InventoryItemGroup();
+        $request->inventoryItemGroup = new Types\InventoryItemGroup();
 
-        //$request->inventoryItemGroup->title = $data['title'];
-        //$request->inventoryItemGroup->description = $data['description'];
+        $request->inventoryItemGroup->title = $data['title'];
+        $request->inventoryItemGroup->description = $data['description'];
 
         $response = $service->CreateOrReplaceInventoryItemGroup($request);
 
@@ -378,10 +371,10 @@ class Inventory {
         $frontReplace=str_replace("%7B","{","$inventoryItemGroupKey"); // replace front code to html special chars
         $inventoryItemGroupKey=str_replace("%7D","}","$frontReplace"); // replace last code to html special chars
 
-        $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
+        $CI =& get_instance(); // create instance so use $CI instead of $this
 
         $service = new Services\InventoryService([
-            'authorization' => $config['sandbox']['oauthUserToken'],
+            'authorization' => $CI->session->userdata('userToken'),
             'requestLanguage'  => 'en-US',
             'responseLanguage' => 'en-US',
             'sandbox' => true

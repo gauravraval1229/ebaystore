@@ -8,15 +8,21 @@ class ItemGroupController extends CI_Controller {
 	public function __construct() 
 	{
 		parent::__construct();
+
+		$this->load->library('TokenData');
+		$this->load->library('CheckLoginToken');
 		$this->load->library('Inventory');
+		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');
 
-		if($this->session->userdata['logged_in']['id']=="")
+		$this->checklogintoken->checkCredential(); // check user is loggedin or not and token expired or not
+
+		/*if($this->session->userdata['logged_in']['id']=="")
 		{
 			$this->session->set_flashdata('error','Kindly login again');
 			redirect(base_url('/'));
 			exit();
-		}
+		}*/
 	}
 
     public function generateRandomString($length = 4)
@@ -28,34 +34,30 @@ class ItemGroupController extends CI_Controller {
     public function index()
     {
     	$data['msgName'] = $this->msgName;
-		//$data['itemGroupList'] = $this->inventory->getItemGroup();
+		$data['itemGroupList'] = $this->inventory->getItemGroup();
        	$data['page'] = 'itemGroup/itemGroupList';
         $this->load->view('includes/template', $data);
     }
 
     public function addNewItemGroup()
     {
-    	if(isset($_POST['btnAddNewItemGroupSubmit'])) // request for submit new inventory
+    	if(isset($_POST['btnAddNewItemGroupSubmit'])) // request for submit new item group
     	{
-    		$inventoryItemGroupKey = $this->generateRandomString().time();
-	    	$title=$this->input->post('title');
-	    	$description=$this->input->post('description');
-
-
-	    	$insertData= array('inventoryItemGroupKey'=>$inventoryItemGroupKey,
-	    						'title'=>$title,
-	    						'description'=>$description
+	    	$insertData= array('inventoryItemGroupKey' => $this->generateRandomString().time(),
+	    						'title' => $this->input->post('title'),
+	    						'description'=> $this->input->post('description')
 	    					);
-
+   	
 	    	$createItemGroup = $this->inventory->createOrUpdateItemGroup($insertData); // upadate and create method are same.
 	    	if ($createItemGroup['status']==1) 
 	    	{
-	    		$this->session->set_flashdata('success', 'Product added successfully!');
-                redirect(base_url('itemGroup/itemGroupList'));
+	    		$this->session->set_flashdata('success', 'Group item added successfully!');
+                redirect(base_url('ItemGroupController/index'));
 			}
 			else
 			{
-				$this->session->set_flashdata('error', 'Product is not added successfully!');
+				$this->session->set_flashdata('error', 'Group item is not added successfully!');
+				redirect(base_url('ItemGroupController/index'));
 			}
     	}
     	else // add new item group page

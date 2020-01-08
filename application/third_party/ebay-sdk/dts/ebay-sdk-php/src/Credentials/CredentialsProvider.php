@@ -10,9 +10,11 @@ namespace DTS\eBaySDK\Credentials;
  */
 class CredentialsProvider
 {
-    const ENV_APP_ID = 'XuneLtd-XuneSaaS-SBX-f38876c2a-47ef9cd9';
-    const ENV_CERT_ID = 'SBX-38876c2a3485-aecb-4c8b-a6aa-bd78';
-    const ENV_DEV_ID = '3f7164a7-4da4-4b85-aeaa-09fa3061d452';
+    // appId,certId,devId created in constants.php
+
+    const ENV_APP_ID = appId;
+    const ENV_CERT_ID = certId;
+    const ENV_DEV_ID = devId;
     const ENV_PROFILE = '';
 
     /**

@@ -8,15 +8,20 @@ class LocationController extends CI_Controller {
 	public function __construct() 
 	{
 		parent::__construct();
+		$this->load->library('TokenData');
+		$this->load->library('CheckLoginToken');
 		$this->load->library('Inventory');
+		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');
 
-		if($this->session->userdata['logged_in']['id']=="")
+		$this->checklogintoken->checkCredential(); // check user is loggedin or not and token expired or not
+
+		/*if($this->session->userdata['logged_in']['id']=="")
 		{
 			$this->session->set_flashdata('error','Kindly login again');
 			redirect(base_url('/'));
 			exit();
-		}
+		}*/
 	}
 
 	public function generateRandomString($length = 4)

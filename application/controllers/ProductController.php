@@ -8,21 +8,23 @@ class ProductController extends CI_Controller {
 	public function __construct() 
 	{
 		parent::__construct();
-		$this->load->library('Inventory');
 		$this->load->library('TokenData');
+		$this->load->library('CheckLoginToken');
+		$this->load->library('Inventory');
 		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');
 
-		if($this->session->userdata['logged_in']['id']=="")
+
+		$this->checklogintoken->checkCredential(); // check user is loggedin or not and token expired or not
+
+		/*if($this->session->userdata['logged_in']['id']=="")
 		{
 			$this->session->set_flashdata('error','Kindly login again');
 			redirect(base_url('/'));
 			exit();
 		}
 
-		//require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
-
-		// token expired or not
+		// check token expired or not
 
 		$where = "";
 		$where = "expired_datetime >='".currentTime."'";
@@ -31,7 +33,7 @@ class ProductController extends CI_Controller {
 		if(count($isTokenExpired) == 0 ) // Token expired and need to generate new token
 		{
 			redirect(base_url('TokenController/index'));
-		}
+		}*/
 	}
 
 	public function generateRandomString($length = 5)
