@@ -99,37 +99,24 @@ class ProductController extends CI_Controller {
 		}
     }
 
-    public function editInventory($sku)
+    public function editInventory($sku,$quantity)
     {
 	   	if(isset($_POST['btnUpdate'])) // request for update product
     	{
-    		
-    		$sku = $this->generateRandomString().time();
-    		$quantity=$this->input->post('quantity');
-	    	$brand=$this->input->post('brand');
-	    	$opticalZoom=$this->input->post('opticalZoom');
-	    	$type=$this->input->post('type');
-	    	$recordingDefinition=$this->input->post('recordingDefinition');
-	    	$mediaFormat=$this->input->post('mediaFormat');
-	    	$storageType=$this->input->post('storageType');
-	    	$description=$this->input->post('description');
-	    	$title=$this->input->post('title');
-
-
-	    	$insertData= array('sku'=>$sku,
-	    						'quantity'=>50,
-	    						'brand'=>$brand,
-	    						'opticalZoom'=>$opticalZoom,
-	    						'type'=>$type,
-	    						'recordingDefinition'=>$recordingDefinition,
-	    						'mediaFormat'=>$mediaFormat,
-	    						'storageType'=>$storageType,
-	    						'description'=>$description,
-	    						'title'=>$title
+	    	$updateData= array('sku' => $this->input->post('skuName'),
+	    						'quantity'=> $this->input->post('quantity'),
+	    						'brand' => $this->input->post('brand'),
+	    						'opticalZoom' => $this->input->post('opticalZoom'),
+	    						'type' => $this->input->post('type'),
+	    						'recordingDefinition' => $this->input->post('recordingDefinition'),
+	    						'mediaFormat' => $this->input->post('mediaFormat'),
+	    						'storageType' => $this->input->post('storageType'),
+	    						'description' => $this->input->post('description'),
+	    						'title' => $this->input->post('title')
 	    					);
 
-	    	$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
-	    	if ($createInventory['status']==1) 
+	    	$updateInventory = $this->inventory->createOrUpdateInventory($updateData); // upadate and create method are same.
+	    	if ($updateInventory['status']==1) 
 	    	{
 	    		$this->session->set_flashdata('success', 'Product upadated successfully!');
                 redirect(base_url('ProductController/index'));
@@ -144,6 +131,7 @@ class ProductController extends CI_Controller {
     		$data['msgName'] = $this->msgName;
     		$data['productList'] = $this->inventory->editInventory($sku);
 	    	$data['skuName'] = $sku;
+	    	$data['quantity'] = $quantity;
 	       	$data['page'] = 'product/editProduct';
 	        $this->load->view('includes/template', $data);
 	    }    	

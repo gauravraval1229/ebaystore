@@ -67,30 +67,18 @@ class Inventory {
 
     public function editInventory($sku) 
     {
-
         $config = require_once APPPATH . 'third_party/ebay-sdk/configuration.php';
-        /**
-         * Create the service object.
-         */
+        
         $service = new Services\InventoryService([
             'authorization' => $config['sandbox']['oauthUserToken']
         ]);
-        /**
-         * Create the request object.
-         */
-        $request = new Types\GetInventoryItemRestRequest();
-        /**
-         * Note how URI parameters are just properties on the request object.
-         */
-        $request->sku = $sku;
-        /**
-         * Send the request.
-         */
-        $response = $service->getInventoryItem($request);
-        /**
-         * Output the result of calling the service operation.
-         */
         
+        $request = new Types\GetInventoryItemRestRequest();
+        
+        $request->sku = $sku;
+        
+        $response = $service->getInventoryItem($request);
+                
         $product =[];
         if ($response->getStatusCode() === 200) {
             $product = json_decode($response->product);
@@ -223,7 +211,8 @@ class Inventory {
         $request->name = $data['name'];
         $request->phone = $data['phone'];
 
-        if($data['locationType'] == "STORE")
+        // location is store or warehouse this code is need to check
+        /*if($data['locationType'] == "STORE")
         {
             $storeEnumObject = new Enums\StoreTypeEnum();
             $finalStore = $storeEnumObject::C_STORE;
@@ -238,8 +227,7 @@ class Inventory {
             $request->locationTypes = $finalWarehouse;
 
             //$request->locationTypes =  Enums\StoreTypeEnum::C_WAREHOUSE;
-        }
-        exit();
+        }*/
 
         $response = $service->CreateInventoryLocation($request);
 

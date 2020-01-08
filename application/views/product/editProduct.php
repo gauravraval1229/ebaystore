@@ -5,6 +5,7 @@
 }
 </style>
 
+
 <!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-wrapper">
@@ -28,13 +29,15 @@
                             <div class="col-md-10">
 
                               <form method="POST" action="">
+                                <?php //echo "<pre>"; print_r($productList); ?>
 
                                 <div class="row">
                                   <div class="col-md-3">
                                     <label>Quantity : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="number" class="form-control" name="quantity" required>
+                                    <input type="number" class="form-control" name="quantity" value="<?php echo $quantity; ?>" required>
+                                    <input type="hidden" name="skuName" value="<?php echo $skuName; ?>">
                                   </div>
                                 </div>
 
@@ -120,7 +123,7 @@
                                   <div class="col-md-3">
                                   </div>
                                   <div class="col-md-9">
-                                    <button type="submit" name="btnUpdate" class="btn btn-info">Submit</button>
+                                    <button type="submit" name="btnUpdate" class="btn btn-info" style="margin-bottom: 12px;">Submit</button>
                                   </div>
                                 </div>
                               </form>
@@ -128,7 +131,7 @@
                             </div>
 
                             <div class="col-md-1"></div>
-                          </div>
+                            </div>
 
                         </div>
                       </div>
