@@ -32,7 +32,7 @@ class TokenController extends CI_Controller {
             if($userAccessToken['status'] == 1) // token generated successfully.
             {
                 $createdTime = date('Y-m-d H:i:s'); // token creation time
-                $expiredTime = date("Y-m-d H:i:s", time() + $userAccessToken['data']->expires_in); // add expired time so we will get token expire time. approximately token expired in 2 hours from creation time
+                $expiredTime = date("Y-m-d H:i:s", time() + $userAccessToken['data']->expires_in); // add expired time so we will get token expire time. approximately token expired in 2 hours from creation time.
 
                 $data = array(
                             "created" => $createdTime,
