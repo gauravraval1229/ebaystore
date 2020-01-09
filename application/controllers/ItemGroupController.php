@@ -16,13 +16,6 @@ class ItemGroupController extends CI_Controller {
 		$this->load->helper('url');
 
 		$this->checklogintoken->checkCredential(); // check user is loggedin or not and token expired or not
-
-		/*if($this->session->userdata['logged_in']['id']=="")
-		{
-			$this->session->set_flashdata('error','Kindly login again');
-			redirect(base_url('/'));
-			exit();
-		}*/
 	}
 
     public function generateRandomString($length = 4)
