@@ -103,8 +103,7 @@ class Inventory {
         $request->availability->shipToLocationAvailability = new Types\ShipToLocationAvailability();
         $request->availability->shipToLocationAvailability->quantity = (int)$data['quantity'];
 
-        $request->condition = Enums\ConditionEnum::C_NEW_OTHER;
-        //$request->condition = 'NEW';
+        $request->condition = Enums\ConditionEnum::C_USED_GOOD;
 
         $request->product = new Types\Product();
         $request->product->title = $data['title'];
@@ -127,11 +126,23 @@ class Inventory {
             'Optical Zoom'         => [$opticalZoom]
         ];
 
-        $request->product->imageUrls = [
+        /*$request->product->imageUrls = [
             'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1000.jpg',
             'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1001.jpg',
             'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1002.jpg'
-        ];
+        ];*/
+
+       /* $request->product->imageUrls = [
+            'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1000.jpg',
+            'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1001.jpg',
+            'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1002.jpg'
+        ];*/
+
+        //testing purpose of image upload
+
+        $testUrl = base_url().'assests/images/'.$data['productImage'];     
+
+        $request->product->imageUrls = [ $testUrl ];
 
         $response = $service->createOrReplaceInventoryItem($request);
 
@@ -362,7 +373,7 @@ class Inventory {
         {
             $details['status'] =0;
         }
-    
+
         return $details;
     }
 

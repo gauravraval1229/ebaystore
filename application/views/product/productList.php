@@ -17,7 +17,7 @@
               </div>
             <?php } ?>
           </div>
-          <?php //echo "<pre>";  print_r($productList->inventoryItems); ?>
+          <?php //echo base_url(); echo "<pre>";  print_r($productList->inventoryItems); ?>
           <!-- DOM - jQuery events table -->
           <section id="dom">
             <div class="row">
@@ -47,17 +47,18 @@
                             <?php
                             for($i=0;$i<count($productList->inventoryItems);$i++) { 
 
-                                $totalQuantity = $productList->inventoryItems[$i]->availability->shipToLocationAvailability->quantity;;
+                                $sku = $productList->inventoryItems[$i]->sku;
+                                $totalQuantity = $productList->inventoryItems[$i]->availability->shipToLocationAvailability->quantity;
 
                               ?>
                               <tr>
-                                <td><?php echo $productList->inventoryItems[$i]->sku; ?></td>
+                                <td><?php echo $sku; ?></td>
                                 <td><?php echo $totalQuantity; ?></td>
                                 <td><?php echo $productList->inventoryItems[$i]->product->title; ?></td>
                                 <td><?php echo $productList->inventoryItems[$i]->product->aspects->Brand[0]; ?></td>
                                 <td><?php echo $productList->inventoryItems[$i]->product->description; ?></td>
-                                <td><a href="<?php echo base_url(); ?>ProductController/editInventory/<?php echo $productList->inventoryItems[$i]->sku; ?>/<?php echo $totalQuantity; ?>">Edit</a></td>
-                                <td><a href="<?php echo base_url(); ?>ProductController/deleteInventory/<?php echo $productList->inventoryItems[$i]->sku; ?>">Delete</a></td>
+                                <td><a href="<?php echo base_url(); ?>ProductController/editInventory/<?php echo $sku; ?>/<?php echo $totalQuantity; ?>">Edit</a></td>
+                                <td><a href="<?php echo base_url(); ?>ProductController/deleteInventory/<?php echo $sku; ?>">Delete</a></td>
                               </tr>
                             <?php } ?>
                           </tbody>

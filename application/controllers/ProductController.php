@@ -16,24 +16,6 @@ class ProductController extends CI_Controller {
 
 
 		$this->checklogintoken->checkCredential(); // check user is loggedin or not and token expired or not
-
-		/*if($this->session->userdata['logged_in']['id']=="")
-		{
-			$this->session->set_flashdata('error','Kindly login again');
-			redirect(base_url('/'));
-			exit();
-		}
-
-		// check token expired or not
-
-		$where = "";
-		$where = "expired_datetime >='".currentTime."'";
-
-		$isTokenExpired = $this->userModel->tableData('tokenmaster',$where);
-		if(count($isTokenExpired) == 0 ) // Token expired and need to generate new token
-		{
-			redirect(base_url('TokenController/index'));
-		}*/
 	}
 
 	public function generateRandomString($length = 5)
@@ -55,18 +37,19 @@ class ProductController extends CI_Controller {
     {
     	if(isset($_POST['btnAddNewProductSubmit'])) // request for submit new inventory
     	{
-	    	$insertData= array('sku'=>$this->generateRandomString().time(),
-	    						'quantity'=>$this->input->post('quantity'),
-	    						'brand'=>$this->input->post('brand'),
-	    						'opticalZoom'=>$this->input->post('opticalZoom'),
-	    						'type'=>$this->input->post('type'),
-	    						'recordingDefinition'=>$this->input->post('recordingDefinition'),
-	    						'mediaFormat'=>$this->input->post('mediaFormat'),
-	    						'storageType'=>$this->input->post('storageType'),
-	    						'description'=>$this->input->post('description'),
-	    						'title'=>$this->input->post('title')
+	    	$insertData= array(	'sku' => $this->generateRandomString().time(),
+	    						'quantity' => $this->input->post('quantity'),
+	    						'brand' => $this->input->post('brand'),
+	    						'opticalZoom' => $this->input->post('opticalZoom'),
+	    						'type' => $this->input->post('type'),
+	    						'recordingDefinition' => $this->input->post('recordingDefinition'),
+	    						'mediaFormat' => $this->input->post('mediaFormat'),
+	    						'storageType' => $this->input->post('storageType'),
+	    						'description' => $this->input->post('description'),
+	    						'title' => $this->input->post('title'),
+	    						'productImage' => $this->input->post('productImage')
 	    					);
-
+	    	
 	    	$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
 			if ($createInventory['status']==1) 
 			{
