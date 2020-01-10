@@ -50,7 +50,7 @@ class TokenController extends CI_Controller {
                 $this->session->unset_userdata('userToken'); // unset userToken session so old data removed
                 $this->session->set_userdata('userToken',$userAccessToken['data']->access_token); // assign new token in userToken.
 
-                redirect(base_url('ProductController/index'));
+                redirect(base_url('ebay/ProductController/index'));
             }
             else
             {

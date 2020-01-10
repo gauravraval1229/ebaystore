@@ -21,7 +21,7 @@ class CheckLoginToken {
         $isTokenExpired = $CI->userModel->tableData('tokenmaster',$where);
         if(count($isTokenExpired) == 0 ) // Token expired and need to generate new token
         {
-            redirect(base_url('TokenController/index'));
+            redirect(base_url('ebay/TokenController/index'));
         }
     }
 }
