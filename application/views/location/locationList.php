@@ -25,7 +25,7 @@
                 <div class="card">
                   <div class="card-header">
                     <h4 class="card-title"><?php echo $msgName; ?> List</h4>
-                    <a href="<?php echo base_url(); ?>LocationController/addNewLocation" class="btn btn-info heading-elements" style="float:right;">Add New <?php echo $msgName; ?></a>
+                    <a href="<?php echo base_url(); ?>ebay/LocationController/addNewLocation" class="btn btn-info heading-elements" style="float:right;">Add New <?php echo $msgName; ?></a>
                   </div>
                   <div class="card-content collapse show">
                     <div class="card-body card-dashboard">
@@ -53,16 +53,16 @@
                                     <?php
                                       if($locationList->locations[$i]->merchantLocationStatus=="ENABLED")
                                       {
-                                        echo "<td><a href='".base_url('LocationController/enableDisableLocation/disable/'.$merchantLocationKey)."'>Enable</a></td>";
+                                        echo "<td><a href='".base_url('ebay/LocationController/enableDisableLocation/disable/'.$merchantLocationKey)."'>Enable</a></td>";
                                       }
                                       else
                                       {
-                                        echo "<td><a style='color:red;' href='".base_url('LocationController/enableDisableLocation/enable/'.$merchantLocationKey)."'>Disable</a></td>";
+                                        echo "<td><a style='color:red;' href='".base_url('ebay/LocationController/enableDisableLocation/enable/'.$merchantLocationKey)."'>Disable</a></td>";
                                       }
                                     ?>
                                   <td><?php echo $locationList->locations[$i]->locationInstructions; ?></td>
                                   <td><?php echo $locationList->locations[$i]->phone; ?></td>
-                                  <td><a href="<?php echo base_url(); ?>LocationController/deleteLocation/<?php echo $locationList->locations[$i]->merchantLocationKey; ?>">Delete</a></td>
+                                  <td><a href="<?php echo base_url(); ?>ebay/LocationController/deleteLocation/<?php echo $locationList->locations[$i]->merchantLocationKey; ?>">Delete</a></td>
                                 </tr>
                               <?php } ?>
                             </tbody>

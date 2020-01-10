@@ -25,7 +25,7 @@
                 <div class="card">
                   <div class="card-header">
                       <h4 class="card-title"><?php echo $msgName; ?> List</h4>
-                      <a href="<?php echo base_url('ProductController/addNewProduct'); ?>" class="btn btn-info heading-elements" style="float:right;">Add New <?php echo $msgName; ?></a>
+                      <a href="<?php echo base_url('ebay/ProductController/addNewProduct'); ?>" class="btn btn-info heading-elements" style="float:right;">Add New <?php echo $msgName; ?></a>
                   </div>
 
                   <div class="card-content collapse show">
@@ -57,8 +57,8 @@
                                 <td><?php echo $productList->inventoryItems[$i]->product->title; ?></td>
                                 <td><?php echo $productList->inventoryItems[$i]->product->aspects->Brand[0]; ?></td>
                                 <td><?php echo $productList->inventoryItems[$i]->product->description; ?></td>
-                                <td><a href="<?php echo base_url(); ?>ProductController/editInventory/<?php echo $sku; ?>/<?php echo $totalQuantity; ?>">Edit</a></td>
-                                <td><a href="<?php echo base_url(); ?>ProductController/deleteInventory/<?php echo $sku; ?>">Delete</a></td>
+                                <td><a href="<?php echo base_url(); ?>ebay/ProductController/editInventory/<?php echo $sku; ?>/<?php echo $totalQuantity; ?>">Edit</a></td>
+                                <td><a href="<?php echo base_url(); ?>ebay/ProductController/deleteInventory/<?php echo $sku; ?>">Delete</a></td>
                               </tr>
                             <?php } ?>
                           </tbody>
