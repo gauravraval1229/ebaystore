@@ -35,6 +35,8 @@ class TokenController extends CI_Controller {
                 $createdTime = date('Y-m-d H:i:s'); // token creation time
                 $expiredTime = date("Y-m-d H:i:s", time() + $userAccessToken['data']->expires_in); // add expired time so we will get token expire time. approximately token expired in 2 hours from creation time.
 
+                $authToken  =   md5(date('Y-m-d H:i:s'));
+                
                 $data = array(
                             "created" => $createdTime,
                             "access_token" => $userAccessToken['data']->access_token,
@@ -48,7 +50,11 @@ class TokenController extends CI_Controller {
                 $this->userModel->updateData('tokenmaster',$data); // insert data in table for use token data
 
                 $this->session->unset_userdata('userToken'); // unset userToken session so old data removed
+                $this->session->unset_userdata('Admin_Auth_Token');
+
+
                 $this->session->set_userdata('userToken',$userAccessToken['data']->access_token); // assign new token in userToken.
+                $this->session->set_userdata('Admin_Auth_Token',$authToken); 
 
                 redirect(base_url('ProductController/index'));
             }

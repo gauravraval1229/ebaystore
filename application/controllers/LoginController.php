@@ -44,6 +44,7 @@ class LoginController extends CI_Controller {
 
 				$this->session->set_userdata('logged_in',$session_arr);
 				$this->session->set_userdata('userToken',""); // set as blank
+				$this->session->set_userdata('Admin_Auth_Token',""); // set as blank
 				redirect(base_url('TokenController/index'));
 			}
 			else

@@ -104,7 +104,10 @@
 
                 <li class="nav-item"><a href="#"><i class="la la-bank"></i><span class="menu-title" data-i18n="nav.color_palette.main">Product</span></a>
                     <ul class="menu-content">
-                        <li><a class="menu-item" href="<?php echo base_url('ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
+                        <li><a class="menu-item" href="<?php echo base_url('ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View Ebay Product</span></a>
+                        </li>
+
+                        <li><a class="menu-item" href="<?php echo base_url('ProductController/shopifyProduct'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View Shopify Product</span></a>
                         </li>
                     </ul>
                 </li>

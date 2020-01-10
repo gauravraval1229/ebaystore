@@ -12,8 +12,7 @@ class ProductController extends CI_Controller {
 		$this->load->library('CheckLoginToken');
 		$this->load->library('Inventory');
 		$this->load->model('UserModel','userModel');
-		$this->load->helper('url');
-
+		$this->load->helper('url','form');
 
 		$this->checklogintoken->checkCredential(); // check user is loggedin or not and token expired or not
 	}
@@ -31,7 +30,6 @@ class ProductController extends CI_Controller {
     	$data['page'] = 'product/productList';
     	$this->load->view('includes/template', $data);
     }
-
 
     public function addNewProduct()
     {
@@ -122,26 +120,64 @@ class ProductController extends CI_Controller {
 	    }    	
     }
 
-    /*public function getLocation()
-    {
-    	//$merchantKey = $this->generateRandomString().time();
-		$data['locationList'] = $this->inventory->getLocation();
-       	$data['page'] = 'location/locationList';
-        $this->load->view('includes/template', $data);
-    }*/
+    public function shopifyIndex($receivedData="")
+	{
+		$data['msgName'] = $this->msgName;
+		$data['shopifyProdutList'] = $receivedData;
+    	$data['page'] = 'product/productListShopify';
+    	$this->load->view('includes/template', $data);
+    }
 
-    /*public function deleteLocation($merchantLocationKey)
+    public function shopifyProduct()
     {
-        $deleteLocation = $this->inventory->deleteLocation($merchantLocationKey);
-
-    	if ($deleteLocation['status']==1) 
+    	$_POST  = json_decode(file_get_contents('php://input'), true);
+    	$shopifyProdutList = json_decode($this->userModel->getProductListWithDetail());
+    	
+    	if($shopifyProdutList->status == "1") // record found
     	{
-    		$this->session->set_flashdata('success', 'Location deleted successfully!');
-            redirect(base_url('Home/getLocation'));
+    		$this->shopifyIndex($shopifyProdutList);
+    	}
+    	else
+    	{
+    		$this->session->set_flashdata('error', $shopifyProdutList->message);
+    	}
+    }
+
+    public function addNewProductShopify()
+    {
+    	if(isset($_POST['btnAddNewProductShopifySubmit'])) // request for submit new inventory
+    	{
+    		$this->userModel->productStore(); 
+    		
+	    	$insertData= array(	'sku' => $this->generateRandomString().time(),
+	    						'quantity' => $this->input->post('quantity'),
+	    						'brand' => $this->input->post('brand'),
+	    						'opticalZoom' => $this->input->post('opticalZoom'),
+	    						'type' => $this->input->post('type'),
+	    						'recordingDefinition' => $this->input->post('recordingDefinition'),
+	    						'mediaFormat' => $this->input->post('mediaFormat'),
+	    						'storageType' => $this->input->post('storageType'),
+	    						'description' => $this->input->post('description'),
+	    						'title' => $this->input->post('title'),
+	    						'productImage' => $this->input->post('productImage')
+	    					);
+	    	
+	    	$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
+			if ($createInventory['status']==1) 
+			{
+				$this->session->set_flashdata('success', 'Product added successfully!');
+				redirect(base_url('ProductController/index'));
+			}
+			else
+			{
+				$this->session->set_flashdata('error', 'Product is not added successfully!');
+			}
+    	}
+    	else // add new product page
+    	{
+    		$data['msgName'] = $this->msgName;
+			$data['page'] = 'product/addNewProductShopify';
+			$this->load->view('includes/template', $data); 
 		}
-		else
-		{
-			$this->session->set_flashdata('error', 'Location is not deleted!');
-		}
-    }*/
+    }
 }
