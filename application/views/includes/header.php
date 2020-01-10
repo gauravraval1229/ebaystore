@@ -115,8 +115,8 @@
                     <ul class="menu-content">
                         <li><a class="menu-item" href="<?php echo base_url('ebay/ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Ebay Product</span></a>
                         </li>
-                        <li><a class="menu-item" href="<?php echo base_url('shopify/ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Shopify Product</span></a>
-                        </li>
+                        <!-- <li><a class="menu-item" href="<?php echo base_url('shopify/ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Shopify Product</span></a>
+                        </li> -->
                     </ul>
                 </li>
 
