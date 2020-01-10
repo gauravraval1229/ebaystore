@@ -56,7 +56,7 @@ class TokenController extends CI_Controller {
                 $this->session->set_userdata('userToken',$userAccessToken['data']->access_token); // assign new token in userToken.
                 $this->session->set_userdata('Admin_Auth_Token',$authToken); 
 
-                redirect(base_url('ProductController/index'));
+                redirect(base_url('ebay/ProductController/index'));
             }
             else
             {
