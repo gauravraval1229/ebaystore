@@ -46,11 +46,11 @@
             $query = $this->db->select('*')->from('product')->order_by('product.id','DESC')->get();         
             if($query->num_rows() > 0)
             {
-                return  json_encode(array('status'=>1,'message'=>'success','data'=>$query->result()));
+                return json_encode(array('status'=>1,'message'=>'success','data'=>$query->result()));
             }
             else
             {
-                return  json_encode(array('status'=>2,'message'=>'No record Found'));
+                return json_encode(array('status'=>2,'message'=>'No record Found'));
             }
         }
     

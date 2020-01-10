@@ -10,137 +10,32 @@ class ProductController extends CI_Controller {
 		parent::__construct();
 		$this->load->library('TokenData');
 		$this->load->library('CheckLoginToken');
-		$this->load->library('Inventory');
 		$this->load->model('UserModel','userModel');
 		$this->load->helper('url','form');
 
-		$this->checklogintoken->checkCredential(); // check user is loggedin or not and token expired or not
+		$this->checklogintoken->checkLogin(); // check user is loggedin or not
 	}
 
-	public function generateRandomString($length = 5)
+    public function index()
 	{
-		$chars = "123456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
-		return substr(str_shuffle($chars),0,$length);
-	}
-	
-	public function index()
-	{
-		$data['msgName'] = $this->msgName;
-		$data['productList'] = $this->inventory->listInventory();
-    	$data['page'] = 'product/productList';
-    	$this->load->view('includes/template', $data);
-    }
+		$_POST  = json_decode(file_get_contents('php://input'), true);
+		$shopifyProdutList = json_decode($this->userModel->getProductListWithDetail());
 
-    public function addNewProduct()
-    {
-    	if(isset($_POST['btnAddNewProductSubmit'])) // request for submit new inventory
-    	{
-	    	$insertData= array(	'sku' => $this->generateRandomString().time(),
-	    						'quantity' => $this->input->post('quantity'),
-	    						'brand' => $this->input->post('brand'),
-	    						'opticalZoom' => $this->input->post('opticalZoom'),
-	    						'type' => $this->input->post('type'),
-	    						'recordingDefinition' => $this->input->post('recordingDefinition'),
-	    						'mediaFormat' => $this->input->post('mediaFormat'),
-	    						'storageType' => $this->input->post('storageType'),
-	    						'description' => $this->input->post('description'),
-	    						'title' => $this->input->post('title'),
-	    						'productImage' => $this->input->post('productImage')
-	    					);
-	    	
-	    	$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
-			if ($createInventory['status']==1) 
-			{
-				$this->session->set_flashdata('success', 'Product added successfully!');
-				redirect(base_url('ProductController/index'));
-			}
-			else
-			{
-				$this->session->set_flashdata('error', 'Product is not added successfully!');
-			}
-    	}
-    	else // add new product page
+		if($shopifyProdutList->status == "1") // record found
     	{
     		$data['msgName'] = $this->msgName;
-			$data['page'] = 'product/addNewProduct';
-			$this->load->view('includes/template', $data); 
-		}
-    }
-
-    public function deleteInventory($sku)
-    {
-		$deleteInventory = $this->inventory->deleteInventory($sku);
-
-		if ($deleteInventory['status']==1) 
-		{
-			$this->session->set_flashdata('success', 'Product deleted successfully!');
-			redirect(base_url('ProductController/index'));
-		}
-		else
-		{
-			$this->session->set_flashdata('error', 'Product is not deleted!');
-		}
-    }
-
-    public function editInventory($sku,$quantity)
-    {
-	   	if(isset($_POST['btnUpdate'])) // request for update product
-    	{
-	    	$updateData= array('sku' => $this->input->post('skuName'),
-	    						'quantity'=> $this->input->post('quantity'),
-	    						'brand' => $this->input->post('brand'),
-	    						'opticalZoom' => $this->input->post('opticalZoom'),
-	    						'type' => $this->input->post('type'),
-	    						'recordingDefinition' => $this->input->post('recordingDefinition'),
-	    						'mediaFormat' => $this->input->post('mediaFormat'),
-	    						'storageType' => $this->input->post('storageType'),
-	    						'description' => $this->input->post('description'),
-	    						'title' => $this->input->post('title')
-	    					);
-
-	    	$updateInventory = $this->inventory->createOrUpdateInventory($updateData); // upadate and create method are same.
-	    	if ($updateInventory['status']==1) 
-	    	{
-	    		$this->session->set_flashdata('success', 'Product upadated successfully!');
-                redirect(base_url('ProductController/index'));
-			}
-			else
-			{
-				$this->session->set_flashdata('error', 'Product is not upadated successfully!');
-			}
+			$data['shopifyProdutList'] = $shopifyProdutList;
+	    	$data['page'] = 'product/productListShopify';
+	    	$this->load->view('includes/template', $data);
     	}
     	else
     	{
     		$data['msgName'] = $this->msgName;
-    		$data['productList'] = $this->inventory->editInventory($sku);
-	    	$data['skuName'] = $sku;
-	    	$data['quantity'] = $quantity;
-	       	$data['page'] = 'product/editProduct';
-	        $this->load->view('includes/template', $data);
-	    }    	
-    }
-
-    public function shopifyIndex($receivedData="")
-	{
-		$data['msgName'] = $this->msgName;
-		$data['shopifyProdutList'] = $receivedData;
-    	$data['page'] = 'product/productListShopify';
-    	$this->load->view('includes/template', $data);
-    }
-
-    public function shopifyProduct()
-    {
-    	$_POST  = json_decode(file_get_contents('php://input'), true);
-    	$shopifyProdutList = json_decode($this->userModel->getProductListWithDetail());
-    	
-    	if($shopifyProdutList->status == "1") // record found
-    	{
-    		$this->shopifyIndex($shopifyProdutList);
-    	}
-    	else
-    	{
-    		$this->session->set_flashdata('error', $shopifyProdutList->message);
-    	}
+			$data['shopifyProdutList'] = $shopifyProdutList;
+	    	$data['page'] = 'product/productListShopify';
+	    	$this->load->view('includes/template', $data);
+    		//$this->session->set_flashdata('error', $shopifyProdutList->message);
+    	}	
     }
 
     public function addNewProductShopify()
@@ -148,21 +43,8 @@ class ProductController extends CI_Controller {
     	if(isset($_POST['btnAddNewProductShopifySubmit'])) // request for submit new inventory
     	{
     		$this->userModel->productStore(); 
-    		
-	    	$insertData= array(	'sku' => $this->generateRandomString().time(),
-	    						'quantity' => $this->input->post('quantity'),
-	    						'brand' => $this->input->post('brand'),
-	    						'opticalZoom' => $this->input->post('opticalZoom'),
-	    						'type' => $this->input->post('type'),
-	    						'recordingDefinition' => $this->input->post('recordingDefinition'),
-	    						'mediaFormat' => $this->input->post('mediaFormat'),
-	    						'storageType' => $this->input->post('storageType'),
-	    						'description' => $this->input->post('description'),
-	    						'title' => $this->input->post('title'),
-	    						'productImage' => $this->input->post('productImage')
-	    					);
 	    	
-	    	$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
+	    	/*$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
 			if ($createInventory['status']==1) 
 			{
 				$this->session->set_flashdata('success', 'Product added successfully!');
@@ -171,7 +53,7 @@ class ProductController extends CI_Controller {
 			else
 			{
 				$this->session->set_flashdata('error', 'Product is not added successfully!');
-			}
+			}*/
     	}
     	else // add new product page
     	{
