@@ -89,7 +89,7 @@
         <div class="main-menu-content">
             <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation">
 
-                <li class="nav-item"><a href="#"><i class="la la-bank"></i><span class="menu-title" data-i18n="nav.color_palette.main">Dashborad</span></a>
+                <li class="nav-item"><a href="#"><i class="la la-bank"></i><span class="menu-title" data-i18n="nav.color_palette.main">Dashboard</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="<?php echo base_url('WelcomeController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Dashboard</span></a>
                         </li>
