@@ -14,7 +14,8 @@ class ProductController extends CI_Controller {
 		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');
 
-		$this->checklogintoken->checkCredential(); // check user is loggedin or not and token expired or not
+		$this->checklogintoken->checkLogin(); // check user is loggedin or not 
+		$this->checklogintoken->checkToken(); //token expired or not
 	}
 
 	public function generateRandomString($length = 5)

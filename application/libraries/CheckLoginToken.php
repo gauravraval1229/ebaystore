@@ -2,7 +2,7 @@
 
 class CheckLoginToken {
 
-    public function checkCredential()
+    public function checkLogin() // check that user is logged in or not
     {
         $CI =& get_instance(); // create instance so use $CI instead of $this
 
@@ -12,8 +12,11 @@ class CheckLoginToken {
             redirect(base_url('/'));
             exit();
         }
+    }
 
-        // check token expired or not
+    public function checkToken() // check token expired or not
+    {
+        $CI =& get_instance(); // create instance so use $CI instead of $this
 
         $where = "";
         $where = "expired_datetime >='".currentTime."'";

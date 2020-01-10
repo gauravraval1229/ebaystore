@@ -46,8 +46,8 @@ class ProductController extends CI_Controller {
 	    						'mediaFormat' => $this->input->post('mediaFormat'),
 	    						'storageType' => $this->input->post('storageType'),
 	    						'description' => $this->input->post('description'),
-	    						'title' => $this->input->post('title'),
-	    						'productImage' => $this->input->post('productImage')
+	    						'title' => $this->input->post('title')
+	    						//'productImage' => $this->input->post('productImage')
 	    					);
 	    	
 	    	$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
