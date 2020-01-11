@@ -14,6 +14,7 @@ class CheckLoginToken {
         }        
     }
 
+
     public function checkToken() // check token expired or not
     {
         $CI =& get_instance(); // create instance so use $CI instead of $this

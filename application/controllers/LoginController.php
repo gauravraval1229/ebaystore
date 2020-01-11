@@ -42,7 +42,13 @@ class LoginController extends CI_Controller {
 					"mobile" => $checkAdmin[0]['mobile'],
 				);
 
+				$tokenData = $this->userModel->tableData('tokenmaster');
+
+				$oldToken = $tokenData[0]['access_token'];
+
 				$this->session->set_userdata('logged_in',$session_arr);
+				$this->session->set_userdata('userToken',$oldToken); // set old token in session so not getting error in 2 hours from token generated.
+
 				redirect(base_url('WelcomeController/index'));
 			}
 			else

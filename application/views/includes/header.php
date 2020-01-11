@@ -97,28 +97,29 @@
                 </li>
 
 
-                <li class="nav-item"><a href="#"><i class="la la-stethoscope"></i><span class="menu-title" data-i18n="nav.color_palette.main">Location</span></a>
+                <!-- <li class="nav-item"><a href="#"><i class="la la-stethoscope"></i><span class="menu-title" data-i18n="nav.color_palette.main">Location</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="<?php echo base_url('ebay/LocationController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
 
-                <li class="nav-item"><a href="#"><i class="la la-shopping-cart"></i><span class="menu-title" data-i18n="nav.color_palette.main">Item Group</span></a>
+                <!-- <li class="nav-item"><a href="#"><i class="la la-shopping-cart"></i><span class="menu-title" data-i18n="nav.color_palette.main">Item Group</span></a>
                     <ul class="menu-content">
                         <li><a class="menu-item" href="<?php echo base_url('ebay/ItemGroupController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">View</span></a>
                         </li>
                     </ul>
-                </li>
+                </li> -->
 
                 <li class="nav-item"><a href="#"><i class="la la-bank"></i><span class="menu-title" data-i18n="nav.color_palette.main">Product</span></a>
                     <ul class="menu-content">
 
                         <li><a class="menu-item" href="<?php echo base_url('ebay/ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Ebay Product</span></a>
                         </li>
-                        <li><a class="menu-item" href="<?php echo base_url('shopify/ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Shopify Product</span></a>
-                            
-                        </li>
+
+                        <!-- <li><a class="menu-item" href="<?php echo base_url('shopify/ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Shopify Product</span></a>
+                        </li> -->
+
                     </ul>
                 </li>
 
