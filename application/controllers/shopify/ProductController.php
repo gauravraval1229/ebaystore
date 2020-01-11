@@ -40,20 +40,20 @@ class ProductController extends CI_Controller {
 
     public function addNewProductShopify()
     {
-    	if(isset($_POST['btnAddNewProductShopifySubmit'])) // request for submit new inventory
+    	if(isset($_POST['btnAddNewProductShopifySubmit'])) // request for submit new product
     	{
-    		$this->userModel->productStore(); 
-	    	
-	    	/*$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
-			if ($createInventory['status']==1) 
+    		$insertProduct = json_decode($this->userModel->productStore()); 
+
+			if ($insertProduct->status == 1) // product added successfully
 			{
 				$this->session->set_flashdata('success', 'Product added successfully!');
-				redirect(base_url('ProductController/index'));
+				redirect(base_url('shopify/ProductController/index'));
 			}
 			else
 			{
 				$this->session->set_flashdata('error', 'Product is not added successfully!');
-			}*/
+				redirect(base_url('shopify/ProductController/index'));
+			}
     	}
     	else // add new product page
     	{
@@ -61,5 +61,79 @@ class ProductController extends CI_Controller {
 			$data['page'] = 'product/addNewProductShopify';
 			$this->load->view('includes/template', $data); 
 		}
+	}
+
+	public function synchWithShopify()
+	{
+		$synchProduct = json_decode($this->userModel->synchWithShopify());
+
+		if ($synchProduct->status == 1) // product added successfully
+		{
+			$this->session->set_flashdata('success', 'Synchronize with shopify successfully!');
+			redirect(base_url('shopify/ProductController/index'));
+		}
+		else
+		{
+			$this->session->set_flashdata('error', 'Synchronize with shopify not added successfully!');
+			redirect(base_url('shopify/ProductController/index'));
+		}
+	}
+
+	public function deleteProduct($productId)
+	{
+        $deleteProduct = json_decode($this->userModel->deleteProduct($productId));
+
+        if ($deleteProduct->status == 1) // product deleted successfully
+		{
+			$this->session->set_flashdata('success', 'Product deleted successfully!');
+			redirect(base_url('shopify/ProductController/index'));
+		}
+		else if($deleteProduct->status == 2) // product is not deleted
+		{
+			$this->session->set_flashdata('error', 'Product is not deleted successfully!');
+			redirect(base_url('shopify/ProductController/index'));
+		}
+		else // some parameters are missing
+		{
+			$this->session->set_flashdata('error', 'Product id is missing!');
+			redirect(base_url('shopify/ProductController/index'));
+		}
     }
+
+    public function editProduct($productId)
+	{
+		if(isset($_POST['btnUpdateShopify'])) // request for update product
+		{
+			$updateProduct = json_decode($this->userModel->updateProduct());
+
+			if ($updateProduct->status == 1) // product updated successfully
+			{
+				$this->session->set_flashdata('success', 'Product updated successfully!');
+				redirect(base_url('shopify/ProductController/index'));
+			}
+			else
+			{
+				$this->session->set_flashdata('error', 'Product is not updated successfully!');
+				redirect(base_url('shopify/ProductController/index'));
+			}
+		}
+		else // redirect on edit product page
+		{
+	        $productData = json_decode($this->userModel->getProductDataById($productId));
+
+	        if ($productData->status == 1) // product data successfully
+			{
+				$data['msgName'] = $this->msgName;
+	    		$data['shopifyProdutList'] = $productData;
+		       	$data['page'] = 'product/editProductShopify';
+		        $this->load->view('includes/template', $data);
+			}
+			else
+			{
+				$this->session->set_flashdata('error', 'No data found');
+				redirect(base_url('shopify/ProductController/index'));
+			}
+		}
+    }
+	
 }

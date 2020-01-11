@@ -5,7 +5,7 @@
 }
 </style>
 
-  <!-- BEGIN: Content-->
+<!-- BEGIN: Content-->
     <div class="app-content content">
         <div class="content-wrapper">
             <div class="content-body">
@@ -14,7 +14,7 @@
                 <section class="validations" id="validation">
                     <div class="row">
                         <div class="col-12 mt-3 mb-1">
-                            <h4 class="text-uppercase">Add <?php echo $msgName; ?></h4>
+                            <h4 class="text-uppercase">Edit <?php echo $msgName; ?></h4>
                         </div>
                     </div>
 
@@ -27,14 +27,15 @@
                             
                             <div class="col-md-10">
 
-                              <form method="POST" action="<?php echo base_url('shopify/ProductController/addNewProductShopify'); ?>" enctype='multipart/form-data'>
+                              <form method="POST" action="" enctype='multipart/form-data'>
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Product Name : </label>
+                                    <label>Product Name :</label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="text" class="form-control" name="product_name" required>
+                                    <input type="text" class="form-control" name="product_name" value="<?php echo $shopifyProdutList->data->title; ?>" required>
+                                    <input type="hidden" name="productId" value="<?php echo $shopifyProdutList->data->shopify_id; ?>">
                                   </div>
                                 </div>
 
@@ -43,7 +44,7 @@
                                     <label>Product Type : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="text" class="form-control" name="product_type" required>
+                                    <input type="text" class="form-control" name="product_type" value="<?php echo $shopifyProdutList->data->product_type; ?>">
                                   </div>
                                 </div>
 
@@ -52,7 +53,7 @@
                                     <label>Vendor : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="text" class="form-control" name="vendor" required>
+                                    <input type="text" class="form-control" name="vendor" value="<?php echo $shopifyProdutList->data->vendor; ?>" required>
                                   </div>
                                 </div>
 
@@ -61,7 +62,7 @@
                                     <label>Tags : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="text" class="form-control" name="tags" required>
+                                    <input type="text" class="form-control" name="tags" value="<?php echo $shopifyProdutList->data->tags; ?>">
                                   </div>
                                 </div>
 
@@ -70,7 +71,7 @@
                                     <label>Published : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="checkbox" name="publish">
+                                    <input type="checkbox" name="publish" <?php if($shopifyProdutList->data->published == 1) { echo "checked='checked'"; } ?> >
                                   </div>
                                 </div>
 
@@ -79,7 +80,7 @@
                                     <label>Shopify : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="checkbox" name="shopify">
+                                    <input type="checkbox" name="shopify" <?php if($shopifyProdutList->data->shopify == 1) { echo "checked='checked'"; } ?> >
                                   </div>
                                 </div>
 
@@ -88,7 +89,7 @@
                                     <label>Variants : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="text" class="form-control" name="variant" required>
+                                    <input type="text" class="form-control" name="variant" value="<?php echo $shopifyProdutList->data->variants; ?>" required>
                                   </div>
                                 </div>
 
@@ -97,7 +98,7 @@
                                     <label>Price : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="number" class="form-control" name="price" required>
+                                    <input type="number" class="form-control" name="price" value="<?php echo $shopifyProdutList->data->price; ?>">
                                   </div>
                                 </div>
 
@@ -106,15 +107,23 @@
                                     <label>Product Image : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="file" class="form-control" name="productImage" required>
+                                    <input type="file" class="form-control" name="productImage">
                                   </div>
                                 </div>
-                                
-                                <div class="row">
+
+                                <div class="row" style="margin-top: 30px;">
+                                  <div class="col-md-3"></div>
+                                  <div class="col-md-9">
+                                    <img height="55%" width="25%" src=<?php echo base_url('assests/product_img/'.$shopifyProdutList->data->images); ?> >
+                                    <input type="hidden" class="form-control" name="old_image" value="<?php echo $shopifyProdutList->data->images; ?>">
+                                  </div>
+                                </div>
+
+                                <div class="row" style="margin-top: 0px;">
                                   <div class="col-md-3">
                                   </div>
                                   <div class="col-md-9">
-                                    <button type="submit" name="btnAddNewProductShopifySubmit" class="btn btn-info" style="margin-bottom: 12px;">Submit</button>
+                                    <button type="submit" name="btnUpdateShopify" class="btn btn-info" style="margin-bottom: 12px;">Submit</button>
                                   </div>
                                 </div>
                               </form>
@@ -122,7 +131,7 @@
                             </div>
 
                             <div class="col-md-1"></div>
-                          </div>
+                            </div>
 
                         </div>
                       </div>

@@ -29,10 +29,10 @@
                         <h4 class="card-title" style="margin-left: 15px;"><?php echo $msgName; ?> List</h4>
                       </div>
                       <div class="col-sm-2" style="margin-top: 15px;margin-left: -10px;">
-                        <a href="<?php echo base_url('ProductController/addNewProductShopify'); ?>" class="btn btn-info " style="float:right;">Add New <?php echo $msgName; ?></a>
+                        <a href="<?php echo base_url('shopify/ProductController/addNewProductShopify'); ?>" class="btn btn-info " style="float:right;">Add New <?php echo $msgName; ?></a>
                       </div>
                       <div class="col-sm-3" style="margin-top: 15px;margin-left: -10px;">
-                        <a href="<?php echo base_url('ProductController/tt'); ?>" class="btn btn-info " style="float:right;">Synchronize with Shopify</a>
+                        <a href="<?php echo base_url('shopify/ProductController/synchWithShopify'); ?>" class="btn btn-info " style="float:right;">Synchronize with Shopify</a>
                       </div>
                     </div>
 
@@ -45,9 +45,9 @@
                               <th>Product Id</th>
                               <th>Product Name</th>
                               <th>Vendor</th>
-                              <th>Produtc Type</th>
-                              <!-- <th></th>
-                              <th></th> -->
+                              <th>Product Type</th>
+                              <th></th>
+                              <th></th>
                             </tr>
                           </thead>
                           <tbody>
@@ -65,8 +65,8 @@
                                 <td><?php echo $productName; ?></td>
                                 <td><?php echo $vendor; ?></td>
                                 <td><?php echo $productType; ?></td>
-                                <!-- <td><a href="<?php echo base_url(); ?>ProductController/editInventory/<?php echo $sku; ?>/<?php echo $totalQuantity; ?>">Edit</a></td>
-                                <td><a href="<?php echo base_url(); ?>ProductController/deleteInventory/<?php echo $sku; ?>">Delete</a></td> -->
+                                <td><a href="<?php echo base_url(); ?>shopify/ProductController/editProduct/<?php echo $productId; ?>">Edit</a></td>
+                                <td><a href="<?php echo base_url(); ?>shopify/ProductController/deleteProduct/<?php echo $productId; ?>">Delete</a></td>
                               </tr>
                             <?php } ?>
                           </tbody>
