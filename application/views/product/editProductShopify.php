@@ -102,6 +102,17 @@
                                   </div>
                                 </div>
 
+                                <?php
+                                    $image = ROOT_PATH . '/assests/product_img/'.$shopifyProdutList->data->images;
+                                    if ($shopifyProdutList->data->images=="" || !file_exists($image)) // image not exist in folder or not in database
+                                    {
+                                        $imageName = "assests/product_img/defaultProduct.jpg";
+                                    }
+                                    else
+                                    {
+                                      $imageName = "assests/product_img/".$shopifyProdutList->data->images;
+                                    }
+                                ?>
                                 <div class="row">
                                   <div class="col-md-3">
                                     <label>Product Image : </label>
@@ -114,7 +125,7 @@
                                 <div class="row" style="margin-top: 30px;">
                                   <div class="col-md-3"></div>
                                   <div class="col-md-9">
-                                    <img height="55%" width="25%" src=<?php echo base_url('assests/product_img/'.$shopifyProdutList->data->images); ?> >
+                                    <img height="55%" width="25%" src="<?php echo base_url($imageName); ?>">
                                     <input type="hidden" class="form-control" name="old_image" value="<?php echo $shopifyProdutList->data->images; ?>">
                                   </div>
                                 </div>

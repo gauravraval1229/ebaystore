@@ -195,11 +195,21 @@
         {
             if($productId!="")
             {
+                $where = "";
+                $where = "shopify_id ='".$productId."'";
+
+                $productData= $this->tableData('product',$where);
+                $productImage = $productData[0]['images']; // imageName for unlink
+
+                if($productImage !="") // remove image from folder
+                {
+                    unlink("./assests/product_img/".$productImage);
+                }
+
                 $this->db->where('shopify_id',$productId);
 
                 if($this->db->delete('product'))
                 {
-                    //echo $this->db->last_query();
                     return  json_encode(array('status'=>1));
                 }
                 else
@@ -288,7 +298,7 @@
             
             if($this->db->update('product'))
             {
-                if($flag = 1 && $_POST['old_image'] !="") // remove from folder
+                if($flag = 1 && $_POST['old_image'] !="") // remove image from folder
                 {
                     unlink("./assests/product_img/".$_POST['old_image']);
                 }

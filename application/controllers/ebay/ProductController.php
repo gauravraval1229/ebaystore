@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ProductController extends CI_Controller {
 
-	public $msgName = "Product";
+	public $msgName = "Ebay Product";
 
 	public function __construct() 
 	{
