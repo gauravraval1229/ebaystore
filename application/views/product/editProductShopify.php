@@ -103,14 +103,14 @@
                                 </div>
 
                                 <?php
-                                    $image = ROOT_PATH . '/assests/product_img/'.$shopifyProdutList->data->images;
-                                    if ($shopifyProdutList->data->images=="" || !file_exists($image)) // image not exist in folder or not in database
+                                    $image = ROOT_PATH . '/assests/productImageShopify/'.$shopifyProdutList->data->images;
+                                    if ($shopifyProdutList->data->images=="" || !file_exists($image)) // image not exist in folder or exist not in database
                                     {
-                                        $imageName = "assests/product_img/defaultProduct.jpg";
+                                        $imageName = "assests/productImageShopify/defaultProduct.jpg";
                                     }
                                     else
                                     {
-                                      $imageName = "assests/product_img/".$shopifyProdutList->data->images;
+                                      $imageName = "assests/productImageShopify/".$shopifyProdutList->data->images;
                                     }
                                 ?>
                                 <div class="row">
