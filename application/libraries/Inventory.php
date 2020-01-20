@@ -140,9 +140,15 @@ class Inventory {
 
         //testing purpose of image upload
 
-        $testUrl = base_url().'assests/images/'.$data['productImage'];     
+        echo $data['productImage'];
+
+        $testUrl = base_url().'assests/productImageEbay/'.$data['productImage']; 
 
         $request->product->imageUrls = [ $testUrl ];
+
+        echo "<pre>";
+        print_r(json_decode($request));
+        exit();
 
         $response = $service->createOrReplaceInventoryItem($request);
 

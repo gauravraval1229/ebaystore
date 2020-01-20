@@ -27,7 +27,7 @@
                             
                             <div class="col-md-10">
 
-                              <form method="POST" action="<?php echo base_url('ebay/ProductController/addNewProduct'); ?>">
+                              <form method="POST" enctype="multipart/form-data" action="<?php echo base_url('ebay/ProductController/addNewProduct'); ?>">
 
                                 <div class="row">
                                   <div class="col-md-3">
@@ -115,14 +115,14 @@
                                   </div>
                                 </div>
 
-                                <!-- <div class="row">
+                                <div class="row">
                                   <div class="col-md-3">
                                     <label>Product Image : </label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="file" class="form-control" name="productImage" required>
                                   </div>
-                                </div> -->
+                                </div>
 
                                 <div class="row">
                                   <div class="col-md-3">
