@@ -38,7 +38,7 @@ class ProductController extends CI_Controller {
 		if(isset($_POST['btnAddNewProductSubmit'])) // request for submit new inventory
 		{
 
-			$productImage = $_FILES['productImage']['name'];
+			//$productImage = $_FILES['productImage']['name'];
 
 			$insertData= array(	'sku' => $this->generateRandomString().time(),
 								'quantity' => $this->input->post('quantity'),
@@ -49,8 +49,8 @@ class ProductController extends CI_Controller {
 								'mediaFormat' => $this->input->post('mediaFormat'),
 								'storageType' => $this->input->post('storageType'),
 								'description' => $this->input->post('description'),
-								'title' => $this->input->post('title'),
-								'productImage' => $productImage
+								'title' => $this->input->post('title')
+								//'productImage' => $productImage
 							);
 			
 

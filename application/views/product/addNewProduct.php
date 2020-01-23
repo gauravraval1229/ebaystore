@@ -115,14 +115,14 @@
                                   </div>
                                 </div>
 
-                                <div class="row">
+                                <!-- <div class="row">
                                   <div class="col-md-3">
                                     <label>Product Image : </label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="file" class="form-control" name="productImage" required>
                                   </div>
-                                </div>
+                                </div> -->
 
                                 <div class="row">
                                   <div class="col-md-3">

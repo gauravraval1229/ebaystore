@@ -126,29 +126,21 @@ class Inventory {
             'Optical Zoom'         => [$opticalZoom]
         ];
 
-        /*$request->product->imageUrls = [
+        $request->product->imageUrls = [
             'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1000.jpg',
             'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1001.jpg',
             'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1002.jpg'
-        ];*/
-
-       /* $request->product->imageUrls = [
-            'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1000.jpg',
-            'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1001.jpg',
-            'http://i.ebayimg.com/images/i/182196556219-0-1/s-l1002.jpg'
-        ];*/
+        ];
 
         //testing purpose of image upload
 
-        echo $data['productImage'];
-
-        $testUrl = base_url().'assests/productImageEbay/'.$data['productImage']; 
+        /*$testUrl = base_url().'assests/productImageEbay/'.$data['productImage']; 
 
         $request->product->imageUrls = [ $testUrl ];
 
         echo "<pre>";
         print_r(json_decode($request));
-        exit();
+        exit();*/
 
         $response = $service->createOrReplaceInventoryItem($request);
 
