@@ -34,6 +34,10 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assests/assets/css/style.css'); ?>">
     <!-- END: Custom CSS-->
 
+    <!-- Dashboard widget CSS -->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url('assests/app-assets/fonts/simple-line-icons/style.min.css'); ?>">
+    <!-- Dashboard widget CSS -->
+
     <script language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
 
 

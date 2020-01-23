@@ -32,6 +32,10 @@
     <script src="<?php echo base_url('assests/app-assets/js/scripts/tables/datatables/datatable-basic.js'); ?> "></script>
     <!-- END: Page JS-->
 
+    <!--- DashBoard Widget Js --->
+    <script src="<?php echo base_url('assests/app-assets/vendors/js/extensions/jquery.knob.min.js'); ?>"></script>
+    <!--- DashBoard Widget Js --->
+
 </body>
 <!-- END: Body-->
 
