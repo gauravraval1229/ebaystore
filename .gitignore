@@ -21,9 +21,11 @@ application/logs/*
 /application/config/config.php
 /application/config/database.php
 /application/config/constants.php
+/assests/productImageShopify/*
 
 .htaccess
 
 application/config/config.php
 application/config/database.php
 application/config/constants.php
+assests/productImageShopify/*
