@@ -250,7 +250,7 @@
 
         public function getProductDataById($productId) // get product data
         {
-            $query = $this->db->select('*')->from('product')->where('product.shopify_id', $productId)->get();
+            $query = $this->db->select('*')->from('product')->where('shopify_id', $productId)->get();
               
             if($query->num_rows() > 0)
             {
@@ -318,12 +318,17 @@
                     exit();
                 }
             }
+            else
+            {
+                $productDetails['images'] = $_POST['old_image'];
+                $flag = 0;
+            }
             
             $this->db->set($productDetails)->where('shopify_id', $_POST['productId']); 
             
             if($this->db->update('product'))
             {
-                if($flag = 1 && $_POST['old_image'] !="") // remove image from folder
+                if($flag == 1 && $_POST['old_image'] !="") // remove image from folder
                 {
                     unlink("./assests/productImageShopify/".$_POST['old_image']);
                 }
