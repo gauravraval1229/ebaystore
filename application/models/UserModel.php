@@ -318,7 +318,7 @@
                     exit();
                 }
             }
-            else
+            else // if image not uploaded then take existing image name
             {
                 $productDetails['images'] = $_POST['old_image'];
                 $flag = 0;
