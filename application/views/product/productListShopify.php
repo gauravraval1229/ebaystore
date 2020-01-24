@@ -52,23 +52,28 @@
                           </thead>
                           <tbody>
                             <?php
-                            for($i=0;$i<count($shopifyProdutList->data);$i++) { 
 
-                                $productId = $shopifyProdutList->data[$i]->shopify_id;
-                                $productName = $shopifyProdutList->data[$i]->title;
-                                $vendor = $shopifyProdutList->data[$i]->vendor;
-                                $productType = $shopifyProdutList->data[$i]->product_type;
+                            if (count($shopifyProdutList->data)>=1) // if data found in array
+                            {
+                              for($i=0;$i<count($shopifyProdutList->data);$i++) { 
 
-                              ?>
-                              <tr>
-                                <td><?php echo $productId; ?></td>
-                                <td><?php echo $productName; ?></td>
-                                <td><?php echo $vendor; ?></td>
-                                <td><?php echo $productType; ?></td>
-                                <td><a href="<?php echo base_url(); ?>shopify/ProductController/editProduct/<?php echo $productId; ?>">Edit</a></td>
-                                <td><a href="<?php echo base_url(); ?>shopify/ProductController/deleteProduct/<?php echo $productId; ?>">Delete</a></td>
-                              </tr>
-                            <?php } ?>
+                                  $productId = $shopifyProdutList->data[$i]->shopify_id;
+                                  $productName = $shopifyProdutList->data[$i]->title;
+                                  $vendor = $shopifyProdutList->data[$i]->vendor;
+                                  $productType = $shopifyProdutList->data[$i]->product_type;
+
+                                  if($productId!="") { // if product id found then display data
+
+                                ?>
+                                <tr>
+                                  <td><?php echo $productId; ?></td>
+                                  <td><?php echo $productName; ?></td>
+                                  <td><?php echo $vendor; ?></td>
+                                  <td><?php echo $productType; ?></td>
+                                  <td><a href="<?php echo base_url(); ?>shopify/ProductController/editProduct/<?php echo $productId; ?>">Edit</a></td>
+                                  <td><a href="<?php echo base_url(); ?>shopify/ProductController/deleteProduct/<?php echo $productId; ?>">Delete</a></td>
+                                </tr>
+                              <?php } } } else { echo "<b> No Data Found <b>"; } ?>
                           </tbody>
                         </table>
                       </div>
