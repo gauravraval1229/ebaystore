@@ -118,7 +118,7 @@
                                     <label>Product Image : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="file" class="form-control" name="productImage">
+                                    <input type="file" class="form-control" name="productImage" accept="image/x-png,image/jpg,image/jpeg">
                                   </div>
                                 </div>
 
