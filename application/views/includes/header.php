@@ -124,6 +124,9 @@
                         <li><a class="menu-item" href="<?php echo base_url('shopify/ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Shopify Product</span></a>
                         </li>
 
+                        <li><a class="menu-item" href="<?php echo base_url('amazon/ProductController/index'); ?>"><i></i><span data-i18n="nav.color_palette.color_palette_primary">Amazon Product</span></a>
+                        </li>
+
                     </ul>
                 </li>
 
