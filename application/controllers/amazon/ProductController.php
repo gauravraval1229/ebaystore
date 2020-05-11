@@ -105,16 +105,16 @@ class ProductController extends CI_Controller {
 					<MessageID>1</MessageID>
 					<OperationType>Update</OperationType>
 					<Product>
-						<SKU>56786</SKU>
+						<SKU>'.$sku.'</SKU>
 						<StandardProductID>
 							<Type>UPC</Type>
 							<Value>463563647487</Value>
 						</StandardProductID>
 						<ProductTaxCode>A_GEN_NOTAX</ProductTaxCode>
 						<DescriptionData>
-							<Title>Example Product Title</Title>
-							<Brand>Example Product Brand</Brand>
-							<Description>This is an example product description.</Description>
+							<Title>'.$title.'</Title>
+							<Brand>'.$brand.'</Brand>
+							<Description>'.$description.'</Description>
 							<BulletPoint>Example Bullet Point 1</BulletPoint>
 							<BulletPoint>Example Bullet Point 2</BulletPoint>
 							<MSRP currency="USD">25.19</MSRP>
