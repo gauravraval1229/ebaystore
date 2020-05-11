@@ -22,98 +22,66 @@ class ProductController extends CI_Controller {
 		include_once (APPPATH.'libraries/amazon/feed/MarketplaceWebService/Model/SubmitFeedRequest.php');
 	}
 
-	/*public function index() {
+	public function generateRandomString($length = 5) {
+
+		$chars = "123456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
+		return substr(str_shuffle($chars),0,$length);
+	}
+
+	public function index() {
 
 		$data['msgName'] = $this->msgName;
 		$data['page'] = 'product/productListAmazon';
 		$this->load->view('includes/template',$data);
-	}*/
+	}
 	
-	public function index() {
+	public function addNewProduct() {
 
-		//if(isset($_POST['btnAddNewProductSubmit'])) { // request for submit new product
+		if(isset($_POST['btnAddNewProductSubmit'])) { // request for submit new product
 
-		$config = array (
-			'ServiceURL' => SERVICE_URL,
-			'ProxyHost' => null,
-			'ProxyPort' => -1,
-			'MaxErrorRetry' => 3,
-		);
-
-		$service = new MarketplaceWebService_Client(
-						AWS_ACCESS_KEY_ID,
-						AWS_SECRET_ACCESS_KEY,
-						$config,
-						APPLICATION_NAME,
-						APPLICATION_VERSION);
-
-		$feed =
-'<?xml version="1.0" encoding="iso-8859-1"?>
-<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
-  <Header>
-    <DocumentVersion>1.01</DocumentVersion>
-    <MerchantIdentifier>MARKETPLACE_ID</MerchantIdentifier>
-  </Header>
-  <MessageType>Product</MessageType>
-  <PurgeAndReplace>false</PurgeAndReplace>
-  <Message>
-    <MessageID>1</MessageID>
-    <OperationType>Update</OperationType>
-    <Product>
-      <SKU>262626</SKU>
-      <StandardProductID>
-        <Type>UPC</Type>
-        <Value>463563647487</Value>
-      </StandardProductID>
-      <ProductTaxCode>A_GEN_NOTAX</ProductTaxCode>
-      <DescriptionData>
-        <Title>Test Product Title</Title>
-        <Brand>Example Product Brand</Brand>
-        <Description>This is an example product description.</Description>
-        <BulletPoint>Example Bullet Point 1</BulletPoint>
-        <BulletPoint>Example Bullet Point 2</BulletPoint>
-        <MSRP currency="USD">25.19</MSRP>
-        <Manufacturer>Example Product Manufacturer</Manufacturer>
-        <ItemType>example-item-type</ItemType>
-      </DescriptionData>
-      <ProductData>
-        <Health>
-          <ProductType>
-            <HealthMisc>
-              <Ingredients>Example Ingredients</Ingredients>
-              <Directions>Example Directions</Directions>
-            </HealthMisc>
-          </ProductType>
-        </Health>
-      </ProductData>
-    </Product>
-  </Message>
-</AmazonEnvelope>';
-
-$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
-
-$feedHandle = @fopen('php://temp','rw+');
-fwrite($feedHandle,$feed);
-rewind($feedHandle);
-			$parameters = array (
-					'Merchant' => MERCHANT_ID,
-					'MarketplaceIdList' => $marketplaceIdArray,
-					//'FeedType' => '_POST_ORDER_FULFILLMENT_DATA_',
-					'FeedType' => '_POST_PRODUCT_DATA_',
-					'FeedContent' => $feedHandle,
-					'PurgeAndReplace' => false,
-					'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
-					'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
+			$config = array (
+				'ServiceURL' => SERVICE_URL,
+				'ProxyHost' => null,
+				'ProxyPort' => -1,
+				'MaxErrorRetry' => 3,
 			);
 
-rewind($feedHandle);
-$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
-$this->invokeSubmitFeed($service, $request);
-@fclose($feedHandle);
-}
+			$service = new MarketplaceWebService_Client(
+							AWS_ACCESS_KEY_ID,
+							AWS_SECRET_ACCESS_KEY,
+							$config,
+							APPLICATION_NAME,
+							APPLICATION_VERSION);
 
-/*}
+			$sku = $this->generateRandomString().time();
+			$title = trim($this->input->post('title'));
+			$brand = trim($this->input->post('brand'));
+			$description = trim($this->input->post('description'));
+
+			$feed = $this->createOrUpdateFeed($sku,$title,$brand,$description); // create xml here
+			$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
+
+			$feedHandle = @fopen('php://temp','rw+');
+			fwrite($feedHandle,$feed);
+			rewind($feedHandle);
+						$parameters = array (
+								'Merchant' => MERCHANT_ID,
+								'MarketplaceIdList' => $marketplaceIdArray,
+								'FeedType' => '_POST_PRODUCT_DATA_',
+								'FeedContent' => $feedHandle,
+								'PurgeAndReplace' => false,
+								'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
+								'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
+						);
+
+			rewind($feedHandle);
+			$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
+			$this->invokeSubmitFeed($service, $request);
+			@fclose($feedHandle);
+
+			$this->session->set_flashdata('success', 'Product added successfully!');
+			redirect(base_url('amazon/ProductController/index'));
+		}
 		else { // Just display add proudct page
 
 			$data['msgName'] = $this->msgName;
@@ -121,11 +89,57 @@ $this->invokeSubmitFeed($service, $request);
 			$this->load->view('includes/template',$data);
 		}
 
-	}*/
+	}
 
-	function invokeSubmitFeed(MarketplaceWebService_Interface $service, $request) { //submit product
+	function createOrUpdateFeed($sku,$title,$brand,$description) {
 
-		try {
+		return '<?xml version="1.0" encoding="iso-8859-1"?>
+			<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
+				<Header>
+					<DocumentVersion>1.01</DocumentVersion>
+					<MerchantIdentifier>MARKETPLACE_ID</MerchantIdentifier>
+				</Header>
+				<MessageType>Product</MessageType>
+				<PurgeAndReplace>false</PurgeAndReplace>
+				<Message>
+					<MessageID>1</MessageID>
+					<OperationType>Update</OperationType>
+					<Product>
+						<SKU>56786</SKU>
+						<StandardProductID>
+							<Type>UPC</Type>
+							<Value>463563647487</Value>
+						</StandardProductID>
+						<ProductTaxCode>A_GEN_NOTAX</ProductTaxCode>
+						<DescriptionData>
+							<Title>Example Product Title</Title>
+							<Brand>Example Product Brand</Brand>
+							<Description>This is an example product description.</Description>
+							<BulletPoint>Example Bullet Point 1</BulletPoint>
+							<BulletPoint>Example Bullet Point 2</BulletPoint>
+							<MSRP currency="USD">25.19</MSRP>
+							<Manufacturer>Example Product Manufacturer</Manufacturer>
+							<ItemType>example-item-type</ItemType>
+						</DescriptionData>
+						<ProductData>
+							<Health>
+								<ProductType>
+									<HealthMisc>
+										<Ingredients>Example Ingredients</Ingredients>
+										<Directions>Example Directions</Directions>
+									</HealthMisc>
+								</ProductType>
+							</Health>
+						</ProductData>
+					</Product>
+				</Message>
+			</AmazonEnvelope>';
+	}
+
+	function invokeSubmitFeed(MarketplaceWebService_Interface $service, $request) { //submit product data
+
+		$response = $service->submitFeed($request);
+		/*try {
 			$response = $service->submitFeed($request);
 
 			echo "Service Response<br/>";
@@ -176,6 +190,6 @@ $this->invokeSubmitFeed($service, $request);
 			echo "Request ID: ".$ex->getRequestId()."<br/>";
 			echo "XML: ".$ex->getXML()."<br/>";
 			echo "ResponseHeaderMetadata: ".$ex->getResponseHeaderMetadata()."<br/>";
-		}
+		}*/
 	}
 }

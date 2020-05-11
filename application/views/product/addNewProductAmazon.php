@@ -49,6 +49,15 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
+                                    <label>Description : </label>
+                                  </div>
+                                  <div class="col-md-9">
+                                    <input type="text" class="form-control" name="description" required>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-3">
                                   </div>
                                   <div class="col-md-9">
                                     <button type="submit" name="btnAddNewProductSubmit" class="btn btn-info" style="margin-bottom: 12px;">Submit</button>
