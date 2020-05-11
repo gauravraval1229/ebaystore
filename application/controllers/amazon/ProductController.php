@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ProductController extends CI_Controller {
 
-	public $msgName = "Ebay Product";
+	public $msgName = "Amazon Product";
 
 	public function __construct() {
 
@@ -14,31 +14,38 @@ class ProductController extends CI_Controller {
 		$this->load->library('Inventory');
 		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');
-		//$this->checklogintoken->checkLogin(); // check user is loggedin or not 
+		//$this->checklogintoken->checkLogin(); // check user is loggedin or not
 		//$this->checklogintoken->checkToken(); //token expired or not
 
 		include_once (APPPATH.'libraries/amazon/feed/Client.php');
 		include_once (APPPATH.'libraries/amazon/feed/Interface.php');
 		include_once (APPPATH.'libraries/amazon/feed/MarketplaceWebService/Model/SubmitFeedRequest.php');
 	}
+
+	/*public function index() {
+
+		$data['msgName'] = $this->msgName;
+		$data['page'] = 'product/productListAmazon';
+		$this->load->view('includes/template',$data);
+	}*/
 	
 	public function index() {
 
-		//$serviceUrl = "https://mws.amazonservices.co.uk";
+		//if(isset($_POST['btnAddNewProductSubmit'])) { // request for submit new product
 
 		$config = array (
-		  'ServiceURL' => SERVICE_URL,
-		  'ProxyHost' => null,
-		  'ProxyPort' => -1,
-		  'MaxErrorRetry' => 3,
+			'ServiceURL' => SERVICE_URL,
+			'ProxyHost' => null,
+			'ProxyPort' => -1,
+			'MaxErrorRetry' => 3,
 		);
 
 		$service = new MarketplaceWebService_Client(
-		     AWS_ACCESS_KEY_ID, 
-		     AWS_SECRET_ACCESS_KEY, 
-		     $config,
-		     APPLICATION_NAME,
-		     APPLICATION_VERSION);
+						AWS_ACCESS_KEY_ID,
+						AWS_SECRET_ACCESS_KEY,
+						$config,
+						APPLICATION_NAME,
+						APPLICATION_VERSION);
 
 		$feed =
 '<?xml version="1.0" encoding="iso-8859-1"?>
@@ -54,14 +61,14 @@ class ProductController extends CI_Controller {
     <MessageID>1</MessageID>
     <OperationType>Update</OperationType>
     <Product>
-      <SKU>56789</SKU>
+      <SKU>262626</SKU>
       <StandardProductID>
         <Type>UPC</Type>
         <Value>463563647487</Value>
       </StandardProductID>
       <ProductTaxCode>A_GEN_NOTAX</ProductTaxCode>
       <DescriptionData>
-        <Title>Example Product Title</Title>
+        <Title>Test Product Title</Title>
         <Brand>Example Product Brand</Brand>
         <Description>This is an example product description.</Description>
         <BulletPoint>Example Bullet Point 1</BulletPoint>
@@ -86,33 +93,38 @@ class ProductController extends CI_Controller {
 
 $marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
 
-$feedHandle = @fopen('php://temp', 'rw+');
-fwrite($feedHandle, $feed);
+$feedHandle = @fopen('php://temp','rw+');
+fwrite($feedHandle,$feed);
 rewind($feedHandle);
-$parameters = array (
- 'Merchant' => MERCHANT_ID,
- 'MarketplaceIdList' => $marketplaceIdArray,
- //'FeedType' => '_POST_ORDER_FULFILLMENT_DATA_',
- 'FeedType' => '_POST_PRODUCT_DATA_',
- 'FeedContent' => $feedHandle,
- 'PurgeAndReplace' => false,
- 'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
- 'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
-);
+			$parameters = array (
+					'Merchant' => MERCHANT_ID,
+					'MarketplaceIdList' => $marketplaceIdArray,
+					//'FeedType' => '_POST_ORDER_FULFILLMENT_DATA_',
+					'FeedType' => '_POST_PRODUCT_DATA_',
+					'FeedContent' => $feedHandle,
+					'PurgeAndReplace' => false,
+					'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
+					'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
+			);
 
 rewind($feedHandle);
 $request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
 $this->invokeSubmitFeed($service, $request);
 @fclose($feedHandle);
+}
 
+/*}
+		else { // Just display add proudct page
 
-		//$data['msgName'] = $this->msgName;
-		//$data['page'] = 'product/amazon/GetReportCountSample';
-		//$this->load->view('includes/template', $data);
-	}
+			$data['msgName'] = $this->msgName;
+			$data['page'] = 'product/addNewProductAmazon';
+			$this->load->view('includes/template',$data);
+		}
 
-	function invokeSubmitFeed(MarketplaceWebService_Interface $service, $request) 
-	{
+	}*/
+
+	function invokeSubmitFeed(MarketplaceWebService_Interface $service, $request) { //submit product
+
 		try {
 			$response = $service->submitFeed($request);
 
@@ -120,20 +132,20 @@ $this->invokeSubmitFeed($service, $request);
 			echo "=============================================================================<br/>";
 			echo "SubmitFeedResponse<br/>";
 
-			if ($response->isSetSubmitFeedResult()) { 
+			if ($response->isSetSubmitFeedResult()) {
 				echo("SubmitFeedResult\n");
 				$submitFeedResult = $response->getSubmitFeedResult();
-				if ($submitFeedResult->isSetFeedSubmissionInfo()) { 
+				if ($submitFeedResult->isSetFeedSubmissionInfo()) {
 					echo "FeedSubmissionInfo<br/>";
 					$feedSubmissionInfo = $submitFeedResult->getFeedSubmissionInfo();
 					if ($feedSubmissionInfo->isSetFeedSubmissionId()) {
 						echo "FeedSubmissionId: ".$feedSubmissionInfo->getFeedSubmissionId()."<br/>";
 					}
 					if ($feedSubmissionInfo->isSetFeedType()) {
-					echo "FeedType: "; $feedSubmissionInfo->getFeedType() . "<br/>";
+						echo "FeedType: ".$feedSubmissionInfo->getFeedType() . "<br/>";
 					}
 					if ($feedSubmissionInfo->isSetSubmittedDate()) {
-						echo "SubmittedDate: " .$feedSubmissionInfo->getSubmittedDate()->format(DATE_FORMAT)."<br/>";
+						echo "SubmittedDate: ".$feedSubmissionInfo->getSubmittedDate()->format(DATE_FORMAT)."<br/>";
 					}
 					if ($feedSubmissionInfo->isSetFeedProcessingStatus()) {
 					echo "FeedProcessingStatus: ".$feedSubmissionInfo->getFeedProcessingStatus()."<br>";
@@ -141,29 +153,29 @@ $this->invokeSubmitFeed($service, $request);
 					if ($feedSubmissionInfo->isSetStartedProcessingDate()) {
 						echo "StartedProcessingDate: ".$feedSubmissionInfo->getStartedProcessingDate()->format(DATE_FORMAT)."<br/>";
 					}
-					if ($feedSubmissionInfo->isSetCompletedProcessingDate()) 
+					if ($feedSubmissionInfo->isSetCompletedProcessingDate())
 					{
 						echo "CompletedProcessingDate: ".$feedSubmissionInfo->getCompletedProcessingDate()->format(DATE_FORMAT)."<br/>";
 					}
-				} 
-			} 
-			if ($response->isSetResponseMetadata()) { 
+				}
+			}
+			if ($response->isSetResponseMetadata()) {
 				echo "<br/>ResponseMetadata<br/>";
 				$responseMetadata = $response->getResponseMetadata();
 				if ($responseMetadata->isSetRequestId()) {
 					echo "RequestId: ".$responseMetadata->getRequestId()."<br/>";
 				}
-			} 
-			echo "ResponseHeaderMetadata: " . $response->getResponseHeaderMetadata()."<br/>" ;
-		} 
+			}
+			echo "ResponseHeaderMetadata: ".$response->getResponseHeaderMetadata()."<br/>" ;
+		}
 		catch (MarketplaceWebService_Exception $ex) {
-			echo "Caught Exception: " . $ex->getMessage() . "<br/>";
-			echo "Response Status Code: " . $ex->getStatusCode() . "<br/>";
-			echo "Error Code: " . $ex->getErrorCode() . "<br/>";
-			echo "Error Type: " . $ex->getErrorType() . "<br/>";
-			echo "Request ID: " . $ex->getRequestId() . "<br/>";
-			echo "XML: " . $ex->getXML() . "<br/>";
-			echo "ResponseHeaderMetadata: " . $ex->getResponseHeaderMetadata() . "<br/>";
+			echo "Caught Exception: ".$ex->getMessage()."<br/>";
+			echo "Response Status Code: ".$ex->getStatusCode()."<br/>";
+			echo "Error Code: ".$ex->getErrorCode()."<br/>";
+			echo "Error Type: ".$ex->getErrorType()."<br/>";
+			echo "Request ID: ".$ex->getRequestId()."<br/>";
+			echo "XML: ".$ex->getXML()."<br/>";
+			echo "ResponseHeaderMetadata: ".$ex->getResponseHeaderMetadata()."<br/>";
 		}
 	}
 }
