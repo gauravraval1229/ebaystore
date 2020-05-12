@@ -38,16 +38,41 @@
                         <table class="table table-striped table-bordered zero-configuration">
                           <thead>
                             <tr>
-                              <th>Product Id</th>
+                              <th>SKU</th>
                               <th>Product Name</th>
-                              <th>Vendor</th>
-                              <th>Product Type</th>
+                              <th>Product Price</th>
+                              <th>Product Quantity</th>
+                              <th>Status</th>
                               <th></th>
                               <th></th>
                             </tr>
                           </thead>
                           <tbody>
-                            
+                            <?php
+                              if (count($amazonProductList)>=1) {// if data found in array
+
+                                for($i=0;$i<count($amazonProductList);$i++) { 
+
+                                    if($i>=1){ // skip 0 key of array and start from 1 key
+
+                                    $sku = $amazonProductList[$i][3];
+                                    $title = $amazonProductList[$i][0];
+                                    $price = $amazonProductList[$i][4];
+                                    $qty = $amazonProductList[$i][5];
+                                    $status = $amazonProductList[$i][28];
+
+                                    if($sku!="") { // if sku is found then display data
+                                  ?>
+                                  <tr>
+                                    <td><?php echo $sku; ?></td>
+                                    <td><?php echo $title; ?></td>
+                                    <td><?php echo $price; ?></td>
+                                    <td><?php echo $qty; ?></td>
+                                    <td><?php echo ucfirst($status); ?></td>
+                                    <td><a href="<?php echo base_url(); ?>amazon/ProductController/editProduct/<?php echo $sku; ?>">Edit</a></td>
+                                    <td><a href="<?php echo base_url(); ?>amazon/ProductController/deleteProduct/<?php echo $sku; ?>">Delete</a></td>
+                                  </tr>
+                            <?php } } } } else { echo "<b> No Data Found <b>"; } ?>
                           </tbody>
                         </table>
                       </div>
