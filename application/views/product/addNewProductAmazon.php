@@ -83,7 +83,7 @@
                                   </div>
                                 </div>
 
-                                <div class="row">
+                                <!-- <div class="row">
                                   <div class="col-md-3">
                                     <label>Bullet Point : </label>
                                   </div>
@@ -95,7 +95,7 @@
                                   </div>
                                 </div>
 
-                                <div id="bulletTextbox"></div>
+                                <div id="bulletTextbox"></div> -->
 
                                 <div class="row">
                                   <div class="col-md-3"></div>
@@ -122,12 +122,12 @@
   <!-- END: Content-->
 
 <script type="text/javascript">
-  var i=2;
+  /*var i=2;
   
   $("#addTextBox").click(function(){
     var cnt = document.querySelectorAll('#bulletTextbox .txtBox').length;
 
-    if(cnt>4){
+    if(cnt>3){
       alert("You can add only 5 textbox");
       return false;
     }
@@ -139,5 +139,5 @@
 
   function removeTextbox(id){
     $('#bulletRow'+id).remove();
-  }
+  }*/
 </script>
