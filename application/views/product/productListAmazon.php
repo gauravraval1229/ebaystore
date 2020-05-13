@@ -43,8 +43,8 @@
                               <th>Product Price</th>
                               <th>Product Quantity</th>
                               <th>Status</th>
-                              <!-- <th></th>
-                              <th></th> -->
+                              <th></th>
+                              <!--<th></th> -->
                             </tr>
                           </thead>
                           <tbody>
@@ -75,8 +75,8 @@
                                     <td><?php echo $price; ?></td>
                                     <td><?php echo $qty; ?></td>
                                     <td><?php echo ucfirst($status); ?></td>
-                                    <!-- <td><a href="<?php echo base_url(); ?>amazon/ProductController/editProduct/<?php echo $sku; ?>">Edit</a></td>
-                                    <td><a href="<?php echo base_url(); ?>amazon/ProductController/deleteProduct/<?php echo $sku; ?>">Delete</a></td> -->
+                                    <!-- <td><a href="<?php echo base_url(); ?>amazon/ProductController/editProduct/<?php echo $sku; ?>">Edit</a></td> -->
+                                    <td><a href="<?php echo base_url(); ?>amazon/ProductController/deleteProduct/<?php echo $sku; ?>">Delete</a></td> 
                                   </tr>
                             <?php } } } } else { echo "<b> No Data Found <b>"; } ?>
                           </tbody>

@@ -56,14 +56,23 @@
                                   </div>
                                 </div>
 
-                                <!-- <div class="row">
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <label>Quantity : </label>
+                                  </div>
+                                  <div class="col-md-9">
+                                    <input type="number" class="form-control" name="qty">
+                                  </div>
+                                </div>
+
+                                <div class="row">
                                   <div class="col-md-3">
                                     <label>Product Image : </label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="file" class="form-control" name="prodcutImage" accept="image/x-png,image/gif,image/jpeg,image/jpg">
                                   </div>
-                                </div> -->
+                                </div>
 
                                 <div class="row">
                                   <div class="col-md-3">
@@ -74,19 +83,19 @@
                                   </div>
                                 </div>
 
-                                <!-- <div class="row" id='bulletId'>
+                                <div class="row">
                                   <div class="col-md-3">
-                                    <label>Add Bullet Points : </label>
+                                    <label>Bullet Point : </label>
                                   </div>
                                   <div class="col-md-8">
-                                    <input type="text" class="form-control" name="bulletPoints[]" id='bulletPoints1' required>
+                                    <input type="text" class="form-control txtBox" name="bulletPoints[]" id='bulletPoints1' required>
                                   </div>
                                   <div class="col-md-1">
-                                    <div id="div">
-                                      <button onclick ="appendRow()">+</button>
-                                    </div>
+                                    <input type="button" class="btn btn-info" id="addTextBox" value="+">
                                   </div>
-                                </div> -->
+                                </div>
+
+                                <div id="bulletTextbox"></div>
 
                                 <div class="row">
                                   <div class="col-md-3"></div>
@@ -113,9 +122,22 @@
   <!-- END: Content-->
 
 <script type="text/javascript">
-var i=2;
-function appendRow() {
-  $("#bulletId").append("<input type='text' name='bulletPoints[]' id='bulletPoints"+i+"'>");
-  i++;
-}
+  var i=2;
+  
+  $("#addTextBox").click(function(){
+    var cnt = document.querySelectorAll('#bulletTextbox .txtBox').length;
+
+    if(cnt>4){
+      alert("You can add only 5 textbox");
+      return false;
+    }
+    else{
+      $("#bulletTextbox").append("<div class='row' id='bulletRow"+i+"'><div class='col-md-3'></div><div class='col-md-8'><input type='text' class='form-control txtBox' name='bulletPoints[]' id='bulletPoints"+i+"'></div><div class='col-md-1'><input type='button' class='btn btn-danger' value='-' onclick='removeTextbox("+i+")'></div></div>");
+     i++;
+    }
+  });
+
+  function removeTextbox(id){
+    $('#bulletRow'+id).remove();
+  }
 </script>

@@ -46,8 +46,6 @@ class ProductController extends CI_Controller {
 
 			if($getAllProductData['status'] == 1 ) { // data found so no need to call another api
 
-				$getAllProductData['data'];
-
 				$data['msgName'] = $this->msgName;
 				$data['page'] = 'product/productListAmazon';
 				$data['amazonProductList'] = $getAllProductData['data'];
@@ -73,7 +71,7 @@ class ProductController extends CI_Controller {
 				$request->setReportOptions('ShowSalesChannel=true');
 				$requestReportArr = $this->invokeRequestReport($this->service, $request); // if condition here
 
-				if($requestReportArr['status'] ==  1) {
+				if($requestReportArr['status'] == 1) {
 
 					$getAllProductData = $this->getAllProductData();
 
@@ -197,9 +195,15 @@ class ProductController extends CI_Controller {
 					if ($response->isSetGetReportListResult()) { //
 						$getReportListResult = $response->getGetReportListResult();
 						$reportInfoList = $getReportListResult->getReportInfoList();
+
+						$loopFlage = 0; // if flage is 1 that means type matched so need to loop more exit loop
 						foreach ($reportInfoList as $reportInfo) {
-							if ($reportInfo->getReportType() == "_GET_MERCHANT_LISTINGS_ALL_DATA_") {
-								return array('status'=>1,'data'=>$reportInfo->getReportId());
+
+							if($loopFlage == 0) { //
+								if ($reportInfo->getReportType() == "_GET_MERCHANT_LISTINGS_ALL_DATA_") {
+									$loopFlage = 1; // type matched so end the loop
+									return array('status'=>1,'data'=>$reportInfo->getReportId());
+								}
 							}
 						}
 						
@@ -353,7 +357,7 @@ class ProductController extends CI_Controller {
 			$parameters = array (
 				'Merchant' => MERCHANT_ID,
 				//'ReportType' => '_GET_MERCHANT_LISTINGS_ALL_DATA_',
-				'ReportTypeList.Type.1'  => '_GET_MERCHANT_LISTINGS_ALL_DATA_',
+				'ReportTypeList.Type.1' => '_GET_MERCHANT_LISTINGS_ALL_DATA_',
 				'AvailableToDate' => new DateTime('now', new DateTimeZone('UTC')),
 				'AvailableFromDate' => new DateTime('-6 months', new DateTimeZone('UTC')),
 				'Acknowledged' => false, 
@@ -400,89 +404,10 @@ class ProductController extends CI_Controller {
 		public function addNewProduct() {
 
 			if(isset($_POST['btnAddNewProductSubmit'])) { // request for submit new product
-				
 
 				$sku = $this->generateRandomString().time();
-				$title = trim($this->input->post('title'));
-				$brand = trim($this->input->post('brand'));
-				$price = trim($this->input->post('price'));
-				$description = trim($this->input->post('description'));
 
-				$feed = $this->createOrUpdateFeed($sku,$title,$brand,$description); // create xml here
-				$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
-
-				$feedHandle = @fopen('php://temp','rw+');
-				fwrite($feedHandle,$feed);
-				rewind($feedHandle);
-				$parameters = array (
-						'Merchant' => MERCHANT_ID,
-						'MarketplaceIdList' => $marketplaceIdArray,
-						'FeedType' => '_POST_PRODUCT_DATA_',
-						'FeedContent' => $feedHandle,
-						'PurgeAndReplace' => false,
-						'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
-						'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
-				);
-
-				rewind($feedHandle);
-				$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
-				$this->invokeSubmitFeed($this->service, $request);
-				@fclose($feedHandle);
-
-				/********* Add product pirce*********/
-
-				$feed = "";
-				$feedHandle = "";
-				$request = "";
-				$parameters = array();
-
-				$feed = $this->feedPrice($sku,$price); // create xml here
-				$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
-
-				$feedHandle = @fopen('php://temp', 'rw+');
-				fwrite($feedHandle, $feed);
-				rewind($feedHandle);
-
-				$parameters = array(
-					'Merchant' => MERCHANT_ID,
-					'MarketplaceIdList' => $marketplaceIdArray,
-					'FeedType' => '_POST_PRODUCT_PRICING_DATA_',
-					'FeedContent' => $feedHandle,
-					'PurgeAndReplace' => false, //Leave this PurgeAndReplace to false so that it want replace whole product in amazon inventory
-					'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true))
-				);
-
-				$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
-				$this->invokeSubmitFeed($this->service, $request);
-				@fclose($feedHandle);
-
-				$this->session->set_flashdata('success', 'Product added successfully!');
-				redirect(base_url('amazon/ProductController/index'));
-
-				/**** for image ***/
-				/*$feed = $this->feedImage(); // create xml here
-
-				$feedHandle = @fopen('php://temp','rw+');
-				fwrite($feedHandle,$feed);
-				rewind($feedHandle);
-				$parameters = array (
-						'Merchant' => MERCHANT_ID,
-						'MarketplaceIdList' => $marketplaceIdArray,
-						'FeedType' => '_POST_PRODUCT_IMAGE_DATA_',
-						'FeedContent' => $feedHandle,
-						'PurgeAndReplace' => false,
-						'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
-						'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
-				);
-
-				rewind($feedHandle);
-				$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
-				$this->invokeSubmitFeed($this->service, $request);
-				@fclose($feedHandle);*/
-
-				
-
-				/*if(!file_exists(createFolderAmazonImage)) { // create folder on root/assets
+				if(!file_exists(createFolderAmazonImage)) { // create folder on root/assets
 					mkdir(createFolderAmazonImage, 0777, true);
 				}
 
@@ -490,7 +415,7 @@ class ProductController extends CI_Controller {
 					mkdir(createFolderAmazonImage.'/'.$sku, 0777, true);
 				}
 
-				$imageNewName = time().'.'.strtolower(pathinfo($_FILES["prodcutImage"]['name'], PATHINFO_EXTENSION));
+				$imageNewName = uniqid().'-'.time().'.'.strtolower(pathinfo($_FILES["prodcutImage"]['name'], PATHINFO_EXTENSION));
 				$config['upload_path'] = createFolderAmazonImage.'/'.$sku;
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
 				$config['file_name'] = $imageNewName;
@@ -498,13 +423,140 @@ class ProductController extends CI_Controller {
 				$this->load->library('upload', $config);
 
 				if (!$this->upload->do_upload('prodcutImage')) {
-					echo "error";
-				} else {
-					echo "success";
-				}*/
 
-				//$this->session->set_flashdata('success', 'Product added successfully!');
-				//redirect(base_url('amazon/ProductController/index'));
+					$this->session->set_flashdata('error', 'The Product not added due to image uploading failed. Please try after somtime!');
+					redirect(base_url('amazon/ProductController/index'));
+
+				} else {
+				
+					$title = trim($this->input->post('title'));
+					$brand = trim($this->input->post('brand'));
+					$price = trim($this->input->post('price'));
+					$qty = trim($this->input->post('qty'));
+					$description = trim($this->input->post('description'));
+
+					/************* Add/Update Product Basic Detail Start *************/
+
+						$feed = "";
+						$feedHandle = "";
+						$request = "";
+						$parameters = array();
+
+						$feed = $this->createOrUpdateFeed($sku,$title,$brand,$description); // create xml here
+						$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
+
+						$feedHandle = @fopen('php://temp','rw+');
+						fwrite($feedHandle,$feed);
+						rewind($feedHandle);
+						$parameters = array (
+								'Merchant' => MERCHANT_ID,
+								'MarketplaceIdList' => $marketplaceIdArray,
+								'FeedType' => '_POST_PRODUCT_DATA_',
+								'FeedContent' => $feedHandle,
+								'PurgeAndReplace' => false,
+								'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
+								'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
+						);
+
+						rewind($feedHandle);
+						$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
+						$this->invokeSubmitFeed($this->service, $request);
+						@fclose($feedHandle);
+
+					/************* Add/Update Product Basic Detail End *************/
+
+
+					/************* Add/Update Product Qty Start *************/
+
+						$feed = "";
+						$feedHandle = "";
+						$request = "";
+						$parameters = array();
+
+						$feed = $this->feedQty($sku,$qty); // create xml here
+
+						$feedHandle = @fopen('php://temp', 'rw+');
+						fwrite($feedHandle, $feed);
+						rewind($feedHandle);
+
+						$parameters = array (
+								'Merchant' => MERCHANT_ID,
+								'MarketplaceIdList' => $marketplaceIdArray,
+								'FeedType' => '_POST_INVENTORY_AVAILABILITY_DATA_',
+								'FeedContent' => $feedHandle,
+								'PurgeAndReplace' => false,
+								'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
+								'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
+						);
+
+						$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
+						$this->invokeSubmitFeed($this->service, $request);
+						@fclose($feedHandle);
+
+					/************* Add/Update Product Qty End *************/
+
+
+					/************* Add/Update Product Price Start *************/
+
+						$feed = "";
+						$feedHandle = "";
+						$request = "";
+						$parameters = array();
+
+						$feed = $this->feedPrice($sku,$price); // create xml here
+
+						$feedHandle = @fopen('php://temp', 'rw+');
+						fwrite($feedHandle, $feed);
+						rewind($feedHandle);
+
+						$parameters = array (
+								'Merchant' => MERCHANT_ID,
+								'MarketplaceIdList' => $marketplaceIdArray,
+								'FeedType' => '_POST_PRODUCT_PRICING_DATA_',
+								'FeedContent' => $feedHandle,
+								'PurgeAndReplace' => false,
+								'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
+								'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
+						);
+
+						$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
+						$this->invokeSubmitFeed($this->service, $request);
+						@fclose($feedHandle);
+
+					/************* Add/Update Product Price Start *************/
+
+
+					/************* Add/Update Product Image Start *************/
+
+						$imagePath = uploadAmazonImage.'/'.$sku.'/'.$imageNewName;
+
+						$feed = $this->feedImage($sku,$imagePath); // create xml here
+
+						$feedHandle = @fopen('php://temp','rw+');
+						fwrite($feedHandle,$feed);
+						rewind($feedHandle);
+						$parameters = array (
+								'Merchant' => MERCHANT_ID,
+								'MarketplaceIdList' => $marketplaceIdArray,
+								'FeedType' => '_POST_PRODUCT_IMAGE_DATA_',
+								'FeedContent' => $feedHandle,
+								'PurgeAndReplace' => false,
+								'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
+								'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
+						);
+
+						rewind($feedHandle);
+						$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
+						$this->invokeSubmitFeed($this->service, $request);
+						@fclose($feedHandle);
+
+					/************* Add/Update Product Image End *************/
+
+					$this->session->set_flashdata('success', 'Product added successfully!');
+					redirect(base_url('amazon/ProductController/index'));
+				}
+
+				
 			}
 			else { // Just display add proudct page
 
@@ -559,106 +611,134 @@ class ProductController extends CI_Controller {
 				</AmazonEnvelope>';
 		}
 
-		// add/update image of product
-		function feedImage(){
-
-			return '<?xml version="1.0" encoding="utf-8"?>
-					<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
-						<Header>
-							<DocumentVersion>1.01</DocumentVersion>
-							<MerchantIdentifier>MARKETPLACE_ID</MerchantIdentifier>
-						</Header>
-						<MessageType>ProductImage</MessageType>
-						<PurgeAndReplace>false</PurgeAndReplace> 
-						<Message> 
-							<MessageID>1</MessageID> 
-							<OperationType>Update</OperationType> 
-							<ProductImage> 
-								<SKU>566666</SKU> 
-								<ImageType>Main</ImageType>
-								<ImageLocation>http://www.w3schools.com/html/img_chania.jpg</ImageLocation>
-							</ProductImage> 
-						</Message>
-					</AmazonEnvelope>';
-		}
-
-		// Add/updae price of prodcut
+		// Add/update price of prodcut
 		function feedPrice($sku,$price) {
 
 			return '<?xml version="1.0" encoding="utf-8"?>
-					<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
-						<Header>
-							<DocumentVersion>1.01</DocumentVersion>
-							<MerchantIdentifier>MARKETPLACE_ID</MerchantIdentifier>
-						</Header>
-						<MessageType>Price</MessageType>
-						<Message>
-							<MessageID>1</MessageID>
-							<Price>
-								<SKU>'.$sku.'</SKU>
-								<StandardPrice currency="EUR">'.$price.'</StandardPrice>
-							</Price>
-						</Message>
-					</AmazonEnvelope>';
+						<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
+							<Header>
+								<DocumentVersion>1.01</DocumentVersion>
+								<MerchantIdentifier>MARKETPLACE_ID</MerchantIdentifier>
+							</Header>
+							<MessageType>Price</MessageType>
+							<Message>
+								<MessageID>1</MessageID>
+								<OperationType>Update</OperationType>
+								<Price>
+									<SKU>'.$sku.'</SKU>
+									<StandardPrice currency="GBP">'.$price.'</StandardPrice>
+									<MinimumSellerAllowedPrice currency="GBP">15</MinimumSellerAllowedPrice>
+									<MaximumSellerAllowedPrice currency="GBP">100</MaximumSellerAllowedPrice>
+								</Price>
+							</Message>
+						</AmazonEnvelope>';
 		}
 
-		// All data submitted (basic data,image,price,qty etc)
+		// Add/update qty of prodcut
+		function feedQty($sku,$qty) {
+
+			return '<?xml version="1.0" encoding="utf-8"?>
+						<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
+							<Header>
+								<DocumentVersion>1.01</DocumentVersion>
+								<MerchantIdentifier>MARKETPLACE_ID</MerchantIdentifier>
+							</Header>
+							<MessageType>Inventory</MessageType>
+							<Message>
+								<MessageID>1</MessageID>
+								<OperationType>Update</OperationType>
+								<Inventory>
+									<SKU>'.$sku.'</SKU>
+									<Quantity>'.$qty.'</Quantity>
+								</Inventory>
+							</Message>
+						</AmazonEnvelope>';
+		}
+
+		// add/update image of product
+		function feedImage($sku,$imagePath){
+
+			return '<?xml version="1.0" encoding="utf-8"?>
+						<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
+							<Header>
+								<DocumentVersion>1.01</DocumentVersion>
+								<MerchantIdentifier>MARKETPLACE_ID</MerchantIdentifier>
+							</Header>
+							<MessageType>ProductImage</MessageType>
+							<PurgeAndReplace>false</PurgeAndReplace> 
+							<Message> 
+								<MessageID>1</MessageID> 
+								<OperationType>Update</OperationType> 
+								<ProductImage> 
+									<SKU>'.$sku.'</SKU> 
+									<ImageType>Main</ImageType>
+									<ImageLocation>'.$imagePath.'</ImageLocation>
+								</ProductImage> 
+							</Message>
+						</AmazonEnvelope>';
+		}
+
+		// All request submit/upload/delete (basic data,image,price,qty etc)
 		function invokeSubmitFeed(MarketplaceWebService_Interface $service, $request) { //submit product data
 
 			$response = $service->submitFeed($request);
 
-			/*try {
-				$response = $service->submitFeed($request);
+			/************************* Example Start ****************************
 
-				echo "Service Response<br/>";
-				echo "=============================================================================<br/>";
-				echo "SubmitFeedResponse<br/>";
+				try {
+					$response = $service->submitFeed($request);
 
-				if ($response->isSetSubmitFeedResult()) {
-					echo("SubmitFeedResult\n");
-					$submitFeedResult = $response->getSubmitFeedResult();
-					if ($submitFeedResult->isSetFeedSubmissionInfo()) {
-						echo "FeedSubmissionInfo<br/>";
-						$feedSubmissionInfo = $submitFeedResult->getFeedSubmissionInfo();
-						if ($feedSubmissionInfo->isSetFeedSubmissionId()) {
-							echo "FeedSubmissionId: ".$feedSubmissionInfo->getFeedSubmissionId()."<br/>";
-						}
-						if ($feedSubmissionInfo->isSetFeedType()) {
-							echo "FeedType: ".$feedSubmissionInfo->getFeedType() . "<br/>";
-						}
-						if ($feedSubmissionInfo->isSetSubmittedDate()) {
-							echo "SubmittedDate: ".$feedSubmissionInfo->getSubmittedDate()->format(DATE_FORMAT)."<br/>";
-						}
-						if ($feedSubmissionInfo->isSetFeedProcessingStatus()) {
-						echo "FeedProcessingStatus: ".$feedSubmissionInfo->getFeedProcessingStatus()."<br>";
-						}
-						if ($feedSubmissionInfo->isSetStartedProcessingDate()) {
-							echo "StartedProcessingDate: ".$feedSubmissionInfo->getStartedProcessingDate()->format(DATE_FORMAT)."<br/>";
-						}
-						if ($feedSubmissionInfo->isSetCompletedProcessingDate())
-						{
-							echo "CompletedProcessingDate: ".$feedSubmissionInfo->getCompletedProcessingDate()->format(DATE_FORMAT)."<br/>";
+					echo "Service Response<br/>";
+					echo "=============================================================================<br/>";
+					echo "SubmitFeedResponse<br/>";
+
+					if ($response->isSetSubmitFeedResult()) {
+						echo("SubmitFeedResult\n");
+						$submitFeedResult = $response->getSubmitFeedResult();
+						if ($submitFeedResult->isSetFeedSubmissionInfo()) {
+							echo "FeedSubmissionInfo<br/>";
+							$feedSubmissionInfo = $submitFeedResult->getFeedSubmissionInfo();
+							if ($feedSubmissionInfo->isSetFeedSubmissionId()) {
+								echo "FeedSubmissionId: ".$feedSubmissionInfo->getFeedSubmissionId()."<br/>";
+							}
+							if ($feedSubmissionInfo->isSetFeedType()) {
+								echo "FeedType: ".$feedSubmissionInfo->getFeedType() . "<br/>";
+							}
+							if ($feedSubmissionInfo->isSetSubmittedDate()) {
+								echo "SubmittedDate: ".$feedSubmissionInfo->getSubmittedDate()->format(DATE_FORMAT)."<br/>";
+							}
+							if ($feedSubmissionInfo->isSetFeedProcessingStatus()) {
+							echo "FeedProcessingStatus: ".$feedSubmissionInfo->getFeedProcessingStatus()."<br>";
+							}
+							if ($feedSubmissionInfo->isSetStartedProcessingDate()) {
+								echo "StartedProcessingDate: ".$feedSubmissionInfo->getStartedProcessingDate()->format(DATE_FORMAT)."<br/>";
+							}
+							if ($feedSubmissionInfo->isSetCompletedProcessingDate())
+							{
+								echo "CompletedProcessingDate: ".$feedSubmissionInfo->getCompletedProcessingDate()->format(DATE_FORMAT)."<br/>";
+							}
 						}
 					}
-				}
-				if ($response->isSetResponseMetadata()) {
-					echo "<br/>ResponseMetadata<br/>";
-					$responseMetadata = $response->getResponseMetadata();
-					if ($responseMetadata->isSetRequestId()) {
-						echo "RequestId: ".$responseMetadata->getRequestId()."<br/>";
+					if ($response->isSetResponseMetadata()) {
+						echo "<br/>ResponseMetadata<br/>";
+						$responseMetadata = $response->getResponseMetadata();
+						if ($responseMetadata->isSetRequestId()) {
+							echo "RequestId: ".$responseMetadata->getRequestId()."<br/>";
+						}
 					}
+					echo "ResponseHeaderMetadata: ".$response->getResponseHeaderMetadata()."<br/>" ;
 				}
-				echo "ResponseHeaderMetadata: ".$response->getResponseHeaderMetadata()."<br/>" ;
-			}
-			catch (MarketplaceWebService_Exception $ex) {
-				echo "Caught Exception: ".$ex->getMessage()."<br/>";
-				echo "Response Status Code: ".$ex->getStatusCode()."<br/>";
-				echo "Error Code: ".$ex->getErrorCode()."<br/>";
-				echo "Error Type: ".$ex->getErrorType()."<br/>";
-				echo "Request ID: ".$ex->getRequestId()."<br/>";
-				echo "XML: ".$ex->getXML()."<br/>";
-				echo "ResponseHeaderMetadata: ".$ex->getResponseHeaderMetadata()."<br/>";
-			}*/
+				catch (MarketplaceWebService_Exception $ex) {
+					echo "Caught Exception: ".$ex->getMessage()."<br/>";
+					echo "Response Status Code: ".$ex->getStatusCode()."<br/>";
+					echo "Error Code: ".$ex->getErrorCode()."<br/>";
+					echo "Error Type: ".$ex->getErrorType()."<br/>";
+					echo "Request ID: ".$ex->getRequestId()."<br/>";
+					echo "XML: ".$ex->getXML()."<br/>";
+					echo "ResponseHeaderMetadata: ".$ex->getResponseHeaderMetadata()."<br/>";
+				}
+
+			************************* Example End ****************************/
 		}
 
 	/********************** Add/Update product functions End **********************/
@@ -667,9 +747,33 @@ class ProductController extends CI_Controller {
 	/********************** Delete product functions Start **********************/
 
 		public function deleteProduct($sku) {
+
+			$feed = $this->feedDelete($sku); // create xml here
+			$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
+
+			$feedHandle = @fopen('php://temp','rw+');
+			fwrite($feedHandle,$feed);
+			rewind($feedHandle);
+			$parameters = array (
+					'Merchant' => MERCHANT_ID,
+					'MarketplaceIdList' => $marketplaceIdArray,
+					'FeedType' => '_POST_PRODUCT_DATA_',
+					'FeedContent' => $feedHandle,
+					'PurgeAndReplace' => false,
+					'ContentMd5' => base64_encode(md5(stream_get_contents($feedHandle), true)),
+					'MWSAuthToken' => MWS_AUTH_TOKEN, // Optional
+			);
+
+			rewind($feedHandle);
+			$request = new MarketplaceWebService_Model_SubmitFeedRequest($parameters);
+			$this->invokeSubmitFeed($this->service, $request);
+			@fclose($feedHandle);
+
+			$this->session->set_flashdata('success', 'Product deleted successfully! It will take 15-20 minutes for process.');
+			redirect(base_url('amazon/ProductController/index'));
 		}
 
-		function feedDelete() {
+		function feedDelete($sku) {
 
 			return '<?xml version="1.0" encoding="UTF-8"?>
 						<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
@@ -680,9 +784,9 @@ class ProductController extends CI_Controller {
 							<MessageType>Product</MessageType>
 							<Message>
 								<MessageID>1</MessageID>
-								<OperationType>999999</OperationType>
+								<OperationType>Delete</OperationType>
 								<Product>
-									<SKU>999999</SKU>
+									<SKU>'.$sku.'</SKU>
 								</Product>
 							</Message>
 						</AmazonEnvelope>';
