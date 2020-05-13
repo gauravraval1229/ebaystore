@@ -58,10 +58,16 @@
                                     $sku = $amazonProductList[$i][3];
                                     $title = $amazonProductList[$i][0];
                                     $price = $amazonProductList[$i][4];
+                                      if($price == "") {
+                                        $price = 0;
+                                      }
                                     $qty = $amazonProductList[$i][5];
+                                      if($qty == ""){
+                                        $qty = 0;
+                                      }
                                     $status = $amazonProductList[$i][28];
 
-                                    if($sku!="") { // if sku is found then display data
+                                    if($sku!="") { // if sku is no empty then display data
                                   ?>
                                   <tr>
                                     <td><?php echo $sku; ?></td>
