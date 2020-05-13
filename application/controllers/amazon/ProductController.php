@@ -27,7 +27,6 @@ class ProductController extends CI_Controller {
 
 		$this->cofig = array ('ServiceURL'=>SERVICE_URL,'ProxyHost' =>null,'ProxyPort'=>-1,'MaxErrorRetry'=>3);
 		$this->service = new MarketplaceWebService_Client(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,$this->cofig,APPLICATION_NAME,APPLICATION_VERSION);
-
 	}
 
 	public function generateRandomString($length = 5) {
@@ -43,20 +42,6 @@ class ProductController extends CI_Controller {
 
 			$productList = array();
 
-			/*$config = array (
-					'ServiceURL' => SERVICE_URL,
-					'ProxyHost' => null,
-					'ProxyPort' => -1,
-					'MaxErrorRetry' => 3,
-				);
-
-			$service = new MarketplaceWebService_Client(
-							AWS_ACCESS_KEY_ID,
-							AWS_SECRET_ACCESS_KEY,
-							$config,
-							APPLICATION_NAME,
-							APPLICATION_VERSION);*/
-
 			$getAllProductData = $this->getAllProductData();
 
 			if($getAllProductData['status'] == 1 ) { // data found so no need to call another api
@@ -69,20 +54,6 @@ class ProductController extends CI_Controller {
 				$this->load->view('includes/template',$data);
 			}
 			else { // call one more api ReportType wil created.
-
-				/*$config = array (
-					'ServiceURL' => SERVICE_URL,
-					'ProxyHost' => null,
-					'ProxyPort' => -1,
-					'MaxErrorRetry' => 3,
-				);
-
-				$service = new MarketplaceWebService_Client(
-								AWS_ACCESS_KEY_ID,
-								AWS_SECRET_ACCESS_KEY,
-								$config,
-								APPLICATION_NAME,
-								APPLICATION_VERSION);*/
 
 				$marketplaceIdArray = array("Id" => array(MARKETPLACE_ID));
 
@@ -131,6 +102,7 @@ class ProductController extends CI_Controller {
 			}
 		}
 
+		// make request to generate report id
 		function invokeRequestReport(MarketplaceWebService_Interface $service, $request) {
 
 			$status = 0;
@@ -214,6 +186,7 @@ class ProductController extends CI_Controller {
 			************************* Example End *****************************/
 		}
 
+		// get report id
 		function invokeGetReportList(MarketplaceWebService_Interface $service, $request) {
 
 			$status = 0;
@@ -298,6 +271,7 @@ class ProductController extends CI_Controller {
 			/************************* Example Start *****************************/
 		}
 
+		// get report using id
 		function invokeGetReport(MarketplaceWebService_Interface $service, $request) {
 
 			$status = 0; // not data found or any condition fails
@@ -373,6 +347,7 @@ class ProductController extends CI_Controller {
 			/************************* Example End ****************************/
 		}
 
+		// common function to get report data.
 		function getAllProductData() {
 
 			$parameters = array (
@@ -426,19 +401,6 @@ class ProductController extends CI_Controller {
 
 			if(isset($_POST['btnAddNewProductSubmit'])) { // request for submit new product
 				
-				/*$config = array (
-					'ServiceURL' => SERVICE_URL,
-					'ProxyHost' => null,
-					'ProxyPort' => -1,
-					'MaxErrorRetry' => 3,
-				);
-
-				$service = new MarketplaceWebService_Client(
-								AWS_ACCESS_KEY_ID,
-								AWS_SECRET_ACCESS_KEY,
-								$config,
-								APPLICATION_NAME,
-								APPLICATION_VERSION);*/
 
 				$sku = $this->generateRandomString().time();
 				$title = trim($this->input->post('title'));
@@ -552,6 +514,7 @@ class ProductController extends CI_Controller {
 			}
 		}
 
+		// add/update basic data of product
 		function createOrUpdateFeed($sku,$title,$brand,$description) {
 
 			return '<?xml version="1.0" encoding="iso-8859-1"?>
@@ -578,7 +541,6 @@ class ProductController extends CI_Controller {
 								<Description>'.$description.'</Description>
 								<BulletPoint>Example Bullet Point 1</BulletPoint>
 								<BulletPoint>Example Bullet Point 2</BulletPoint>
-								<MSRP currency="USD">25.19</MSRP>
 								<Manufacturer>Example Product Manufacturer</Manufacturer>
 								<ItemType>example-item-type</ItemType>
 							</DescriptionData>
@@ -597,6 +559,7 @@ class ProductController extends CI_Controller {
 				</AmazonEnvelope>';
 		}
 
+		// add/update image of product
 		function feedImage(){
 
 			return '<?xml version="1.0" encoding="utf-8"?>
@@ -619,7 +582,8 @@ class ProductController extends CI_Controller {
 					</AmazonEnvelope>';
 		}
 
-		function feedPrice($sku,$price){
+		// Add/updae price of prodcut
+		function feedPrice($sku,$price) {
 
 			return '<?xml version="1.0" encoding="utf-8"?>
 					<AmazonEnvelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="amzn-envelope.xsd">
@@ -638,6 +602,7 @@ class ProductController extends CI_Controller {
 					</AmazonEnvelope>';
 		}
 
+		// All data submitted (basic data,image,price,qty etc)
 		function invokeSubmitFeed(MarketplaceWebService_Interface $service, $request) { //submit product data
 
 			$response = $service->submitFeed($request);
@@ -697,6 +662,7 @@ class ProductController extends CI_Controller {
 		}
 
 	/********************** Add/Update product functions End **********************/
+
 
 	/********************** Delete product functions Start **********************/
 
