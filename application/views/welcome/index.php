@@ -1,6 +1,6 @@
 <style type="text/css">
-.row
-{
+.row {
+
   margin-top: 10px;
 }
 </style>
@@ -16,7 +16,7 @@
                       <div class="col-xl-12 col-lg-12 col-md-12">
                         <div class="card">
 
-                          <p style="margin-top: 20px; margin-left: 20px;">Welcome <?php echo $this->session->userdata['logged_in']['firstName'].' '.$this->session->userdata['logged_in']['lastName']; ?></p>
+                          <p style="margin-top: 20px; margin-left: 20px;">Welcome <?php echo ucfirst($this->session->userdata['logged_in']['firstName']).' '.ucfirst($this->session->userdata['logged_in']['lastName']); ?></p>
 
                         </div>
                       </div>
@@ -112,7 +112,18 @@
                                         </div>
                                         <div class="p-2 media-body">
                                             <h5>Total Products</h5>
-                                            <h5 class="text-bold-400 mb-0">50,000</h5>
+                                            <h5 class="text-bold-400 mb-0">
+                                                <?php 
+                                                    // if count is 1 that means only header text is exist original data starts from 2nd count
+                                                    if(count($amazonProductList) == 0 || count($amazonProductList) == 1) {
+                                                        echo 0;
+                                                    }
+                                                    else {
+                                                        // -1 remove header count
+                                                        echo count($amazonProductList)-1;
+                                                    }
+                                                ?>
+                                            </h5>
                                         </div>
                                     </div>
                                 </div>
@@ -126,13 +137,28 @@
                                             <i class="icon-wallet font-large-2 text-white"></i>
                                         </div>
                                         <div class="p-2 media-body">
-                                            <h5>Ebay Products</h5>
+                                            <h5>Total Product Sold</h5>
                                             <h5 class="text-bold-400 mb-0">20,000</h5>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <?php 
+                            $remainingAmazonProduct = 0;
+                            if(count($amazonProductList) >= 1) {
+                                for($i=0;$i<count($amazonProductList);$i++) {
+                                    if($i>=1) { // skip 0 key of array and start from 1 key
+                                        $qty = $amazonProductList[$i][5];
+                                        if($qty > 0) { // quantity is exist so icreament count
+                                            $remainingAmazonProduct = $remainingAmazonProduct+1;
+                                        }
+                                    }
+                                }
+                            }
+                        ?>
+
                         <div class="col-xl-4 col-md-6 col-12">
                             <div class="card">
                                 <div class="card-content">
@@ -141,56 +167,8 @@
                                             <i class="icon-wallet font-large-2 text-white"></i>
                                         </div>
                                         <div class="p-2 media-body">
-                                            <h5>Shopify Products</h5>
-                                            <h5 class="text-bold-400 mb-0">30,000</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-xl-4 col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="media align-items-stretch">
-                                        <div class="p-2 text-center bg-info rounded-left">
-                                            <i class="icon-basket-loaded font-large-2 text-white"></i>
-                                        </div>
-                                        <div class="p-2 media-body">
-                                            <h5>Total Orders</h5>
-                                            <h5 class="text-bold-400 mb-0">4,000</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="media align-items-stretch">
-                                        <div class="p-2 text-center bg-success rounded-left">
-                                            <i class="icon-basket-loaded font-large-2 text-white"></i>
-                                        </div>
-                                        <div class="p-2 media-body">
-                                            <h5>Total Sold Products</h5>
-                                            <h5 class="text-bold-400 mb-0">2,000</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-4 col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="media align-items-stretch">
-                                        <div class="p-2 text-center bg-warning rounded-left">
-                                            <i class="icon-basket-loaded font-large-2 text-white"></i>
-                                        </div>
-                                        <div class="p-2 media-body">
-                                            <h5>Total Products in Stock</h5>
-                                            <h5 class="text-bold-400 mb-0">2,000</h5>
+                                            <h5>Total Remaining Product</h5>
+                                            <h5 class="text-bold-400 mb-0"><?php echo $remainingAmazonProduct; ?></h5>
                                         </div>
                                     </div>
                                 </div>

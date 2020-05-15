@@ -22,6 +22,7 @@ application/logs/*
 /application/config/database.php
 /application/config/constants.php
 /assests/productImageShopify/*
+/assests/productImageAmazon/*
 
 .htaccess
 
@@ -29,3 +30,4 @@ application/config/config.php
 application/config/database.php
 application/config/constants.php
 assests/productImageShopify/*
+assests/productImageAmazon/*

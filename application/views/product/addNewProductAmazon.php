@@ -43,7 +43,7 @@
                                     <label>Brand : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="text" class="form-control" name="brand">
+                                    <input type="text" class="form-control" name="brand" required>
                                   </div>
                                 </div>
 
@@ -52,7 +52,7 @@
                                     <label>Price : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="text" class="form-control" name="price">
+                                    <input type="text" class="form-control" name="price" onkeypress="return isNumber(event)" required>
                                   </div>
                                 </div>
 
@@ -61,7 +61,25 @@
                                     <label>Quantity : </label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="number" class="form-control" name="qty">
+                                    <input type="number" class="form-control" name="qty" min="0" required>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <label>Description : </label>
+                                  </div>
+                                  <div class="col-md-9">
+                                    <textarea class="form-control" name="description" required></textarea>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-3">
+                                    <label>Manufacturer : </label>
+                                  </div>
+                                  <div class="col-md-9">
+                                    <input type="text" class="form-control" name="manufacturer" required>
                                   </div>
                                 </div>
 
@@ -71,15 +89,6 @@
                                   </div>
                                   <div class="col-md-9">
                                     <input type="file" class="form-control" name="prodcutImage" accept="image/x-png,image/gif,image/jpeg,image/jpg">
-                                  </div>
-                                </div>
-
-                                <div class="row">
-                                  <div class="col-md-3">
-                                    <label>Description : </label>
-                                  </div>
-                                  <div class="col-md-9">
-                                    <textarea class="form-control" name="description"></textarea>
                                   </div>
                                 </div>
 
@@ -140,4 +149,11 @@
   function removeTextbox(id){
     $('#bulletRow'+id).remove();
   }*/
+
+  function isNumber(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+    return false;
+    return true;
+  }
 </script>

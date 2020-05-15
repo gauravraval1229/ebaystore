@@ -44,12 +44,12 @@
                               <th>Product Quantity</th>
                               <th>Status</th>
                               <th></th>
-                              <!--<th></th> -->
+                              <th></th> 
                             </tr>
                           </thead>
                           <tbody>
                             <?php
-                              if (count($amazonProductList)>=1) {// if data found in array
+                              if (count($amazonProductList)>=1) { // if data found in array
 
                                 for($i=0;$i<count($amazonProductList);$i++) { 
 
@@ -67,7 +67,16 @@
                                       }
                                     $status = $amazonProductList[$i][28];
 
+                                    $imageUrl = $amazonProductList[$i][7];
+                                    $description = $amazonProductList[$i][1];
+
                                     if($sku!="") { // if sku is no empty then display data
+
+                                    $productArray = array();
+                                    $productArray1 = "";
+                                    $productArray = array("sku"=>$sku,"title"=>$title,"price"=>$price,"qty"=>$qty,"description"=>$description,"imageUrl"=>$imageUrl);
+                                    $productArray1 = htmlspecialchars(json_encode($productArray));
+                                    //print_r($productArray);
                                   ?>
                                   <tr>
                                     <td><?php echo $sku; ?></td>
@@ -76,9 +85,10 @@
                                     <td><?php echo $qty; ?></td>
                                     <td><?php echo ucfirst($status); ?></td>
                                     <!-- <td><a href="<?php echo base_url(); ?>amazon/ProductController/editProduct/<?php echo $sku; ?>">Edit</a></td> -->
+                                    <td><input type="hidden" id="hiddenProduct<?php echo $sku;?>" value="<?php echo $productArray1; ?>"><a href="#" onclick="editProduct('<?php echo $sku; ?>');">Edit</a></td>
                                     <td><a href="<?php echo base_url(); ?>amazon/ProductController/deleteProduct/<?php echo $sku; ?>">Delete</a></td> 
                                   </tr>
-                            <?php } } } } else { echo "<b> No Data Found <b>"; } ?>
+                            <?php } } } } ?>
                           </tbody>
                         </table>
                       </div>
@@ -98,5 +108,13 @@
 <script type="text/javascript">
   $(document).ready(function(){
     $('#msg').delay(4000).fadeOut(400);
+    localStorage.removeItem('productArray');
+    localStorage.clear();
   });
+
+  function editProduct(sku){
+    var productArray = $("#hiddenProduct"+sku).val();
+    sessionStorage.setItem("productArray",productArray);
+    window.location.href = '<?php echo base_url() ?>index.php/amazon/ProductController/editProduct';
+  }
 </script>
