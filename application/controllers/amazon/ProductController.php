@@ -483,7 +483,7 @@ class ProductController extends CI_Controller {
 
 				$this->load->library('upload', $config);
 
-				if (!$this->upload->do_upload('prodcutImage')) {
+				if (!$this->upload->do_upload('prodcutImage')) { // Product upload fail
 
 					$this->session->set_flashdata('error', 'The Product not added due to image uploading failed. Please try after some time.');
 					redirect(base_url('amazon/ProductController/index'));
@@ -776,6 +776,14 @@ class ProductController extends CI_Controller {
 
 					if($_FILES["prodcutImageNew"]['name'] != "") {
 
+						if(!file_exists(createFolderAmazonImage)) { // create folder on root/assets
+							mkdir(createFolderAmazonImage, 0777, true);
+						}
+
+						if(!file_exists(createFolderAmazonImage.'/'.$sku)) { // create folder of sku
+							mkdir(createFolderAmazonImage.'/'.$sku, 0777, true);
+						}
+
 						$imageNewName = uniqid().'-'.time().'.'.strtolower(pathinfo($_FILES["prodcutImageNew"]['name'], PATHINFO_EXTENSION));
 						$config['upload_path'] = createFolderAmazonImage.'/'.$sku;
 						$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -783,7 +791,7 @@ class ProductController extends CI_Controller {
 
 						$this->load->library('upload', $config);
 
-						if (!$this->upload->do_upload('prodcutImageNew')) {
+						if (!$this->upload->do_upload('prodcutImageNew')) { // product upload fail
 
 							$this->session->set_flashdata('error', 'The Product image uploading failed. Please try after some time.');
 							redirect(base_url('amazon/ProductController/index'));
@@ -817,7 +825,7 @@ class ProductController extends CI_Controller {
 							$this->invokeSubmitFeed($this->service, $request);
 							@fclose($feedHandle);
 
-							$this->session->set_flashdata('success', 'Product added successfully! For the display in the list, it may take 25-30 minutes.');
+							$this->session->set_flashdata('success', 'Product updated successfully! For the display in the list, it may take 25-30 minutes.');
 							redirect(base_url('amazon/ProductController/index'));
 						}
 					}
