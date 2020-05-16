@@ -490,6 +490,8 @@ class ProductController extends CI_Controller {
 				}
 				else {
 					
+					$productType = $this->input->post('productType');
+					$productId = trim($this->input->post('productId'));
 					$title = trim($this->input->post('title'));
 					$brand = trim($this->input->post('brand'));
 					$price = trim($this->input->post('price'));

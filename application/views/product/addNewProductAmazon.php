@@ -31,6 +31,31 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
+                                    <label>Select Product Type : </label>
+                                  </div>
+                                  <div class="col-md-9">
+                                    <select class="form-control" name="productType" id="productType" required>
+                                      <option value="">Please Select Product Type</option>
+                                      <option value="ASIN">ASIN</option>
+                                      <option value="EAN">EAN</option>
+                                      <option value="GCID">GCID</option>
+                                      <option value="GTIN">GTIN</option>
+                                      <option value="UPC">UPC</option>
+                                    </select>
+                                  </div>
+                                </div>
+
+                                <div class="row" id="rowProductId" style="display: none;">
+                                  <div class="col-md-3">
+                                    <label>Product Id : </label>
+                                  </div>
+                                  <div class="col-md-9">
+                                    <input type="text" class="form-control" name="productId" id="productId" required>
+                                  </div>
+                                </div>
+
+                                <div class="row">
+                                  <div class="col-md-3">
                                     <label>Title : </label>
                                   </div>
                                   <div class="col-md-9">
@@ -131,6 +156,59 @@
   <!-- END: Content-->
 
 <script type="text/javascript">
+  function isNumber(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+    return false;
+    return true;
+  }
+
+  $("#productType").change(function(){
+    $("#productId").val('');
+    document.getElementById("rowProductId").style.display = "flex";
+  });
+
+  $("form").submit(function(event) {
+
+    var productType = $("#productType").val();
+    var productId = $("#productId").val().trim();
+
+    if(productType == ""){
+      alert("Please select product type");
+      return false;
+    }
+    else if(productId == ""){
+      alert("Please enter product id");
+      return false;
+    }
+    else if(productType == "ASIN" && productId.length != 10) {
+      alert("Product id must be 10 digit");
+      return false;
+    }
+    else if(productType == "EAN" && productId.length != 13) {
+      alert("Product id must be 13 digit");
+      return false;
+    }
+    else if(productType == "GCID" && productId.length != 16) {
+      alert("Product id must be 16 digit");
+      return false;
+    }
+    else if(productType == "GTIN" && (productId.length != 8 || productId.length !=12 || productId.length !=13 || productId.length != 14)) {
+      alert("Product id must be 8,12,13,14 digit");
+      return false;
+    }
+    else if(productType == "UPC" && productId.length != 12) {
+      alert("Product id must be 12 digit");
+      return false;
+    }
+    else{
+      return true;
+    }
+
+  });
+</script>
+
+<script type="text/javascript">
   /*var i=2;
   
   $("#addTextBox").click(function(){
@@ -149,11 +227,4 @@
   function removeTextbox(id){
     $('#bulletRow'+id).remove();
   }*/
-
-  function isNumber(evt) {
-    var charCode = (evt.which) ? evt.which : evt.keyCode;
-    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
-    return false;
-    return true;
-  }
 </script>
