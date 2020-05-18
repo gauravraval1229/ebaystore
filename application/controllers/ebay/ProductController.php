@@ -4,9 +4,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class ProductController extends CI_Controller {
 
 	public $msgName = "Ebay Product";
+	public $title = "Ebay";
 
-	public function __construct() 
-	{
+	public function __construct() {
+
 		parent::__construct();
 		$this->load->library('TokenData');
 		$this->load->library('CheckLoginToken');
@@ -18,14 +19,15 @@ class ProductController extends CI_Controller {
 		$this->checklogintoken->checkToken(); //token expired or not
 	}
 
-	public function generateRandomString($length = 5)
-	{
+	public function generateRandomString($length = 5) {
+
 		$chars = "123456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
 		return substr(str_shuffle($chars),0,$length);
 	}
 	
-	public function index()
-	{
+	public function index(){
+
+		$data['title'] = $this->title;
 		$data['msgName'] = $this->msgName;
 		$data['productList'] = $this->inventory->listInventory();
 		$data['page'] = 'product/productList';
@@ -37,7 +39,6 @@ class ProductController extends CI_Controller {
 	{
 		if(isset($_POST['btnAddNewProductSubmit'])) // request for submit new inventory
 		{
-
 			//$productImage = $_FILES['productImage']['name'];
 
 			$insertData= array(	'sku' => $this->generateRandomString().time(),
@@ -65,33 +66,32 @@ class ProductController extends CI_Controller {
 				$this->session->set_flashdata('error', 'Product is not added successfully!');
 			}
 		}
-		else // add new product page
-		{
+		else { // add new product page
+
+			$data['title'] = $this->title;
 			$data['msgName'] = $this->msgName;
 			$data['page'] = 'product/addNewProduct';
 			$this->load->view('includes/template', $data); 
 		}
 	}
 
-	public function deleteInventory($sku)
-	{
+	public function deleteInventory($sku) {
+
 		$deleteInventory = $this->inventory->deleteInventory($sku);
 
-		if ($deleteInventory['status']==1) 
-		{
+		if ($deleteInventory['status']==1) {
 			$this->session->set_flashdata('success', 'Product deleted successfully!');
 			redirect(base_url('ebay/ProductController/index'));
 		}
-		else
-		{
+		else{
 			$this->session->set_flashdata('error', 'Product is not deleted!');
 		}
 	}
 
-	public function editInventory($sku,$quantity)
-	{
-	 	if(isset($_POST['btnUpdate'])) // request for update product
-		{
+	public function editInventory($sku,$quantity) {
+
+		if(isset($_POST['btnUpdate'])) { // request for update product
+
 			$updateData= array('sku' => $this->input->post('skuName'),
 								'quantity'=> $this->input->post('quantity'),
 								'brand' => $this->input->post('brand'),
@@ -105,18 +105,17 @@ class ProductController extends CI_Controller {
 							);
 
 			$updateInventory = $this->inventory->createOrUpdateInventory($updateData); // upadate and create method are same.
-			if ($updateInventory['status']==1) 
-			{
+			if ($updateInventory['status']==1) {
 				$this->session->set_flashdata('success', 'Product upadated successfully!');
 				redirect(base_url('ebay/ProductController/index'));
 			}
-			else
-			{
+			else {
 				$this->session->set_flashdata('error', 'Product is not upadated successfully!');
 			}
 		}
-		else
-		{
+		else {
+
+			$data['title'] = $this->title;
 			$data['msgName'] = $this->msgName;
 			$data['productList'] = $this->inventory->editInventory($sku);
 			$data['skuName'] = $sku;

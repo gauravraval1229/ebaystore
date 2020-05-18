@@ -1,6 +1,5 @@
 <style type="text/css">
-.row
-{
+.row {
   margin-top: 10px;
 }
 </style>
@@ -29,7 +28,7 @@
 
                               <form method="POST" enctype="multipart/form-data" action="<?php echo base_url('amazon/ProductController/addNewProduct'); ?>">
 
-                                <div class="row">
+                                <!-- <div class="row">
                                   <div class="col-md-3">
                                     <label>Select Product Type : </label>
                                   </div>
@@ -52,7 +51,7 @@
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="productId" id="productId" required>
                                   </div>
-                                </div>
+                                </div> -->
 
                                 <div class="row">
                                   <div class="col-md-3">
@@ -163,12 +162,12 @@
     return true;
   }
 
-  $("#productType").change(function(){
+ /* $("#productType").change(function(){
     $("#productId").val('');
     document.getElementById("rowProductId").style.display = "flex";
-  });
+  });*/
 
-  $("form").submit(function(event) {
+ /* $("form").submit(function(event) {
 
     var productType = $("#productType").val();
     var productId = $("#productId").val().trim();
@@ -204,8 +203,7 @@
     else{
       return true;
     }
-
-  });
+  });*/
 </script>
 
 <script type="text/javascript">

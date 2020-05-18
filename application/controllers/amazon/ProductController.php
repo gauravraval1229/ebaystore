@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class ProductController extends CI_Controller {
 
 	public $msgName = "Amazon Product";
+	public $title = "Amazon";
 
 	public function __construct() {
 
@@ -58,6 +59,7 @@ class ProductController extends CI_Controller {
 
 			if($getAllProductData['status'] == 1 ) { // data found so no need to call another api
 
+				$data['title'] = $this->title;
 				$data['msgName'] = $this->msgName;
 				$data['page'] = 'product/productListAmazon';
 				$data['amazonProductList'] = $getAllProductData['data'];
@@ -89,6 +91,7 @@ class ProductController extends CI_Controller {
 
 					if($getAllProductData['status'] == 1 ) { // data found
 
+						$data['title'] = $this->title;
 						$data['msgName'] = $this->msgName;
 						$data['page'] = 'product/productListAmazon';
 						$data['amazonProductList'] = $getAllProductData['data'];
@@ -96,6 +99,7 @@ class ProductController extends CI_Controller {
 					}
 					else {
 
+						$data['title'] = $this->title;
 						$data['msgName'] = $this->msgName;
 						$data['page'] = 'product/productListAmazon';
 						$data['amazonProductList'] = $productList;
@@ -104,6 +108,7 @@ class ProductController extends CI_Controller {
 				}
 				else {
 
+					$data['title'] = $this->title;
 					$data['msgName'] = $this->msgName;
 					$data['page'] = 'product/productListAmazon';
 					$data['amazonProductList'] = $productList;
@@ -490,8 +495,8 @@ class ProductController extends CI_Controller {
 				}
 				else {
 					
-					$productType = $this->input->post('productType');
-					$productId = trim($this->input->post('productId'));
+					//$productType = $this->input->post('productType');
+					//$productId = trim($this->input->post('productId'));
 					$title = trim($this->input->post('title'));
 					$brand = trim($this->input->post('brand'));
 					$price = trim($this->input->post('price'));
@@ -628,6 +633,7 @@ class ProductController extends CI_Controller {
 			}
 			else { // Just display add proudct page
 
+				$data['title'] = $this->title;
 				$data['msgName'] = $this->msgName;
 				$data['page'] = 'product/addNewProductAmazon';
 				$this->load->view('includes/template',$data);
@@ -839,6 +845,7 @@ class ProductController extends CI_Controller {
 			}
 			else {
 
+				$data['title'] = $this->title;
 				$data['msgName'] = $this->msgName;
 				$data['page'] = 'product/editProductAmazon';
 				$this->load->view('includes/template',$data);
