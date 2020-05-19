@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class WelcomeController extends CI_Controller {
 
+    public $title = "Amazon";
+
     /* public function __construct() {
         parent::__construct();
 
@@ -48,6 +50,7 @@ class WelcomeController extends CI_Controller {
 
     public function index() {
 
+        $data['title'] = $this->title;
         $data['page'] = 'welcome/index';
         $this->load->view('includes/template',$data);
     }
