@@ -35,10 +35,10 @@ class ProductController extends CI_Controller {
 	}
 
 
-	public function addNewProduct()
-	{
-		if(isset($_POST['btnAddNewProductSubmit'])) // request for submit new inventory
-		{
+	public function addNewProduct(){
+
+		if(isset($_POST['btnAddNewProductSubmit'])) { // request for submit new inventory
+
 			//$productImage = $_FILES['productImage']['name'];
 
 			$insertData= array(	'sku' => $this->generateRandomString().time(),
@@ -55,14 +55,12 @@ class ProductController extends CI_Controller {
 							);
 			
 
-			$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
-			if ($createInventory['status']==1) 
-			{
+			$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate & create methods are same.
+			if ($createInventory['status']==1) {
 				$this->session->set_flashdata('success', 'Product added successfully!');
 				redirect(base_url('ebay/ProductController/index'));
 			}
-			else
-			{
+			else {
 				$this->session->set_flashdata('error', 'Product is not added successfully!');
 			}
 		}
@@ -104,7 +102,7 @@ class ProductController extends CI_Controller {
 								'title' => $this->input->post('title')
 							);
 
-			$updateInventory = $this->inventory->createOrUpdateInventory($updateData); // upadate and create method are same.
+			$updateInventory = $this->inventory->createOrUpdateInventory($updateData); // upadate & create methods are same.
 			if ($updateInventory['status']==1) {
 				$this->session->set_flashdata('success', 'Product upadated successfully!');
 				redirect(base_url('ebay/ProductController/index'));

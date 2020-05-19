@@ -35,7 +35,7 @@ class TokenController extends CI_Controller {
                 $createdTime = date('Y-m-d H:i:s'); // token creation time
                 $expiredTime = date("Y-m-d H:i:s", time() + $userAccessToken['data']->expires_in); // add expired time so we will get token expire time. approximately token expired in 2 hours from creation time.
 
-                $authToken  =   md5(date('Y-m-d H:i:s'));
+                $authToken = md5(date('Y-m-d H:i:s'));
                 
                 $data = array(
                             "created" => $createdTime,
@@ -47,13 +47,13 @@ class TokenController extends CI_Controller {
                             "expired_datetime" => $expiredTime
                         );
 
-                $this->userModel->updateData('tokenmaster',$data); // insert data in table for use token data
+                $this->userModel->updateData('tokenmaster',$data); // update data in table for use token data
 
                 $this->session->unset_userdata('userToken'); // unset userToken session so old data removed
-                $this->session->unset_userdata('Admin_Auth_Token');
+                //$this->session->unset_userdata('Admin_Auth_Token');
 
                 $this->session->set_userdata('userToken',$userAccessToken['data']->access_token); // assign new token in userToken.
-                $this->session->set_userdata('Admin_Auth_Token',$authToken); 
+                //$this->session->set_userdata('Admin_Auth_Token',$authToken);
 
                 redirect(base_url('ebay/ProductController/index'));
             }
@@ -68,5 +68,38 @@ class TokenController extends CI_Controller {
 
     public function failToken() {
         echo "Some error in token generation";
+    }
+
+    public function getRefreshToken() {
+
+        $CI =& get_instance(); // create instance so use $CI instead of $this
+        
+        //$where = "";
+        //$where = "expired_datetime >='".currentTime."'";
+
+        $isTokenExpired = $CI->userModel->tableData('tokenmaster');
+    
+        $tokenData = $this->tokendata->refreshToken($isTokenExpired[0]['refresh_token']);
+
+        if($tokenData['status'] == 1) {
+
+            $expiredTime = date("Y-m-d H:i:s", time() + $tokenData['data']->expires_in); // add expired time so we will get token expire time. approximately token expired in 2 hours from creation time.
+
+            $data = array(
+                        "access_token" => $tokenData['data']->access_token,
+                        "expired_datetime" => $expiredTime
+                    );
+
+            $this->userModel->updateData('tokenmaster',$data); // update token data
+
+            $this->session->unset_userdata('userToken'); // unset userToken session so old data removed
+            //$this->session->unset_userdata('Admin_Auth_Token');
+
+            $this->session->set_userdata('userToken',$tokenData['data']->access_token); // assign new token
+            //$this->session->set_userdata('Admin_Auth_Token',$authToken);
+        }
+        else{
+            echo $tokenData['message'];
+        }
     }
 }

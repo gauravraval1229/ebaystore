@@ -24,8 +24,8 @@
             $this->db->select('*');
             $this->db->from($tableName);
 
-            if($where!="") //return specific where data otherwise return table's all data
-            {
+            if($where!="") { // return specific where data otherwise return table's all data
+
                 $this->db->where($where);
             }
 

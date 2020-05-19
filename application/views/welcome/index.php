@@ -11,18 +11,24 @@
             <div class="content-body">
 
                 <section class="validations" id="validation">
-                    
                     <div class="row match-height">
                       <div class="col-xl-12 col-lg-12 col-md-12">
                         <div class="card">
-
-                          <p style="margin-top: 20px; margin-left: 20px;">Welcome <?php echo ucfirst($this->session->userdata['logged_in']['firstName']).' '.ucfirst($this->session->userdata['logged_in']['lastName']); ?></p>
+  
+                            <!-- <div class="col-xl-10 col-lg-10 col-md-10"> -->
+                                <p style="margin-top: 20px; margin-left: 20px;">Welcome <?php echo ucfirst($this->session->userdata['logged_in']['firstName']).' '.ucfirst($this->session->userdata['logged_in']['lastName']); ?></p>
+                            <!-- </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2">
+                                <select class="form-control" id="storeType">
+                                    <option value="amazon">Amazon</option>
+                                    <option value="ebay">Ebay</option>
+                                </select>
+                            </div> -->
 
                         </div>
                       </div>
                     </div>
                 </section>
-
 
                 <!-- <div id="crypto-stats-3" class="row">
                     <div class="col-xl-4 col-12">
@@ -99,87 +105,212 @@
                     </div>
                 </div> -->
 
-                <!-- Icon section start -->
-                <section id="icon-section">
-                    
-                    <div class="row">
-                        <div class="col-xl-4 col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="media align-items-stretch">
-                                        <div class="p-2 text-center bg-info rounded-left">
-                                            <i class="icon-wallet font-large-2 text-white"></i>
+                <!-- Amazon Icon section start -->
+                    <section id="icon-section amazonSection">
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media align-items-stretch">
+                                            <div class="p-2 text-center bg-info rounded-left">
+                                                <i class="icon-wallet font-large-2 text-white"></i>
+                                            </div>
+                                            <div class="p-2 media-body">
+                                                <h5>Total Products</h5>
+                                                <h5 class="text-bold-400 mb-0" id="totalProductAmazon">0</h5>
+                                            </div>
                                         </div>
-                                        <div class="p-2 media-body">
-                                            <h5>Total Products</h5>
-                                            <h5 class="text-bold-400 mb-0">
-                                                <?php 
-                                                    // if count is 1 that means only header text is exist original data starts from 2nd count
-                                                    if(count($amazonProductList) == 0 || count($amazonProductList) == 1) {
-                                                        echo 0;
-                                                    }
-                                                    else {
-                                                        // -1 remove header count
-                                                        echo count($amazonProductList)-1;
-                                                    }
-                                                ?>
-                                            </h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media align-items-stretch">
+                                            <div class="p-2 text-center bg-success rounded-left">
+                                                <i class="icon-wallet font-large-2 text-white"></i>
+                                            </div>
+                                            <div class="p-2 media-body">
+                                                <h5>Total Sold Products</h5>
+                                                <h5 class="text-bold-400 mb-0" id="totalProductSoldAmazon">0</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media align-items-stretch">
+                                            <div class="p-2 text-center bg-warning rounded-left">
+                                                <i class="icon-wallet font-large-2 text-white"></i>
+                                            </div>
+                                            <div class="p-2 media-body">
+                                                <h5>Total Remaining Product</h5>
+                                                <h5 class="text-bold-400 mb-0" id="totalRemainingProductAmazon">0</h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-4 col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="media align-items-stretch">
-                                        <div class="p-2 text-center bg-success rounded-left">
-                                            <i class="icon-wallet font-large-2 text-white"></i>
-                                        </div>
-                                        <div class="p-2 media-body">
-                                            <h5>Total Product Sold</h5>
-                                            <h5 class="text-bold-400 mb-0">0</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php 
-                            $remainingAmazonProduct = 0;
-                            if(count($amazonProductList) >= 1) {
-                                for($i=0;$i<count($amazonProductList);$i++) {
-                                    if($i>=1) { // skip 0 key of array and start from 1 key
-                                        $qty = $amazonProductList[$i][5];
-                                        if($qty > 0) { // quantity is exist so icreament count
-                                            $remainingAmazonProduct = $remainingAmazonProduct+1;
-                                        }
-                                    }
-                                }
-                            }
-                        ?>
-
-                        <div class="col-xl-4 col-md-6 col-12">
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="media align-items-stretch">
-                                        <div class="p-2 text-center bg-warning rounded-left">
-                                            <i class="icon-wallet font-large-2 text-white"></i>
-                                        </div>
-                                        <div class="p-2 media-body">
-                                            <h5>Total Remaining Product</h5>
-                                            <h5 class="text-bold-400 mb-0"><?php echo $remainingAmazonProduct; ?></h5>
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media align-items-stretch">
+                                            <div class="p-2 text-center bg-info rounded-left">
+                                                <i class="icon-basket-loaded font-large-2 text-white"></i>
+                                            </div>
+                                            <div class="p-2 media-body">
+                                                <h5>Total Orders</h5>
+                                                <h5 class="text-bold-400 mb-0" id="totalOrderAmazon">0</h5>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
+                <!-- Amazon Icon section end -->
 
-                </section>
-                <!-- // Icon section end -->
+                <!-- Ebay Icon section start -->
+                    <section id="icon-section ebaySection" style="display: none;">
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media align-items-stretch">
+                                            <div class="p-2 text-center bg-info rounded-left">
+                                                <i class="icon-wallet font-large-2 text-white"></i>
+                                            </div>
+                                            <div class="p-2 media-body">
+                                                <h5>Total Products</h5>
+                                                <h5 class="text-bold-400 mb-0">
+                                                    0
+                                                </h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media align-items-stretch">
+                                            <div class="p-2 text-center bg-success rounded-left">
+                                                <i class="icon-wallet font-large-2 text-white"></i>
+                                            </div>
+                                            <div class="p-2 media-body">
+                                                <h5>Total Product Sold</h5>
+                                                <h5 class="text-bold-400 mb-0">0</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media align-items-stretch">
+                                            <div class="p-2 text-center bg-warning rounded-left">
+                                                <i class="icon-wallet font-large-2 text-white"></i>
+                                            </div>
+                                            <div class="p-2 media-body">
+                                                <h5>Total Remaining Product</h5>
+                                                <h5 class="text-bold-400 mb-0">0</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-4 col-md-6 col-12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <div class="media align-items-stretch">
+                                            <div class="p-2 text-center bg-info rounded-left">
+                                                <i class="icon-basket-loaded font-large-2 text-white"></i>
+                                            </div>
+                                            <div class="p-2 media-body">
+                                                <h5>Total Orders</h5>
+                                                <h5 class="text-bold-400 mb-0">4,000</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                <!-- Ebay Icon section end -->
 
             </div>
         </div>
     </div>
   <!-- END: Content-->
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        //var storeType = $("#storeType").val(); // Work pending
+        var storeType = "amazon";
+        if(storeType == "amazon") {
+            $.ajax({
+                data: {"storeType":storeType},
+                url: "getDashboardAmazon",
+                method: "POST",
+                success : function(data){
+                    var amazonArr = data.split(',');
+
+                    $("#totalProductAmazon").html('');
+                    $("#totalProductSoldAmazon").html('');
+                    $("#totalRemainingProductAmazon").html('');
+                    $("#totalOrderAmazon").html('');
+
+                    $("#totalProductAmazon").html(amazonArr[0]);
+                    $("#totalProductSoldAmazon").html(amazonArr[1]);
+                    $("#totalRemainingProductAmazon").html(amazonArr[2]);
+                    $("#totalOrderAmazon").html(amazonArr[3]);
+                }
+            });
+        }
+    });
+
+    $("#storeType").change(function(){
+        var storeType = $("#storeType").val();
+
+        if(storeType == "amazon") {
+            $.ajax({
+                data: {"storeType":storeType},
+                url: "getDashboardAmazon",
+                method: "POST",
+                success : function(data){
+                    var amazonArr = data.split(',');
+
+                    $("#totalProductAmazon").html('');
+                    $("#totalProductSoldAmazon").html('');
+                    $("#totalRemainingProductAmazon").html('');
+                    $("#totalOrderAmazon").html('');
+
+                    $("#totalProductAmazon").html(amazonArr[0]);
+                    $("#totalProductSoldAmazon").html(amazonArr[1]);
+                    $("#totalRemainingProductAmazon").html(amazonArr[2]);
+                    $("#totalOrderAmazon").html(amazonArr[3]);
+                    
+                }
+            });
+        }
+        else if(storeType == "ebay") {
+            $.ajax({
+                data: {"storeType":storeType},
+                url: "getDashboardEbay",
+                method: "POST",
+                success : function(data){
+
+                }
+            });
+        }
+    });
+</script>

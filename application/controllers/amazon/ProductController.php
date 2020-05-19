@@ -11,7 +11,6 @@ class ProductController extends CI_Controller {
 		parent::__construct();
 		$this->load->library('TokenData');
 		$this->load->library('CheckLoginToken');
-		$this->load->library('CheckLoginToken');
 		$this->load->library('Inventory');
 		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');

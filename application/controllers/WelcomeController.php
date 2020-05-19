@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class WelcomeController extends CI_Controller {
 
-   /* public function __construct() {
+    /* public function __construct() {
         parent::__construct();
 
         $this->load->model('UserModel','userModel');
@@ -17,11 +17,16 @@ class WelcomeController extends CI_Controller {
         }
     }*/
 
+    /* public function index() {
+
+        $data['page'] = 'welcome/index';
+        $this->load->view('includes/template', $data);
+    }*/
+
     public function __construct() {
 
         parent::__construct();
         $this->load->library('TokenData');
-        $this->load->library('CheckLoginToken');
         $this->load->library('CheckLoginToken');
         $this->load->library('Inventory');
         $this->load->model('UserModel','userModel');
@@ -41,15 +46,20 @@ class WelcomeController extends CI_Controller {
         $this->service = new MarketplaceWebService_Client(AWS_ACCESS_KEY_ID,AWS_SECRET_ACCESS_KEY,$this->cofig,APPLICATION_NAME,APPLICATION_VERSION);
     }
 
-   /* public function index() {
+    public function index() {
 
         $data['page'] = 'welcome/index';
-        $this->load->view('includes/template', $data);
-    }*/
+        $this->load->view('includes/template',$data);
+    }
 
-    /***************************** Report Functions Start ***************************/
+    /***************************** Amazon Data Start ***************************/
 
-        public function index() {
+        public function getDashboardAmazon() {
+
+            $totalProductAmazon = 0;
+            $totalSoldProductAmazon = 0;
+            $totalRemainingProductAmazon = 0;
+            $totalOrderAmazon = 0;
 
             $productList = array();
 
@@ -57,9 +67,24 @@ class WelcomeController extends CI_Controller {
 
             if($getAllProductData['status'] == 1 ) { // data found so no need to call another api
 
-                $data['page'] = 'welcome/index';
-                $data['amazonProductList'] = $getAllProductData['data'];
-                $this->load->view('includes/template',$data);
+                // if count is 1 that means only header text is exist original data starts from 2nd count
+                if(count($getAllProductData['data']) >=2 ) {
+                    // -1 remove header count
+                    $totalProductAmazon = count($getAllProductData['data'])-1;
+                }
+                
+                if(count($getAllProductData['data']) >= 1) {
+                    for($i=0;$i<count($getAllProductData['data']);$i++) {
+                        if($i>=1) { // skip 0 key of array and start from 1 key
+                            $qty = $getAllProductData['data'][$i][5];
+                            if($qty > 0) { // quantity is exist so icreament count
+                                $totalRemainingProductAmazon = $totalRemainingProductAmazon+1;
+                            }
+                        }
+                    }
+                }
+
+                echo $totalProductAmazon.",".$totalSoldProductAmazon.",".$totalRemainingProductAmazon.",".$totalSoldProductAmazon;
             }
             else { // call one more api ReportType wil created.
 
@@ -87,22 +112,33 @@ class WelcomeController extends CI_Controller {
 
                     if($getAllProductData['status'] == 1 ) { // data found
 
-                        $data['page'] = 'welcome/index';
-                        $data['amazonProductList'] = $getAllProductData['data'];
-                        $this->load->view('includes/template',$data);
+                        // if count is 1 that means only header text is exist original data starts from 2nd count
+                        if(count($getAllProductData['data']) >=2 ) {
+                            // -1 remove header count
+                            $totalProductAmazon = count($getAllProductData['data'])-1;
+                        }
+                        
+                        if(count($getAllProductData['data']) >= 1) {
+                            for($i=0;$i<count($getAllProductData['data']);$i++) {
+                                if($i>=1) { // skip 0 key of array and start from 1 key
+                                    $qty = $getAllProductData['data'][$i][5];
+                                    if($qty > 0) { // quantity is exist so icreament count
+                                        $totalRemainingProductAmazon = $totalRemainingProductAmazon+1;
+                                    }
+                                }
+                            }
+                        }
+
+                        echo $totalProductAmazon.",".$totalSoldProductAmazon.",".$totalRemainingProductAmazon.",".$totalSoldProductAmazon;
                     }
                     else {
 
-                        $data['page'] = 'welcome/index';
-                        $data['amazonProductList'] = $getAllProductData['data'];
-                        $this->load->view('includes/template',$data);
+                        echo $totalProductAmazon.",".$totalSoldProductAmazon.",".$totalRemainingProductAmazon.",".$totalSoldProductAmazon;
                     }
                 }
                 else {
 
-                    $data['page'] = 'welcome/index';
-                    $data['amazonProductList'] = $getAllProductData['data'];
-                    $this->load->view('includes/template',$data);
+                    echo $totalProductAmazon.",".$totalSoldProductAmazon.",".$totalRemainingProductAmazon.",".$totalSoldProductAmazon;
                 }
             }
         }
@@ -403,5 +439,32 @@ class WelcomeController extends CI_Controller {
             }
         }
 
-    /***************************** Report Functions Start ***************************/
+    /***************************** Amazon Data End ***************************/
+
+    /***************************** Ebay Data Start ***************************/
+
+        public function getDashboardEbay() {
+
+            $totalProductEbay = 0;
+            $totalSoldProductEbay = 0;
+            $totalRemainingProductEbay = 0;
+            $totalOrderEbay = 0;
+
+            $checkTokenData = $this->checklogintoken->checkToken(); //token expired or not
+            
+            if($checkTokenData == 0) {
+
+                $url = "https://auth.sandbox.ebay.com/oauth2/authorize?client_id=".appId."&response_type=code&redirect_uri=".ruName."&scope=https://api.ebay.com/oauth/api_scope https://api.ebay.com/oauth/api_scope/buy.order.readonly https://api.ebay.com/oauth/api_scope/buy.guest.order https://api.ebay.com/oauth/api_scope/sell.marketing.readonly https://api.ebay.com/oauth/api_scope/sell.marketing https://api.ebay.com/oauth/api_scope/sell.inventory.readonly https://api.ebay.com/oauth/api_scope/sell.inventory https://api.ebay.com/oauth/api_scope/sell.account.readonly https://api.ebay.com/oauth/api_scope/sell.account https://api.ebay.com/oauth/api_scope/sell.fulfillment.readonly https://api.ebay.com/oauth/api_scope/sell.fulfillment https://api.ebay.com/oauth/api_scope/sell.analytics.readonly https://api.ebay.com/oauth/api_scope/sell.marketplace.insights.readonly https://api.ebay.com/oauth/api_scope/commerce.catalog.readonly https://api.ebay.com/oauth/api_scope/buy.shopping.cart https://api.ebay.com/oauth/api_scope/buy.offer.auction https://api.ebay.com/oauth/api_scope/commerce.identity.readonly https://api.ebay.com/oauth/api_scope/commerce.identity.email.readonly https://api.ebay.com/oauth/api_scope/commerce.identity.phone.readonly https://api.ebay.com/oauth/api_scope/commerce.identity.address.readonly https://api.ebay.com/oauth/api_scope/commerce.identity.name.readonly https://api.ebay.com/oauth/api_scope/commerce.identity.status.readonly https://api.ebay.com/oauth/api_scope/sell.finances https://api.ebay.com/oauth/api_scope/sell.item.draft https://api.ebay.com/oauth/api_scope/sell.payment.dispute https://api.ebay.com/oauth/api_scope/sell.item";
+
+                echo "login,".$url;
+            }
+            else {
+
+                //$data['productList'] = $this->inventory->listInventory();
+
+                echo $totalProductEbay.",".$totalSoldProductEbay.",".$totalRemainingProductEbay.",".$totalOrderEbay;
+            }
+        }
+
+    /***************************** Amazon Data End ***************************/
 }

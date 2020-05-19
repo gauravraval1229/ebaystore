@@ -9,15 +9,10 @@ use \DTS\eBaySDK\OAuth\Types;
 
 class TokenData {
 
-    public function getAccessToken($authCode)
-    {
-        // devId,appId,certId define in constants.php
+    public function getAccessToken($authCode) {
 
-        $credentials = array (
-                                'devId' => devId,
-                                'appId' => appId,
-                                'certId' => certId
-        );
+        // devId,appId,certId define in constants.php
+        $credentials = array ('devId' => devId,'appId' => appId,'certId' => certId);
 
         $service = new Services\OAuthService([
             'credentials' => $credentials,
@@ -31,15 +26,51 @@ class TokenData {
         
         $details = [];
 
-        if ($response->getStatusCode() === 200) // authcode is correct and return required data
-        {
+        if ($response->getStatusCode() === 200) { // authcode is correct and return required data
+
             $details['status'] = 1;
             $details['data'] = json_decode($response);
         }
-        else // on fail return error message.
-        {
+        else { // on fail return error message.
+
             $details['status'] = 0;
             $details['message'] = "Error in authrization token";
+        }
+
+        return $details;
+    }
+
+    public function refreshToken($oldToken) {
+
+        // devId,appId,certId define in constants.php
+        $credentials = array ('devId' => devId,'appId' => appId,'certId' => certId);
+
+        $service = new Services\OAuthService([
+            'credentials' => $credentials,
+            'ruName'      => ruName
+        ]);
+
+        $request = new Types\RefreshUserTokenRestRequest();
+        $request->refresh_token = $oldToken;
+
+        /*$request->scope = [
+            'https://api.ebay.com/oauth/api_scope/sell.account',
+            'https://api.ebay.com/oauth/api_scope/sell.inventory'
+        ];*/
+
+        $response = $service->refreshUserToken($request);
+
+        $details = [];
+
+        if ($response->getStatusCode() === 200) { // authcode is correct and return required data
+
+            $details['status'] = 1;
+            $details['data'] = json_decode($response);
+        }
+        else { // on fail return error message.
+
+            $details['status'] = 0;
+            $details['message'] = "Error in refresh token";
         }
 
         return $details;
