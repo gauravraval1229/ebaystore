@@ -3,126 +3,137 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class ProductController extends CI_Controller {
 
-	public $msgName = "Ebay Product";
+	public $msgName = "Shopify Product";
 
 	public function __construct() 
 	{
 		parent::__construct();
 		$this->load->library('TokenData');
 		$this->load->library('CheckLoginToken');
-		$this->load->library('Inventory');
 		$this->load->model('UserModel','userModel');
-		$this->load->helper('url');
+		$this->load->helper('url','form');
 
-		$this->checklogintoken->checkLogin(); // check user is loggedin or not 
-		$this->checklogintoken->checkToken(); //token expired or not
+		$this->checklogintoken->checkLogin(); // check user is loggedin or not
 	}
 
-	public function generateRandomString($length = 5)
+    public function index()
 	{
-		$chars = "123456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
-		return substr(str_shuffle($chars),0,$length);
-	}
-	
-	public function index()
-	{
-		$data['msgName'] = $this->msgName;
-		$data['productList'] = $this->inventory->listInventory();
-		$data['page'] = 'product/productList';
-		$this->load->view('includes/template', $data);
-	}
+		$_POST  = json_decode(file_get_contents('php://input'), true);
+		$shopifyProdutList = json_decode($this->userModel->getProductListWithDetail());
 
+		if($shopifyProdutList->status == "1") // record found
+    	{
+    		$data['msgName'] = $this->msgName;
+			$data['shopifyProdutList'] = $shopifyProdutList;
+	    	$data['page'] = 'product/productListShopify';
+	    	$this->load->view('includes/template', $data);
+    	}
+    	else
+    	{
+    		$data['msgName'] = $this->msgName;
+			$data['shopifyProdutList'] = $shopifyProdutList;
+	    	$data['page'] = 'product/productListShopify';
+	    	$this->load->view('includes/template', $data);
+    		//$this->session->set_flashdata('error', $shopifyProdutList->message);
+    	}	
+    }
 
-	public function addNewProduct()
-	{
-		if(isset($_POST['btnAddNewProductSubmit'])) // request for submit new inventory
-		{
+    public function addNewProductShopify()
+    {
+    	if(isset($_POST['btnAddNewProductShopifySubmit'])) // request for submit new product
+    	{
+    		$insertProduct = json_decode($this->userModel->productStore()); 
 
-			//$productImage = $_FILES['productImage']['name'];
-
-			$insertData= array(	'sku' => $this->generateRandomString().time(),
-								'quantity' => $this->input->post('quantity'),
-								'brand' => $this->input->post('brand'),
-								'opticalZoom' => $this->input->post('opticalZoom'),
-								'type' => $this->input->post('type'),
-								'recordingDefinition' => $this->input->post('recordingDefinition'),
-								'mediaFormat' => $this->input->post('mediaFormat'),
-								'storageType' => $this->input->post('storageType'),
-								'description' => $this->input->post('description'),
-								'title' => $this->input->post('title')
-								//'productImage' => $productImage
-							);
-			
-
-			$createInventory = $this->inventory->createOrUpdateInventory($insertData); // upadate and create method are same.
-			if ($createInventory['status']==1) 
+			if ($insertProduct->status == 1) // product added successfully
 			{
 				$this->session->set_flashdata('success', 'Product added successfully!');
-				redirect(base_url('ebay/ProductController/index'));
+				redirect(base_url('shopify/ProductController/index'));
 			}
 			else
 			{
 				$this->session->set_flashdata('error', 'Product is not added successfully!');
+				redirect(base_url('shopify/ProductController/index'));
 			}
-		}
-		else // add new product page
-		{
-			$data['msgName'] = $this->msgName;
-			$data['page'] = 'product/addNewProduct';
+    	}
+    	else // add new product page
+    	{
+    		$data['msgName'] = $this->msgName;
+			$data['page'] = 'product/addNewProductShopify';
 			$this->load->view('includes/template', $data); 
 		}
 	}
 
-	public function deleteInventory($sku)
+	public function synchWithShopify()
 	{
-		$deleteInventory = $this->inventory->deleteInventory($sku);
+		$synchProduct = json_decode($this->userModel->synchWithShopify());
 
-		if ($deleteInventory['status']==1) 
+		if ($synchProduct->status == 1) // product added successfully
 		{
-			$this->session->set_flashdata('success', 'Product deleted successfully!');
-			redirect(base_url('ebay/ProductController/index'));
+			$this->session->set_flashdata('success', 'Synchronize with shopify successfully!');
+			redirect(base_url('shopify/ProductController/index'));
 		}
 		else
 		{
-			$this->session->set_flashdata('error', 'Product is not deleted!');
+			$this->session->set_flashdata('error', 'Synchronize with shopify not added successfully!');
+			redirect(base_url('shopify/ProductController/index'));
 		}
 	}
 
-	public function editInventory($sku,$quantity)
+	public function deleteProduct($productId)
 	{
-	 	if(isset($_POST['btnUpdate'])) // request for update product
-		{
-			$updateData= array('sku' => $this->input->post('skuName'),
-								'quantity'=> $this->input->post('quantity'),
-								'brand' => $this->input->post('brand'),
-								'opticalZoom' => $this->input->post('opticalZoom'),
-								'type' => $this->input->post('type'),
-								'recordingDefinition' => $this->input->post('recordingDefinition'),
-								'mediaFormat' => $this->input->post('mediaFormat'),
-								'storageType' => $this->input->post('storageType'),
-								'description' => $this->input->post('description'),
-								'title' => $this->input->post('title')
-							);
+        $deleteProduct = json_decode($this->userModel->deleteProduct($productId));
 
-			$updateInventory = $this->inventory->createOrUpdateInventory($updateData); // upadate and create method are same.
-			if ($updateInventory['status']==1) 
+        if ($deleteProduct->status == 1) // product deleted successfully
+		{
+			$this->session->set_flashdata('success', 'Product deleted successfully!');
+			redirect(base_url('shopify/ProductController/index'));
+		}
+		else if($deleteProduct->status == 2) // product is not deleted
+		{
+			$this->session->set_flashdata('error', 'Product is not deleted successfully!');
+			redirect(base_url('shopify/ProductController/index'));
+		}
+		else // some parameters are missing
+		{
+			$this->session->set_flashdata('error', 'Product id is missing!');
+			redirect(base_url('shopify/ProductController/index'));
+		}
+    }
+
+    public function editProduct($productId)
+	{
+		if(isset($_POST['btnUpdateShopify'])) // request for update product
+		{
+			$updateProduct = json_decode($this->userModel->updateProduct());
+
+			if ($updateProduct->status == 1) // product updated successfully
 			{
-				$this->session->set_flashdata('success', 'Product upadated successfully!');
-				redirect(base_url('ebay/ProductController/index'));
+				$this->session->set_flashdata('success', 'Product updated successfully!');
+				redirect(base_url('shopify/ProductController/index'));
 			}
 			else
 			{
-				$this->session->set_flashdata('error', 'Product is not upadated successfully!');
+				$this->session->set_flashdata('error', 'Product is not updated successfully!');
+				redirect(base_url('shopify/ProductController/index'));
 			}
 		}
-		else
+		else // redirect on edit product page
 		{
-			$data['msgName'] = $this->msgName;
-			$data['productList'] = $this->inventory->editInventory($sku);
-			$data['skuName'] = $sku;
-			$data['quantity'] = $quantity;
-		 	$data['page'] = 'product/editProduct';
-			$this->load->view('includes/template', $data);
+	        $productData = json_decode($this->userModel->getProductDataById($productId));
+
+	        if ($productData->status == 1) // product data successfully
+			{
+				$data['msgName'] = $this->msgName;
+	    		$data['shopifyProdutList'] = $productData;
+		       	$data['page'] = 'product/editProductShopify';
+		        $this->load->view('includes/template', $data);
+			}
+			else
+			{
+				$this->session->set_flashdata('error', 'No data found');
+				redirect(base_url('shopify/ProductController/index'));
+			}
 		}
-	}
+    }
+	
 }
