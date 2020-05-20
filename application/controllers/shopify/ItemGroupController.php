@@ -9,7 +9,6 @@ class ItemGroupController extends CI_Controller {
 	public function __construct() {
 
 		parent::__construct();
-		$this->load->library('TokenData');
 		$this->load->library('CheckLoginToken');
 		$this->load->library('Inventory');
 		$this->load->model('UserModel','userModel');

@@ -9,13 +9,9 @@ class ProductController extends CI_Controller {
 	public function __construct() {
 
 		parent::__construct();
-		$this->load->library('TokenData');
 		$this->load->library('CheckLoginToken');
-		$this->load->library('Inventory');
-		$this->load->model('UserModel','userModel');
 		$this->load->helper('url');
 		$this->checklogintoken->checkLogin(); // check user is loggedin or not
-		//$this->checklogintoken->checkToken(); //token expired or not
 
 		include_once (APPPATH.'libraries/amazon/feed/Client.php');
 		include_once (APPPATH.'libraries/amazon/feed/Interface.php');

@@ -9,8 +9,6 @@ class ItemGroupController extends CI_Controller {
 	public function __construct() {
 
 		parent::__construct();
-
-		$this->load->library('TokenData');
 		$this->load->library('CheckLoginToken');
 		$this->load->library('Inventory');
 		$this->load->model('UserModel','userModel');
@@ -58,7 +56,7 @@ class ItemGroupController extends CI_Controller {
 			$data['title'] = $this->title;
 			$data['msgName'] = $this->msgName;
 			$data['page'] = 'itemGroup/addNewItemGroup';
-			$this->load->view('includes/template', $data); 
+			$this->load->view('includes/template', $data);
 		}
 	}
 

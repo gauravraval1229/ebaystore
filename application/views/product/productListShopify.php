@@ -17,7 +17,6 @@
               </div>
             <?php } ?>
           </div>
-          <?php //echo "<pre>";  print_r($shopifyProdutList); ?>
           <!-- DOM - jQuery events table -->
           <section id="dom">
             <div class="row">
@@ -71,7 +70,8 @@
                                   <td><?php echo $vendor; ?></td>
                                   <td><?php echo $productType; ?></td>
                                   <td><a href="<?php echo base_url(); ?>shopify/ProductController/editProduct/<?php echo $productId; ?>">Edit</a></td>
-                                  <td><a href="<?php echo base_url(); ?>shopify/ProductController/deleteProduct/<?php echo $productId; ?>">Delete</a></td>
+                                  <!-- <td><a href="<?php echo base_url(); ?>shopify/ProductController/deleteProduct/<?php echo $productId; ?>">Delete</a></td> -->
+                                  <td><?=anchor(base_url()."shopify/ProductController/deleteProduct/".$productId,"Delete",array('onclick' => "return confirm('Are you sure want to delete this record ?')"))?></td>
                                 </tr>
                               <?php } } } else { echo "<b> No Data Found <b>"; } ?>
                           </tbody>

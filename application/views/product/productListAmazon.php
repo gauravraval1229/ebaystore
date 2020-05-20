@@ -86,7 +86,8 @@
                                     <td><?php echo ucfirst($status); ?></td>
                                     <!-- <td><a href="<?php echo base_url(); ?>amazon/ProductController/editProduct/<?php echo $sku; ?>">Edit</a></td> -->
                                     <td><input type="hidden" id="hiddenProduct<?php echo $sku;?>" value="<?php echo $productArray1; ?>"><a href="#" onclick="editProduct('<?php echo $sku; ?>');">Edit</a></td>
-                                    <td><a href="<?php echo base_url(); ?>amazon/ProductController/deleteProduct/<?php echo $sku; ?>">Delete</a></td> 
+                                    <!-- <td><a href="<?php echo base_url(); ?>amazon/ProductController/deleteProduct/<?php echo $sku; ?>">Delete</a></td>  -->
+                                    <td><?=anchor(base_url()."amazon/ProductController/deleteProduct/".$sku,"Delete",array('onclick' => "return confirm('Are you sure want to delete this record ?To reflect in list it may take 25-30 minutes.')"))?></td>
                                   </tr>
                             <?php } } } } ?>
                           </tbody>

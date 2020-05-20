@@ -58,7 +58,8 @@
                                 <td><?php echo $productList->inventoryItems[$i]->product->aspects->Brand[0]; ?></td>
                                 <td><?php echo $productList->inventoryItems[$i]->product->description; ?></td>
                                 <td><a href="<?php echo base_url(); ?>ebay/ProductController/editInventory/<?php echo $sku; ?>/<?php echo $totalQuantity; ?>">Edit</a></td>
-                                <td><a href="<?php echo base_url(); ?>ebay/ProductController/deleteInventory/<?php echo $sku; ?>">Delete</a></td>
+                                <!-- <td><a href="<?php echo base_url(); ?>ebay/ProductController/deleteInventory/<?php echo $sku; ?>">Delete</a></td> -->
+                                <td><?=anchor(base_url()."ebay/ProductController/deleteInventory/".$sku,"Delete",array('onclick' => "return confirm('Are you sure want to delete this record ?')"))?></td>
                               </tr>
                             <?php } ?>
                           </tbody>

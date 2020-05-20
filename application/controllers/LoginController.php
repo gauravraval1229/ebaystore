@@ -23,6 +23,7 @@ class LoginController extends CI_Controller {
 
 		$this->form_validation->set_rules("email", "email", "trim|required");
 		$this->form_validation->set_rules("password", "password", "trim|required");
+		
 		if ($this->form_validation->run() == FALSE) { // Validation Fails
 		
 			$this->session->set_flashdata('error','Invalid Login Credential!');
@@ -47,7 +48,7 @@ class LoginController extends CI_Controller {
 				$oldToken = $tokenData[0]['access_token'];
 
 				$this->session->set_userdata('logged_in',$session_arr);
-				$this->session->set_userdata('userToken',$oldToken); // set old token in session so not getting error in 2 hours from token generated.
+				$this->session->set_userdata('userToken',$oldToken); //Create token in session.
 
 				redirect(base_url('WelcomeController/index'));
 			}

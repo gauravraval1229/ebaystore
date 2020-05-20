@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class TokenController extends CI_Controller {
 
-	public function __construct() {
+    public function __construct() {
 
         parent::__construct();
         $this->load->library('TokenData');
@@ -93,10 +93,8 @@ class TokenController extends CI_Controller {
             $this->userModel->updateData('tokenmaster',$data); // update token data
 
             $this->session->unset_userdata('userToken'); // unset userToken session so old data removed
-            //$this->session->unset_userdata('Admin_Auth_Token');
 
             $this->session->set_userdata('userToken',$tokenData['data']->access_token); // assign new token
-            //$this->session->set_userdata('Admin_Auth_Token',$authToken);
         }
         else{
             echo $tokenData['message'];

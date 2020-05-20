@@ -1,7 +1,28 @@
 <style type="text/css">
 .row {
-
   margin-top: 10px;
+}
+.customeBox {
+    margin-bottom: 1.875rem;
+    border: none;
+    -webkit-box-shadow: 0 1px 15px 1px rgba(62, 57, 107, 0.07);
+    box-shadow: 0 1px 15px 1px rgba(62, 57, 107, 0.07);
+    position: relative;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -moz-box-orient: vertical;
+    -moz-box-direction: normal;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #FFFFFF;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 0.35rem; 
 }
 </style>
 
@@ -11,22 +32,16 @@
             <div class="content-body">
 
                 <section class="validations" id="validation">
-                    <div class="row match-height">
-                      <div class="col-xl-12 col-lg-12 col-md-12">
-                        <div class="card">
-  
-                            <!-- <div class="col-xl-10 col-lg-10 col-md-10"> -->
-                                <p style="margin-top: 20px; margin-left: 20px;">Welcome <?php echo ucfirst($this->session->userdata['logged_in']['firstName']).' '.ucfirst($this->session->userdata['logged_in']['lastName']); ?></p>
-                            <!-- </div>
-                            <div class="col-xl-2 col-lg-2 col-md-2">
-                                <select class="form-control" id="storeType">
-                                    <option value="amazon">Amazon</option>
-                                    <option value="ebay">Ebay</option>
-                                </select>
-                            </div> -->
-
+                    <div class="row customeBox">
+                        <div class="col-md-10">
+                            <p style="margin-top: 20px; margin-left: 20px;">Welcome <?php echo ucfirst($this->session->userdata['logged_in']['firstName']).' '.ucfirst($this->session->userdata['logged_in']['lastName']); ?></p>
                         </div>
-                      </div>
+                        <div class="col-md-2">
+                            <select class="form-control" id="storeType" style="margin-top: 8px;margin-bottom: 5px;">
+                                <option value="amazon">Amazon</option>
+                                <option value="ebay">Ebay</option>
+                            </select>
+                        </div>
                     </div>
                 </section>
 
@@ -105,8 +120,16 @@
                     </div>
                 </div> -->
 
+                <!--- Display Processing Start -->
+                    <div class="row processImg" style="display: none;">
+                        <div class="col-md-12 text-center">
+                            <img src="<?php echo base_url('assests/processingDashboard.gif') ?>" style="height: 50%;width: 50%;">
+                        </div>
+                    </div>
+                <!--- Display Processing End -->
+
                 <!-- Amazon Icon section start -->
-                    <section id="icon-section amazonSection">
+                    <section id="icon-section" class="amazonSection">
                         <div class="row">
                             <div class="col-xl-4 col-md-6 col-12">
                                 <div class="card">
@@ -147,7 +170,7 @@
                                                 <i class="icon-wallet font-large-2 text-white"></i>
                                             </div>
                                             <div class="p-2 media-body">
-                                                <h5>Total Remaining Product</h5>
+                                                <h5>Total Remaining Products</h5>
                                                 <h5 class="text-bold-400 mb-0" id="totalRemainingProductAmazon">0</h5>
                                             </div>
                                         </div>
@@ -176,7 +199,7 @@
                 <!-- Amazon Icon section end -->
 
                 <!-- Ebay Icon section start -->
-                    <section id="icon-section ebaySection" style="display: none;">
+                    <section id="icon-section" class="ebaySection" style="display: none;">
                         <div class="row">
                             <div class="col-xl-4 col-md-6 col-12">
                                 <div class="card">
@@ -187,9 +210,7 @@
                                             </div>
                                             <div class="p-2 media-body">
                                                 <h5>Total Products</h5>
-                                                <h5 class="text-bold-400 mb-0">
-                                                    0
-                                                </h5>
+                                                <h5 class="text-bold-400 mb-0" id="totalProductEbay">0</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -203,8 +224,8 @@
                                                 <i class="icon-wallet font-large-2 text-white"></i>
                                             </div>
                                             <div class="p-2 media-body">
-                                                <h5>Total Product Sold</h5>
-                                                <h5 class="text-bold-400 mb-0">0</h5>
+                                                <h5>Total Sold Products</h5>
+                                                <h5 class="text-bold-400 mb-0" id="totalProductSoldEbay">0</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -219,8 +240,8 @@
                                                 <i class="icon-wallet font-large-2 text-white"></i>
                                             </div>
                                             <div class="p-2 media-body">
-                                                <h5>Total Remaining Product</h5>
-                                                <h5 class="text-bold-400 mb-0">0</h5>
+                                                <h5>Total Remaining Products</h5>
+                                                <h5 class="text-bold-400 mb-0" id="totalRemainingProductEbay">0</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -237,7 +258,7 @@
                                             </div>
                                             <div class="p-2 media-body">
                                                 <h5>Total Orders</h5>
-                                                <h5 class="text-bold-400 mb-0">4,000</h5>
+                                                <h5 class="text-bold-400 mb-0" id="totalOrderEbay">0</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -282,11 +303,21 @@
         var storeType = $("#storeType").val();
 
         if(storeType == "amazon") {
+
+            document.getElementsByClassName('amazonSection')[0].style.display = "none";
+            document.getElementsByClassName('ebaySection')[0].style.display = "none";
+            document.getElementsByClassName("processImg")[0].style.display = "block";
+
             $.ajax({
                 data: {"storeType":storeType},
                 url: "getDashboardAmazon",
                 method: "POST",
-                success : function(data){
+                success : function(data) {
+
+                    document.getElementsByClassName("processImg")[0].style.display = "none";
+                    document.getElementsByClassName('amazonSection')[0].style.display = "block";
+                    document.getElementsByClassName('ebaySection')[0].style.display = "none";
+
                     var amazonArr = data.split(',');
 
                     $("#totalProductAmazon").html('');
@@ -298,17 +329,43 @@
                     $("#totalProductSoldAmazon").html(amazonArr[1]);
                     $("#totalRemainingProductAmazon").html(amazonArr[2]);
                     $("#totalOrderAmazon").html(amazonArr[3]);
-                    
                 }
             });
         }
         else if(storeType == "ebay") {
+
+            document.getElementsByClassName('amazonSection')[0].style.display = "none";
+            document.getElementsByClassName('ebaySection')[0].style.display = "none";
+            document.getElementsByClassName("processImg")[0].style.display = "block";
+
             $.ajax({
                 data: {"storeType":storeType},
                 url: "getDashboardEbay",
                 method: "POST",
-                success : function(data){
+                success : function(data) {
 
+                    var ebayArr = data.split(',');
+
+                    if(ebayArr['0'] == "login") { // Token is not refreshed. Need to login in ebay
+
+                        window.location.href = ebayArr[1];
+                    }
+                    else { // token is refreshed and display data
+
+                        document.getElementsByClassName("processImg")[0].style.display = "none";
+                        document.getElementsByClassName('amazonSection')[0].style.display = "none";
+                        document.getElementsByClassName('ebaySection')[0].style.display = "block";
+
+                        $("#totalProductEbay").html('');
+                        $("#totalProductSoldEbay").html('');
+                        $("#totalRemainingProductEbay").html('');
+                        $("#totalOrderEbay").html('');
+
+                        $("#totalProductEbay").html(ebayArr[0]);
+                        $("#totalProductSoldEbay").html(ebayArr[1]);
+                        $("#totalRemainingProductEbay").html(ebayArr[2]);
+                        $("#totalOrderEbay").html(ebayArr[3]);
+                    }
                 }
             });
         }

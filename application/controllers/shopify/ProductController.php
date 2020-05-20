@@ -9,7 +9,6 @@ class ProductController extends CI_Controller {
 	public function __construct() {
 
 		parent::__construct();
-		$this->load->library('TokenData');
 		$this->load->library('CheckLoginToken');
 		$this->load->model('UserModel','userModel');
 		$this->load->helper('url','form');
