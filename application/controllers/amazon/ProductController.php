@@ -947,9 +947,9 @@ class ProductController extends CI_Controller {
 		// All request submit/upload/delete (basic data,image,price,qty etc)
 		function invokeSubmitFeed(MarketplaceWebService_Interface $service, $request) { //submit product data
 
-			//$response = $service->submitFeed($request);
+			$response = $service->submitFeed($request);
 
-			/************************* Example Start ****************************/
+			/************************* Example Start ****************************
 
 				try {
 					$response = $service->submitFeed($request);
