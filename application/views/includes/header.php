@@ -46,13 +46,7 @@
     <link rel="stylesheet" type="text/css" href="<?php echo base_url('assests/app-assets/fonts/simple-line-icons/style.min.css'); ?>">
     <!-- Dashboard widget CSS -->
 
-    <!----For local ---->
-    <!-- <script language="javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script> -->
-    <!----For local ---->
-
-    <!---- For live --->
-    <script language="javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
-    <!---- For live --->
+    <script src="<?php echo base_url('assests/assets/js/jquery.min.js'); ?>"></script>
 
 </head>
 <!-- END: Head-->
