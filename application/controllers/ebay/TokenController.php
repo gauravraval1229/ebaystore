@@ -72,12 +72,12 @@ class TokenController extends CI_Controller {
 
     public function getRefreshToken() {
 
-        $CI =& get_instance(); // create instance so use $CI instead of $this
+        //$CI =& get_instance(); // create instance so use $CI instead of $this
         
         //$where = "";
         //$where = "expired_datetime >='".currentTime."'";
 
-        $isTokenExpired = $CI->userModel->tableData('tokenmaster');
+        $isTokenExpired = $this->userModel->tableData('tokenmaster');
     
         $tokenData = $this->tokendata->refreshToken($isTokenExpired[0]['refresh_token']);
 

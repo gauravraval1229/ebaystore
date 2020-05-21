@@ -20,7 +20,7 @@ class ProductController extends CI_Controller {
 
 	public function generateRandomString($length = 5) {
 
-		$chars = "123456789bcdfghjkmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
+		$chars = "123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 		return substr(str_shuffle($chars),0,$length);
 	}
 	
