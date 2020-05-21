@@ -133,7 +133,8 @@
                                 <div class="row">
                                   <div class="col-md-3"></div>
                                   <div class="col-md-9">
-                                    <button type="submit" name="btnAddNewProductSubmit" class="btn btn-info" style="margin-bottom: 12px;">Submit</button>
+                                    <button type="submit" name="btnAddNewProductSubmit" id="btnSubmit" class="btn btn-info" style="margin-bottom: 12px;">Submit</button>
+                                    <p id="btnMsg" style="color:red;display: none;">It will take several minutes to get this product added in your seller store.</p>
                                   </div>
                                 </div>
                               </form>
@@ -161,6 +162,11 @@
     return false;
     return true;
   }
+
+  $("form").submit(function() {
+    document.getElementById('btnMsg').style.display = "block";
+    document.getElementById('btnSubmit').style.display = "none";
+  });
 
  /* $("#productType").change(function(){
     $("#productId").val('');
