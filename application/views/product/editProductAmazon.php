@@ -139,19 +139,31 @@
       $("#old_qty").val(productArray.qty); // used in controller for sum of new+old qty
 
       var defaultProductImage = '<?php echo defaultProductImage; ?>';
-      console.log(defaultProductImage);
 
       if(productArray.imageUrl == "" || productArray.imageUrl == "undefined") {
-        $("#prodcutImage").attr('src',defaultProductImage);
-        $("#txtimage").val('');
-        $("#txtimage").val(defaultProductImage);
+        $.ajax({
+          data: {"sku":productArray.sku},
+          url: "getProductImage",
+          method: "POST",
+          success : function(data) {
+            if(data == "") { // image not found
+              $("#prodcutImage").attr('src',defaultProductImage);
+              $("#txtimage").val('');
+              $("#txtimage").val(defaultProductImage);
+            }
+            else { // image found
+              $("#prodcutImage").attr('src',data);
+              $("#txtimage").val('');
+              $("#txtimage").val(data);
+            }
+          }
+        });
       }
-      else{
+      else { // image found 
         $("#prodcutImage").attr('src',productArray.imageUrl);
         $("#txtimage").val('');
         $("#txtimage").val(productArray.imageUrl);
       }
-      
   });
 
   function isNumber(evt) {
@@ -160,11 +172,7 @@
     return false;
     return true;
   }
-/*
-  function viewProductImage(){
-    $("#modalImage").attr('src',$("#txtimage").val());
-    $('#imageModal').modal('show');
-  }*/
+
   $("#prodcutImage").click(function(){
     $("#modalImage").attr('src',$("#txtimage").val());
     $('#imageModal').modal('show');

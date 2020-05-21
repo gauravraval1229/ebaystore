@@ -1008,4 +1008,71 @@ class ProductController extends CI_Controller {
 		}
 
 	/***************************** Common Functions End ***************************/
+
+	/***************************** Product Image Start ***************************/
+
+		public function getProductImage(){
+
+			$serviceUrl = "https://mws.amazonservices.co.uk/Products/2011-10-01";
+
+			$config = array (
+				'ServiceURL' => $serviceUrl,
+				'ProxyHost' => null,
+				'ProxyPort' => -1,
+				'ProxyUsername' => null,
+				'ProxyPassword' => null,
+				'MaxErrorRetry' => 3,
+			);
+
+			$service = new MarketplaceWebServiceProducts_Client(
+							AWS_ACCESS_KEY_ID,
+							AWS_SECRET_ACCESS_KEY,
+							APPLICATION_NAME,
+							APPLICATION_VERSION,
+							$config);
+
+			$sku = $this->input->post('sku');
+			$mainImage = "";
+			$request = new MarketplaceWebServiceProducts_Model_GetMatchingProductForIdRequest();
+			$request->setSellerId(MERCHANT_ID);
+			$request->setMarketplaceId(MARKETPLACE_ID);
+			$request->setIdType('SellerSKU');
+			$idlist = new MarketplaceWebServiceProducts_Model_IdListType();
+			$idlist->setId($sku);
+			$request->SetIdList($idlist);
+			$response = $service->GetMatchingProductForId($request);
+			$getMatchingProductForIdResultList = $response->getGetMatchingProductForIdResult();
+			foreach ($getMatchingProductForIdResultList as $getMatchingProductForIdResult) {
+				if ($getMatchingProductForIdResult->isSetProducts()) {
+					$productList = $getMatchingProductForIdResult->getProducts()->getProduct();
+					foreach ($productList as $product) {
+						if ($product->isSetAttributeSets()) {
+							$attributeSets = $product->getAttributeSets();
+							if ($attributeSets->isSetAny()){
+								$nodeList = $attributeSets->getAny();
+								foreach ($nodeList as $nodeList) {
+									foreach ($nodeList->childNodes as $childNode) {
+										switch ($childNode->nodeName) {
+											case "ns2:SmallImage":
+											$mainImage = $childNode->nodeValue;
+											break;
+										}
+										//$allNodeValue[] = $childNode->nodeValue;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+
+			if($mainImage != "") { // image found so reomve last 4 characters
+				echo substr($mainImage, 0, -4);
+			}
+			else {
+				echo $mainImage;
+			}
+		}
+
+	/***************************** Product Image End ***************************/
 }
