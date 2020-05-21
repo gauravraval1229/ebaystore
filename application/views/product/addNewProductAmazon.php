@@ -55,7 +55,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Title : </label>
+                                    <label>Title: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="title" required>
@@ -64,7 +64,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Brand : </label>
+                                    <label>Brand: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="brand" required>
@@ -73,7 +73,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Price : </label>
+                                    <label>Price: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="price" onkeypress="return isNumber(event)" required>
@@ -82,7 +82,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Quantity : </label>
+                                    <label>Quantity: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="number" class="form-control" name="qty" min="0" required>
@@ -91,7 +91,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Description : </label>
+                                    <label>Description: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <textarea class="form-control" name="description" required></textarea>
@@ -100,7 +100,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Manufacturer : </label>
+                                    <label>Manufacturer: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="manufacturer" required>
@@ -109,7 +109,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Product Image : </label>
+                                    <label>Product Image: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="file" class="form-control" name="prodcutImage" accept="image/x-png,image/gif,image/jpeg,image/jpg">

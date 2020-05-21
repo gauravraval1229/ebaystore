@@ -31,7 +31,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Quantity : </label>
+                                    <label>Quantity: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="number" class="form-control" name="quantity" required>
@@ -40,7 +40,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Brand : </label>
+                                    <label>Brand: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="brand" required>
@@ -49,7 +49,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Optical Zoom : </label>
+                                    <label>Optical Zoom: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <select name="opticalZoom" class="form-control" required>
@@ -63,7 +63,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Type : </label>
+                                    <label>Type: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="type" required>
@@ -72,7 +72,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Recording Definition : </label>
+                                    <label>Recording Definition: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="recordingDefinition" required>
@@ -81,7 +81,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Media Format : </label>
+                                    <label>Media Format: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="mediaFormat" required>
@@ -90,7 +90,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Storage Type : </label>
+                                    <label>Storage Type: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="storageType" required>
@@ -99,7 +99,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Description : </label>
+                                    <label>Description: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="description" required>
@@ -108,7 +108,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Title : </label>
+                                    <label>Title: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="title" required>

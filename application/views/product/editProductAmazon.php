@@ -30,7 +30,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Title : </label>
+                                    <label>Title: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="title" id="title" required>
@@ -40,7 +40,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Price : </label>
+                                    <label>Price: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="price" id="price" onkeypress="return isNumber(event)" required>
@@ -49,7 +49,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Quantity : </label>
+                                    <label>Quantity: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="number" class="form-control" name="qty" id="qty" min="0" required>
@@ -59,7 +59,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Description : </label>
+                                    <label>Description: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <textarea class="form-control" name="description" id="description" required></textarea>
@@ -68,7 +68,7 @@
 
                                  <div class="row">
                                   <div class="col-md-3">
-                                    <label>Product Image : </label>
+                                    <label>Product Image :</label>
                                   </div>
                                   <div class="col-md-9">
                                     <img src="" id="prodcutImage" height="150px" width="150px">
@@ -78,7 +78,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Change Image : </label>
+                                    <label>Change Image :</label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="file" class="form-control" name="prodcutImageNew" accept="image/x-png,image/gif,image/jpeg,image/jpg">

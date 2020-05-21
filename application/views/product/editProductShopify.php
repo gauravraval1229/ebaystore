@@ -31,7 +31,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Product Name :</label>
+                                    <label>Product Name: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="product_name" value="<?php echo $shopifyProdutList->data->title; ?>" required>
@@ -41,7 +41,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Product Type : </label>
+                                    <label>Product Type: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="product_type" value="<?php echo $shopifyProdutList->data->product_type; ?>">
@@ -50,7 +50,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Vendor : </label>
+                                    <label>Vendor: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="vendor" value="<?php echo $shopifyProdutList->data->vendor; ?>" required>
@@ -59,16 +59,16 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Tags : </label>
+                                    <label>Tags: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="text" class="form-control" name="tags" value="<?php echo $shopifyProdutList->data->tags; ?>">
+                                    <input type="text" class="form-control" name="tags" value="<?php echo $shopifyProdutList->data->tags; ?>" required>
                                   </div>
                                 </div>
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Published : </label>
+                                    <label>Published: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="checkbox" name="publish" <?php if($shopifyProdutList->data->published == 1) { echo "checked='checked'"; } ?> >
@@ -77,7 +77,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Shopify : </label>
+                                    <label>Shopify: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="checkbox" name="shopify" <?php if($shopifyProdutList->data->shopify == 1) { echo "checked='checked'"; } ?> >
@@ -86,7 +86,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Variants : </label>
+                                    <label>Variants: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="variant" value="<?php echo $shopifyProdutList->data->variants; ?>" required>
@@ -95,10 +95,10 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Price : </label>
+                                    <label>Price: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="number" class="form-control" name="price" value="<?php echo $shopifyProdutList->data->price; ?>">
+                                    <input type="text" class="form-control" name="price" onkeypress="return isNumber(event)" value="<?php echo $shopifyProdutList->data->price; ?>" required>
                                   </div>
                                 </div>
 
@@ -154,3 +154,12 @@
         </div>
     </div>
   <!-- END: Content-->
+
+<script type="text/javascript">
+  function isNumber(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+    return false;
+    return true;
+  }
+</script>

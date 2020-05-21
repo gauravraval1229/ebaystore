@@ -28,7 +28,7 @@
                         <h4 class="card-title" style="margin-left: 15px;"><?php echo $msgName; ?> List</h4>
                       </div>
                       <div class="col-sm-2" style="margin-top: 15px;margin-left: -10px;">
-                        <a href="<?php echo base_url('shopify/ProductController/addNewProduct'); ?>" class="btn btn-info " style="float:right;">Add New Product</a>
+                        <a href="<?php echo base_url('shopify/ProductController/addNewProductShopify'); ?>" class="btn btn-info " style="float:right;">Add New Product</a>
                       </div>
                       <div class="col-sm-3" style="margin-top: 15px;margin-left: -10px;">
                         <a href="<?php echo base_url('shopify/ProductController/synchWithShopify'); ?>" class="btn btn-info " style="float:right;">Synchronize with Shopify</a>

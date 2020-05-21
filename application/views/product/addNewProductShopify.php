@@ -1,6 +1,5 @@
 <style type="text/css">
-.row
-{
+.row {
   margin-top: 10px;
 }
 </style>
@@ -31,7 +30,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Product Name : </label>
+                                    <label>Product Name: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="product_name" required>
@@ -40,7 +39,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Product Type : </label>
+                                    <label>Product Type: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="product_type" required>
@@ -49,7 +48,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Vendor : </label>
+                                    <label>Vendor: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="vendor" required>
@@ -58,7 +57,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Tags : </label>
+                                    <label>Tags: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="tags" required>
@@ -67,7 +66,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Published : </label>
+                                    <label>Published:</label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="checkbox" name="publish">
@@ -76,7 +75,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Shopify : </label>
+                                    <label>Shopify:</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="checkbox" name="shopify">
@@ -85,7 +84,7 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Variants : </label>
+                                    <label>Variants: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="text" class="form-control" name="variant" required>
@@ -94,16 +93,16 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Price : </label>
+                                    <label>Price: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="number" class="form-control" name="price" required>
+                                    <input type="text" class="form-control" name="price" onkeypress="return isNumber(event)" required>
                                   </div>
                                 </div>
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Product Image : </label>
+                                    <label>Product Image: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
                                     <input type="file" class="form-control" name="productImage" accept="image/x-png,image/jpg,image/jpeg" required>
@@ -134,3 +133,12 @@
         </div>
     </div>
   <!-- END: Content-->
+
+<script type="text/javascript">
+  function isNumber(evt) {
+    var charCode = (evt.which) ? evt.which : evt.keyCode;
+    if (charCode != 46 && charCode > 31 && (charCode < 48 || charCode > 57))
+    return false;
+    return true;
+  }
+</script>
