@@ -66,19 +66,19 @@
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Published:</label>
+                                    <label>Published: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="checkbox" name="publish">
+                                    <input type="checkbox" name="publish" required>
                                   </div>
                                 </div>
 
                                 <div class="row">
                                   <div class="col-md-3">
-                                    <label>Shopify:</span></label>
+                                    <label>Shopify: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="checkbox" name="shopify">
+                                    <input type="checkbox" name="shopify" required>
                                   </div>
                                 </div>
 

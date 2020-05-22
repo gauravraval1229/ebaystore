@@ -243,10 +243,6 @@ pre code {
   border-left : none;
 }
 
-/*.table th, .table td {
-  padding : 0.75rem 2rem;
-}*/
-
 .table.table-xl th, .table.table-xl td {
   padding : 1.25rem 2rem;
 }

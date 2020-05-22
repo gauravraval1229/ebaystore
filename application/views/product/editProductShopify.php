@@ -71,7 +71,7 @@
                                     <label>Published: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="checkbox" name="publish" <?php if($shopifyProdutList->data->published == 1) { echo "checked='checked'"; } ?> >
+                                    <input type="checkbox" name="publish" <?php if($shopifyProdutList->data->published == 1) { echo "checked='checked'"; } ?> required>
                                   </div>
                                 </div>
 
@@ -80,7 +80,7 @@
                                     <label>Shopify: <span class="req">*</span></label>
                                   </div>
                                   <div class="col-md-9">
-                                    <input type="checkbox" name="shopify" <?php if($shopifyProdutList->data->shopify == 1) { echo "checked='checked'"; } ?> >
+                                    <input type="checkbox" name="shopify" <?php if($shopifyProdutList->data->shopify == 1) { echo "checked='checked'"; } ?> required>
                                   </div>
                                 </div>
 
@@ -102,17 +102,6 @@
                                   </div>
                                 </div>
 
-                                <?php
-                                    $image = ROOT_PATH . '/assests/productImageShopify/'.$shopifyProdutList->data->images;
-                                    if ($shopifyProdutList->data->images=="" || !file_exists($image)) // image not exist in folder or exist not in database
-                                    {
-                                        $imageName = "assests/productImageShopify/defaultProduct.jpg";
-                                    }
-                                    else
-                                    {
-                                      $imageName = "assests/productImageShopify/".$shopifyProdutList->data->images;
-                                    }
-                                ?>
                                 <div class="row">
                                   <div class="col-md-3">
                                     <label>Product Image : </label>
@@ -122,11 +111,23 @@
                                   </div>
                                 </div>
 
+                                <?php
+                                  $image = ROOT_PATH.'assests/productImageShopify/'.$shopifyProdutList->data->images;
+                                  if ($shopifyProdutList->data->images == "" || !file_exists($image)) { // image not exist in folder or in database
+                                    //$imageName = "assests/productImageShopify/defaultProduct.jpg";
+                                    $imageName = defaultProductImage;
+                                  }
+                                  else {
+                                    $imageName = base_url("assests/productImageShopify/".$shopifyProdutList->data->images);
+                                  }
+                                ?>
+
                                 <div class="row" style="margin-top: 30px;">
                                   <div class="col-md-3"></div>
                                   <div class="col-md-9">
-                                    <img height="55%" width="25%" src="<?php echo base_url($imageName); ?>">
-                                    <input type="hidden" class="form-control" name="old_image" value="<?php echo $shopifyProdutList->data->images; ?>">
+                                    <input type="hidden" name="old_image" value="<?php echo $shopifyProdutList->data->images; ?>">
+                                    <input type="hidden" id="txtimage" value="<?php echo $imageName; ?>">
+                                    <img src="<?php echo $imageName; ?>" height="55%" width="25%" style="cursor: pointer;" id="prodcutImage">
                                   </div>
                                 </div>
 
@@ -155,6 +156,22 @@
     </div>
   <!-- END: Content-->
 
+<!-- Modal Start -->
+<div id="imageModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><b>Product Image</b></h3>
+        <button type="button" class="close" style="font-size: 2rem !important;" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body text-center">
+        <img src="" id="modalImage" height="75%" width="75%">
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal End -->
+
 <script type="text/javascript">
   function isNumber(evt) {
     var charCode = (evt.which) ? evt.which : evt.keyCode;
@@ -162,4 +179,9 @@
     return false;
     return true;
   }
+
+  $("#prodcutImage").click(function(){
+    $("#modalImage").attr('src',$("#txtimage").val());
+    $('#imageModal').modal('show');
+  });
 </script>
