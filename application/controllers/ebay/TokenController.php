@@ -55,7 +55,7 @@ class TokenController extends CI_Controller {
                 $this->session->set_userdata('userToken',$userAccessToken['data']->access_token); // assign new token in userToken.
                 //$this->session->set_userdata('Admin_Auth_Token',$authToken);
 
-                redirect(base_url('ebay/ProductController/index'));
+                redirect(base_url('WelcomeController/index'));
             }
             else {
                 echo $userAccessToken['message'];
@@ -67,7 +67,7 @@ class TokenController extends CI_Controller {
     }
 
     public function failToken() {
-        echo "Some error in token generation";
+        echo "Some generation fail due to some error.";
     }
 
     public function getRefreshToken() {
