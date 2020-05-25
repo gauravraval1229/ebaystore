@@ -66,7 +66,7 @@ class WelcomeController extends CI_Controller {
                     }
                 }
 
-                echo $totalProductAmazon.",".$totalSoldProductAmazon.",".$totalRemainingProductAmazon.",".$totalSoldProductAmazon;
+                echo "success,".$totalProductAmazon.",".$totalSoldProductAmazon.",".$totalRemainingProductAmazon.",".$totalSoldProductAmazon;
             }
             else { // call one more api ReportType wil created.
 
@@ -108,17 +108,6 @@ class WelcomeController extends CI_Controller {
                                 }
                             }
                         }
-                        
-                       /* if(count($getAllProductData['data']) >= 1) {
-                            for($i=0;$i<count($getAllProductData['data']);$i++) {
-                                if($i>=1) { // skip 0 key of array and start from 1 key
-                                    $qty = $getAllProductData['data'][$i][5];
-                                    if($qty > 0) { // quantity is exist so icreament count
-                                        $totalRemainingProductAmazon = $totalRemainingProductAmazon+1;
-                                    }
-                                }
-                            }
-                        }*/
 
                         echo $totalProductAmazon.",".$totalSoldProductAmazon.",".$totalRemainingProductAmazon.",".$totalSoldProductAmazon;
                     }
@@ -480,7 +469,7 @@ class WelcomeController extends CI_Controller {
                             }
                         }
                     }
-                    echo $totalProductEbay.",".$totalSoldProductEbay.",".$totalRemainingProductEbay.",".$totalOrderEbay;
+                    echo "success,".$totalProductEbay.",".$totalSoldProductEbay.",".$totalRemainingProductEbay.",".$totalOrderEbay;
                 }
                 else{
                     echo $tokenData['message'];

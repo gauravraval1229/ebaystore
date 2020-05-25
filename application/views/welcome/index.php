@@ -285,15 +285,21 @@
                 success : function(data){
                     var amazonArr = data.split(',');
 
-                    $("#totalProductAmazon").html('');
-                    $("#totalProductSoldAmazon").html('');
-                    $("#totalRemainingProductAmazon").html('');
-                    $("#totalOrderAmazon").html('');
+                    if(amazonArr[0] == "success") { // data found
 
-                    $("#totalProductAmazon").html(amazonArr[0]);
-                    $("#totalProductSoldAmazon").html(amazonArr[1]);
-                    $("#totalRemainingProductAmazon").html(amazonArr[2]);
-                    $("#totalOrderAmazon").html(amazonArr[3]);
+                        $("#totalProductAmazon").html('');
+                        $("#totalProductSoldAmazon").html('');
+                        $("#totalRemainingProductAmazon").html('');
+                        $("#totalOrderAmazon").html('');
+
+                        $("#totalProductAmazon").html(amazonArr[1]);
+                        $("#totalProductSoldAmazon").html(amazonArr[2]);
+                        $("#totalRemainingProductAmazon").html(amazonArr[3]);
+                        $("#totalOrderAmazon").html(amazonArr[4]);
+                    }
+                    else { // user sessoin expired
+                        window.location.href = '<?php echo base_url() ?>index.php/LoginController/index';
+                    }
                 }
             });
         }
@@ -320,15 +326,21 @@
 
                     var amazonArr = data.split(',');
 
-                    $("#totalProductAmazon").html('');
-                    $("#totalProductSoldAmazon").html('');
-                    $("#totalRemainingProductAmazon").html('');
-                    $("#totalOrderAmazon").html('');
+                    if(amazonArr[0] == "success"){
 
-                    $("#totalProductAmazon").html(amazonArr[0]);
-                    $("#totalProductSoldAmazon").html(amazonArr[1]);
-                    $("#totalRemainingProductAmazon").html(amazonArr[2]);
-                    $("#totalOrderAmazon").html(amazonArr[3]);
+                        $("#totalProductAmazon").html('');
+                        $("#totalProductSoldAmazon").html('');
+                        $("#totalRemainingProductAmazon").html('');
+                        $("#totalOrderAmazon").html('');
+
+                        $("#totalProductAmazon").html(amazonArr[1]);
+                        $("#totalProductSoldAmazon").html(amazonArr[2]);
+                        $("#totalRemainingProductAmazon").html(amazonArr[3]);
+                        $("#totalOrderAmazon").html(amazonArr[4]);
+                    }
+                    else { // user sessoin expired
+                        window.location.href = '<?php echo base_url() ?>index.php/LoginController/index';
+                    }
                 }
             });
         }
@@ -346,11 +358,11 @@
 
                     var ebayArr = data.split(',');
 
-                    if(ebayArr['0'] == "login") { // Token is not refreshed. Need to login in ebay
+                    if(ebayArr['0'] == "login") { // Token is expired. Need to login in ebay
 
                         window.location.href = ebayArr[1];
                     }
-                    else { // token is refreshed and display data
+                    else if (ebayArr['0'] == "success"){ // token is refreshed and display data
 
                         document.getElementsByClassName("processImg")[0].style.display = "none";
                         document.getElementsByClassName('amazonSection')[0].style.display = "none";
@@ -361,10 +373,13 @@
                         $("#totalRemainingProductEbay").html('');
                         $("#totalOrderEbay").html('');
 
-                        $("#totalProductEbay").html(ebayArr[0]);
-                        $("#totalProductSoldEbay").html(ebayArr[1]);
-                        $("#totalRemainingProductEbay").html(ebayArr[2]);
-                        $("#totalOrderEbay").html(ebayArr[3]);
+                        $("#totalProductEbay").html(ebayArr[1]);
+                        $("#totalProductSoldEbay").html(ebayArr[2]);
+                        $("#totalRemainingProductEbay").html(ebayArr[3]);
+                        $("#totalOrderEbay").html(ebayArr[4]);
+                    }
+                    else { // user sessoin expired
+                        window.location.href = '<?php echo base_url() ?>index.php/LoginController/index';
                     }
                 }
             });

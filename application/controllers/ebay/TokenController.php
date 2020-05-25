@@ -10,6 +10,13 @@ class TokenController extends CI_Controller {
         $this->load->helper('url');
         $this->load->model('UserModel','userModel');
         $this->load->library('session');
+
+        if($this->session->userdata['logged_in']['id']=="" || !$this->session->userdata('logged_in')) { // if user is not logged in
+
+            $this->session->set_flashdata('error','Kindly login again');
+            redirect(base_url('/'));
+            exit();
+        }
     }
 
     public function index(){

@@ -8,13 +8,21 @@ class CheckLoginToken {
 		$CI->load->library('TokenData');
 		$CI->load->model('UserModel','userModel');
 		$CI->load->helper('url');
+		$CI->load->library('session');
+
+		if($CI->session->userdata['logged_in']['id']=="" || !$CI->session->userdata('logged_in')) { // if user is not logged in
+
+			$CI->session->set_flashdata('error','Kindly login again');
+			redirect(base_url('/'));
+			exit();
+		}
 	}
 
 	public function checkLogin() { // check user is logged in or not
 
 		$CI =& get_instance(); // create instance so use $CI instead of $this
 
-		if($CI->session->userdata['logged_in']['id']=="") { // if user is not logged in
+		if($CI->session->userdata['logged_in']['id']=="" || !$CI->session->userdata('logged_in')) { // if user is not logged in
 
 			$CI->session->set_flashdata('error','Kindly login again');
 			redirect(base_url('/'));
